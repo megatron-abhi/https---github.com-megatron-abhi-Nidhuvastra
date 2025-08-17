@@ -16,7 +16,7 @@ import Autoplay from 'embla-carousel-autoplay';
 
 const heroImages = [
     { 
-        src: "https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop", 
+        src: "https://placehold.co/1200x800.png", 
         alt: "Elegant saree model in a vibrant Kanjivaram silk saree.",
         aiHint: "saree fashion model" 
     },
