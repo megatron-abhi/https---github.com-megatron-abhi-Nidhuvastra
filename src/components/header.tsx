@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -50,6 +51,10 @@ const shopLinks = [
 export function Header() {
   const pathname = usePathname();
   const { user } = useAuth();
+
+  if (user) {
+    console.log("Your Admin UID is:", user.uid);
+  }
 
   const handleLogout = async () => {
     await signOut(auth);
