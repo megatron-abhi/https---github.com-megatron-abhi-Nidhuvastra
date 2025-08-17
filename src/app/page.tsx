@@ -16,43 +16,72 @@ import {
 } from '@/components/ui/carousel';
 import { type CarouselApi } from "@/components/ui/carousel"
 import React from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
+
+
+const heroImages = [
+    { src: '/images/1.jpg', alt: 'Saree model', aiHint: 'saree fashion model' },
+    { src: '/images/2.jpg', alt: 'Saree detail', aiHint: 'indian textile lifestyle' },
+    { src: '/images/3.jpg', alt: 'Weaving loom', aiHint: 'saree weaving artisan' },
+    { src: '/images/4.jpg', alt: 'Another saree model', aiHint: 'saree office wear' },
+];
 
 
 export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
-  const videoSources = ['/videos/showcase.mp4', '/videos/showcase2.mp4'];
+  const videoSources = ['/videos/showcase.mp4', '/videos/showcase2.mp4', '/videos/showcase3.mp4'];
   const [api, setApi] = React.useState<CarouselApi>()
   const videoRefs = React.useRef<(HTMLVideoElement | null)[]>([]);
+  const isMobile = useIsMobile();
+  const [scale, setScale] = React.useState<number[]>([]);
+  const [rotate, setRotate] = React.useState<number[]>([]);
+
+  const handleSelect = React.useCallback((api: CarouselApi) => {
+    if (!api) return;
+    const selectedIndex = api.selectedScrollSnap();
+    videoRefs.current.forEach((video, index) => {
+        if (video) {
+            if (index === selectedIndex) {
+                video.play();
+            } else {
+                video.pause();
+                video.currentTime = 0;
+            }
+        }
+    });
+  }, []);
+
+  const handleScroll = React.useCallback((api: CarouselApi) => {
+    if (!api) return;
+    const scrollProgress = api.scrollProgress();
+    const newScale = api.scrollSnapList().map((snap, index) => {
+        const distance = Math.abs(snap - scrollProgress);
+        return 1 - distance * 0.4;
+    });
+     const newRotate = api.scrollSnapList().map((snap, index) => {
+        const distance = snap - scrollProgress;
+        return distance * -15;
+    });
+    setScale(newScale);
+    setRotate(newRotate);
+  }, []);
 
   React.useEffect(() => {
     if (!api) {
       return
     }
-
-    const handleSelect = () => {
-        const selectedIndex = api.selectedScrollSnap();
-        videoRefs.current.forEach((video, index) => {
-            if (video) {
-                if (index === selectedIndex) {
-                    video.play();
-                } else {
-                    video.pause();
-                    video.currentTime = 0;
-                }
-            }
-        });
-    }
-
-    api.on("select", handleSelect)
     
-    // Start playing the first video initially
-    handleSelect();
+    handleSelect(api);
+    handleScroll(api);
+    api.on("select", handleSelect);
+    api.on("scroll", handleScroll);
 
     return () => {
-      api.off("select", handleSelect)
+      api.off("select", handleSelect);
+      api.off("scroll", handleScroll);
     }
-  }, [api])
+  }, [api, handleSelect, handleScroll])
 
 
   return (
@@ -98,28 +127,37 @@ export default function Home() {
       </section>
 
       {/* Video Showcase Section */}
-        <section className="bg-background py-16 lg:py-24">
+        <section className="bg-background py-16 lg:py-24 overflow-hidden">
             <div className="container mx-auto px-4">
-            <Carousel setApi={setApi} className="w-full" opts={{loop: true}}>
-                <CarouselContent>
-                {videoSources.map((src, index) => (
-                    <CarouselItem key={index}>
-                    <div className="relative w-full aspect-video rounded-lg shadow-lg overflow-hidden">
-                        <video
-                        ref={(el) => (videoRefs.current[index] = el)}
-                        className="absolute top-0 left-0 w-full h-full object-cover"
-                        src={src}
-                        muted
-                        playsInline
-                        loop
-                        />
-                    </div>
-                    </CarouselItem>
-                ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-4" />
-                <CarouselNext className="right-4" />
-            </Carousel>
+                 <h2 className="text-3xl md:text-4xl font-headline text-center mb-12">
+                    Behind the Weave
+                </h2>
+                <Carousel setApi={setApi} className="w-full" opts={{loop: true, align: 'center'}}>
+                    <CarouselContent className="-ml-4 h-[70vh]">
+                    {videoSources.map((src, index) => (
+                        <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-1/3 pl-4 flex items-center justify-center">
+                        <div 
+                            className="relative w-[60%] aspect-[9/16] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 ease-out"
+                            style={{
+                                transform: `scale(${isMobile ? 1 : (scale[index] || 0.5)}) rotateY(${isMobile ? 0 : (rotate[index] || 0)}deg)`,
+                                zIndex: Math.round((scale[index] || 0) * 10)
+                            }}
+                        >
+                            <video
+                            ref={(el) => (videoRefs.current[index] = el)}
+                            className="absolute top-0 left-0 w-full h-full object-cover"
+                            src={src}
+                            muted
+                            playsInline
+                            loop
+                            />
+                        </div>
+                        </CarouselItem>
+                    ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="left-4 hidden md:flex" />
+                    <CarouselNext className="right-4 hidden md:flex" />
+                </Carousel>
             </div>
         </section>
 
