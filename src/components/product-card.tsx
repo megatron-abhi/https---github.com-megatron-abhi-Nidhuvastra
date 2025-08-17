@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { Badge } from './ui/badge';
 import { Clock, Archive, Heart } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ProductCardProps {
   product: Product;
