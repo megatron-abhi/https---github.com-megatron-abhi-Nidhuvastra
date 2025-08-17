@@ -142,7 +142,7 @@ export default function Dashboard() {
           <CardContent className="grid gap-8">
             <div className="flex items-center gap-4">
               <Avatar className="hidden h-9 w-9 sm:flex">
-                <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026024d" alt="Avatar" />
+                <AvatarImage src="/images/1.jpg" alt="Avatar" />
                 <AvatarFallback>OM</AvatarFallback>
               </Avatar>
               <div className="grid gap-1">

@@ -13,7 +13,7 @@ const journalPosts = [
     category: "Heritage",
     excerpt: "Discover the rich history and intricate craftsmanship behind the famed Kanjivaram sarees, a symbol of timeless South Indian bridal wear.",
     image: {
-      src: "https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop",
+      src: "/images/1.jpg",
       alt: "A vibrant Kanjivaram silk saree with intricate gold patterns.",
       aiHint: "kanjivaram saree",
     }
@@ -26,7 +26,7 @@ const journalPosts = [
     category: "Style Guide",
     excerpt: "Break the boardroom monotony! Here’s how you can style a classic cotton or linen saree for a look that's both professional and chic.",
     image: {
-        src: "https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop",
+        src: "/images/2.jpg",
         alt: "A woman confidently wearing a modern cotton saree in an office setting.",
         aiHint: "saree office wear",
     }
@@ -39,7 +39,7 @@ const journalPosts = [
     category: "Saree Care",
     excerpt: "The rainy season requires extra care for your precious handloom sarees. Follow our guide to protect them from moisture and mildew.",
      image: {
-        src: "https://images.unsplash.com/photo-1596206583979-a73468b355d1?q=80&w=1974&auto=format&fit=crop",
+        src: "/images/3.jpg",
         alt: "A collection of sarees neatly folded and stored in a wardrobe.",
         aiHint: "saree storage",
     }

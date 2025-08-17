@@ -162,7 +162,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 py-16 lg:py-24">
             <div className="md:w-1/2 w-full">
               <Image
-                src="https://images.unsplash.com/photo-1596206583979-a73468b355d1?q=80&w=1974&auto=format&fit=crop"
+                src="/images/5.jpg"
                 alt="Artisan weaving a saree"
                 width={600}
                 height={450}

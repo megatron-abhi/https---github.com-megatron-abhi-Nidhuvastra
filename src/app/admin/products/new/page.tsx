@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, Upload } from 'lucide-react';
 
@@ -145,7 +146,7 @@ export default function NewProductPage() {
                         alt="Product image"
                         className="aspect-square w-full rounded-md object-cover"
                         height="300"
-                        src="https://placehold.co/300x300.png"
+                        src="/images/placeholder.png"
                         width="300"
                         data-ai-hint="placeholder"
                       />
@@ -155,7 +156,7 @@ export default function NewProductPage() {
                             alt="Product image"
                             className="aspect-square w-full rounded-md object-cover"
                             height="84"
-                            src="https://placehold.co/84x84.png"
+                            src="/images/placeholder.png"
                             width="84"
                             data-ai-hint="placeholder"
                           />
@@ -165,7 +166,7 @@ export default function NewProductPage() {
                             alt="Product image"
                             className="aspect-square w-full rounded-md object-cover"
                             height="84"
-                            src="https://placehold.co/84x84.png"
+                            src="/images/placeholder.png"
                             width="84"
                              data-ai-hint="placeholder"
                           />
