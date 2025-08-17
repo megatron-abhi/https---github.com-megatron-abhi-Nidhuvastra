@@ -11,6 +11,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const hasSecondImage = product.images.length > 1;
+
   return (
     <Card className="group overflow-hidden rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col">
       <Link href={`/product/${product.slug}`}>
@@ -20,10 +22,23 @@ export function ProductCard({ product }: ProductCardProps) {
               src={product.images[0].src}
               alt={product.images[0].alt}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className={cn(
+                'object-cover transition-opacity duration-300',
+                hasSecondImage && 'group-hover:opacity-0'
+              )}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               data-ai-hint={product.images[0].aiHint}
             />
+            {hasSecondImage && (
+              <Image
+                src={product.images[1].src}
+                alt={product.images[1].alt}
+                fill
+                className="object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                data-ai-hint={product.images[1].aiHint}
+              />
+            )}
              <Button variant="ghost" size="icon" className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white text-rose-500">
                 <Heart />
                 <span className="sr-only">Add to wishlist</span>
