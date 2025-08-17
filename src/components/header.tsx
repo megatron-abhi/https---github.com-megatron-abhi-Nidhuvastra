@@ -131,7 +131,10 @@ export function Header() {
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[300px]">
                   <div className="p-4">
-                    <Logo />
+                     <div className="flex items-center gap-2">
+                        <Logo />
+                        <span className="text-xl font-bold text-foreground">NidhuVastra</span>
+                    </div>
                   </div>
                   <nav className="flex flex-col gap-4 p-4">
                     <NavContent />
@@ -139,7 +142,10 @@ export function Header() {
                 </SheetContent>
               </Sheet>
             </div>
-            <Logo />
+             <div className="hidden md:flex items-center gap-2">
+                <Logo />
+                <span className="text-xl font-bold text-foreground">NidhuVastra</span>
+            </div>
         </div>
 
         <nav className="hidden md:flex md:items-center md:gap-2 md:mx-6">

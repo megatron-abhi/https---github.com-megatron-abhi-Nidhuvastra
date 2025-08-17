@@ -1,15 +1,18 @@
 import Link from 'next/link';
-import { Sparkles } from 'lucide-react';
+import Image from 'next/image';
 
 export function Logo() {
   return (
-    <Link href="/" className="flex items-center space-x-2">
-       <div className="p-1.5 bg-white text-black rounded-md">
-         <Sparkles className="h-5 w-5" />
-       </div>
-      <span className="text-xl font-bold text-foreground">
-        NidhuVastra
-      </span>
+    <Link href="/" className="flex items-center space-x-2" aria-label="NidhuVastra Home">
+      <Image
+        src="/images/logo.png"
+        alt="NidhuVastra Logo"
+        width={40}
+        height={40}
+        className="h-10 w-auto"
+        data-ai-hint="logo"
+      />
+      <span className="sr-only">NidhuVastra</span>
     </Link>
   );
 }

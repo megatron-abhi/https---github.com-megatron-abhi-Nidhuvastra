@@ -10,7 +10,10 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-2">
-            <Logo />
+            <div className="flex items-center gap-2">
+                 <Logo />
+                 <span className="text-xl font-bold text-foreground">NidhuVastra</span>
+            </div>
             <p className="mt-4 text-muted-foreground max-w-sm">
               Experience premium Indian sarees designed for comfort, quality, and modern elegance.
             </p>
