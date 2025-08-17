@@ -10,21 +10,42 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
-const allCategories = ['All', ...Array.from(new Set(products.map(p => p.category)))];
+const allCategories = [...Array.from(new Set(products.map(p => p.category)))];
+const allColors = [...new Set(products.flatMap(p => p.colors))];
 const maxPrice = Math.max(...products.map(p => p.price));
 
 export default function AllProductsPage() {
-  const [category, setCategory] = useState('All');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState([0, maxPrice]);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [sort, setSort] = useState('rating-desc');
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
+  };
+  
+  const handleColorChange = (color: string) => {
+    setSelectedColors(prev => 
+      prev.includes(color) 
+        ? prev.filter(c => c !== color)
+        : [...prev, color]
+    );
+  };
 
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = products.filter(product => {
-      const categoryMatch = category === 'All' || product.category === category;
+      const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
       const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
-      return categoryMatch && priceMatch;
+      const colorMatch = selectedColors.length === 0 || product.colors.some(c => selectedColors.includes(c));
+      return categoryMatch && priceMatch && colorMatch;
     });
 
     switch (sort) {
@@ -43,7 +64,18 @@ export default function AllProductsPage() {
     }
 
     return filtered;
-  }, [category, priceRange, sort]);
+  }, [selectedCategories, priceRange, selectedColors, sort]);
+  
+  const colorMap: { [key: string]: string } = {
+    'Maroon': 'bg-rose-900',
+    'Gold': 'bg-yellow-500',
+    'Beige': 'bg-amber-100',
+    'Silver': 'bg-gray-400',
+    'Ivory': 'bg-stone-100',
+    'Red': 'bg-red-600',
+    'Yellow': 'bg-yellow-400',
+    'Green': 'bg-green-600'
+  };
 
   return (
     <div className="bg-background">
@@ -56,31 +88,53 @@ export default function AllProductsPage() {
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Filters */}
           <aside className="lg:col-span-1 bg-card p-6 rounded-lg shadow-sm h-fit sticky top-24">
-            <h3 className="text-xl font-semibold mb-6">Filters</h3>
+            <h3 className="text-xl font-semibold mb-6">Filter by</h3>
             <div className="space-y-6">
               <div>
-                <Label className="text-base font-semibold">Category</Label>
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger className="w-full mt-2">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {allCategories.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
-                  </SelectContent>
-                </Select>
+                <Label className="text-base font-semibold">Product type</Label>
+                <div className="space-y-2 mt-2">
+                  {allCategories.map(cat => (
+                    <div key={cat} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={cat} 
+                        checked={selectedCategories.includes(cat)} 
+                        onCheckedChange={() => handleCategoryChange(cat)}
+                      />
+                      <Label htmlFor={cat} className="font-normal cursor-pointer">{cat}</Label>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div>
-                <Label className="text-base font-semibold">Price Range</Label>
+                <Label className="text-base font-semibold">Price</Label>
                 <Slider
-                  defaultValue={[maxPrice]}
+                  defaultValue={[0, maxPrice]}
                   max={maxPrice}
+                  min={0}
                   step={100}
-                  onValueChange={([val]) => setPriceRange([0, val])}
+                  onValueChange={setPriceRange}
                   className="my-4"
                 />
                 <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>₹0</span>
+                  <span>₹{priceRange[0].toLocaleString('en-IN')}</span>
                   <span>₹{priceRange[1].toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+              <div>
+                <Label className="text-base font-semibold">Color</Label>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {allColors.map(color => (
+                    <button 
+                      key={color} 
+                      onClick={() => handleColorChange(color)}
+                      className={cn(
+                        "w-8 h-8 rounded-full border-2",
+                        selectedColors.includes(color) ? 'border-primary' : 'border-transparent',
+                        colorMap[color] || 'bg-gray-200'
+                      )}
+                      aria-label={`Filter by color ${color}`}
+                    />
+                  ))}
                 </div>
               </div>
                <div>
