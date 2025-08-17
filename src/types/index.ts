@@ -18,6 +18,7 @@ export interface Product {
   slug: string;
   isExclusive?: boolean;
   promotion?: 'Limited Time' | 'Limited Stock';
+  offerEndDate?: string;
 }
 
 export interface Review {

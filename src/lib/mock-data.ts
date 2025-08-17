@@ -1,5 +1,9 @@
 import type { Product, Review } from '@/types';
 
+// Set offer end date to be 3 days from now
+const offerEndDate = new Date();
+offerEndDate.setDate(offerEndDate.getDate() + 3);
+
 export const products: Product[] = [
   {
     id: '1',
@@ -25,6 +29,7 @@ export const products: Product[] = [
     colors: ['Maroon', 'Gold'],
     isExclusive: true,
     promotion: 'Limited Time',
+    offerEndDate: offerEndDate.toISOString(),
   },
   {
     id: '2',

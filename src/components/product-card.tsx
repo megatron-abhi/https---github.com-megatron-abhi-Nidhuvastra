@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { Badge } from './ui/badge';
 import { Clock, Archive, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import CountdownTimer from './countdown-timer';
 
 interface ProductCardProps {
   product: Product;
@@ -61,6 +62,9 @@ export function ProductCard({ product }: ProductCardProps) {
           <h3 className="text-lg font-semibold leading-tight mb-2 group-hover:text-primary transition-colors">{product.name}</h3>
         </Link>
         <p className="text-sm text-muted-foreground">{product.category}</p>
+        {product.promotion === 'Limited Time' && product.offerEndDate && (
+          <CountdownTimer expiryDate={product.offerEndDate} />
+        )}
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between items-center">
         <div className="text-lg font-bold">
