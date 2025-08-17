@@ -33,17 +33,15 @@ export default function Home() {
                      <Image
                         src="https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop"
                         alt="Elegant saree model"
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-2xl shadow-2xl transform -rotate-3 transition-transform duration-500 hover:rotate-0"
+                        fill
+                        className="object-cover rounded-2xl shadow-2xl transform -rotate-3 transition-transform duration-500 hover:rotate-0"
                         data-ai-hint="saree fashion model"
                     />
                      <Image
                         src="https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop"
                         alt="Artisan weaving a saree"
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-2xl shadow-2xl absolute top-1/2 left-1/4 w-1/2 h-1/2 transform rotate-6 transition-transform duration-500 hover:rotate-0"
+                        fill
+                        className="object-cover rounded-2xl shadow-2xl absolute top-1/2 left-1/4 w-1/2 h-1/2 transform rotate-6 transition-transform duration-500 hover:rotate-0"
                         data-ai-hint="indian textile lifestyle"
                     />
                  </div>
