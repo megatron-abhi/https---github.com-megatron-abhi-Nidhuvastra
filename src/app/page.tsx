@@ -1,13 +1,42 @@
+
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/mock-data';
 import { ArrowRight } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
+import { useRef } from 'react';
+
+const heroImages = [
+    { 
+        src: "https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop", 
+        alt: "Elegant saree model in a vibrant Kanjivaram silk saree.",
+        aiHint: "saree fashion model" 
+    },
+    { 
+        src: "https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop",
+        alt: "Woman wearing a modern cotton saree in an office environment.",
+        aiHint: "indian textile lifestyle"
+    },
+    {
+        src: "https://images.unsplash.com/photo-1596206583979-a73468b355d1?q=80&w=1974&auto=format&fit=crop",
+        alt: "Artisan weaving a traditional saree on a handloom.",
+        aiHint: "saree weaving artisan"
+    }
+];
 
 export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
+  const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
 
   return (
     <div className="flex flex-col">
@@ -29,21 +58,31 @@ export default function Home() {
                         <Link href="/collections/all">Explore Collections</Link>
                     </Button>
                 </div>
-                 <div className="relative h-[40vh] md:h-[60vh] w-full animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-                     <Image
-                        src="https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop"
-                        alt="Elegant saree model"
-                        fill
-                        className="object-cover rounded-2xl shadow-2xl transform -rotate-3 transition-transform duration-500 hover:rotate-0 hover:scale-105"
-                        data-ai-hint="saree fashion model"
-                    />
-                     <Image
-                        src="https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop"
-                        alt="Artisan weaving a saree"
-                        fill
-                        className="object-cover rounded-2xl shadow-2xl absolute top-1/2 left-1/4 w-1/2 h-1/2 transform rotate-6 transition-transform duration-500 hover:rotate-0 hover:scale-105"
-                        data-ai-hint="indian textile lifestyle"
-                    />
+                 <div className="relative h-[50vh] md:h-[70vh] w-full animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+                    <Carousel 
+                        plugins={[plugin.current]}
+                        className="w-full h-full"
+                        onMouseEnter={plugin.current.stop}
+                        onMouseLeave={plugin.current.reset}
+                        opts={{ loop: true }}
+                    >
+                        <CarouselContent className="-ml-0">
+                            {heroImages.map((image, index) => (
+                                <CarouselItem key={index} className="pl-0">
+                                    <div className="w-full h-full">
+                                         <Image
+                                            src={image.src}
+                                            alt={image.alt}
+                                            fill
+                                            className="object-cover rounded-2xl shadow-2xl"
+                                            data-ai-hint={image.aiHint}
+                                            priority={index === 0}
+                                        />
+                                    </div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                    </Carousel>
                  </div>
             </div>
         </div>
