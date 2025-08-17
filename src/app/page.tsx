@@ -25,39 +25,19 @@ export default function Home() {
   const [api, setApi] = React.useState<CarouselApi>()
   const videoRefs = React.useRef<(HTMLVideoElement | null)[]>([]);
 
-  const handleSelect = React.useCallback((api: CarouselApi) => {
-    if (!api) return;
-    const selectedIndex = api.selectedScrollSnap();
-    
-    videoRefs.current.forEach((video, index) => {
-        if (video) {
-            if (index === selectedIndex) {
-                video.play().catch(error => console.log("Video play interrupted:", error));
-            } else {
-                video.pause();
-                video.currentTime = 0;
-            }
-        }
-    });
-  }, []);
-
   React.useEffect(() => {
     if (!api) {
       return
     }
-    
-    // Play the first video initially
-    const firstVideo = videoRefs.current[0];
-    if (firstVideo) {
-      firstVideo.play().catch(error => console.log("Video play interrupted:", error));
-    }
-    
-    api.on("select", handleSelect);
 
-    return () => {
-      api.off("select", handleSelect);
-    }
-  }, [api, handleSelect])
+    // Play all videos when the component is ready
+    videoRefs.current.forEach((video) => {
+        if (video) {
+            video.play().catch(error => console.log("Video play interrupted:", error));
+        }
+    });
+
+  }, [api])
 
 
   return (
