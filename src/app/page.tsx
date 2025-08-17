@@ -7,19 +7,53 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/mock-data';
 import { ArrowRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import { type CarouselApi } from "@/components/ui/carousel"
+import React from 'react';
+
 
 export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
-  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
-
   const videoSources = ['/videos/showcase.mp4', '/videos/showcase2.mp4'];
+  const [api, setApi] = React.useState<CarouselApi>()
+  const videoRefs = React.useRef<(HTMLVideoElement | null)[]>([]);
 
-  const handleVideoEnd = () => {
-    setActiveVideoIndex((prevIndex) => (prevIndex + 1) % videoSources.length);
-  };
+  React.useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    const handleSelect = () => {
+        const selectedIndex = api.selectedScrollSnap();
+        videoRefs.current.forEach((video, index) => {
+            if (video) {
+                if (index === selectedIndex) {
+                    video.play();
+                } else {
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            }
+        });
+    }
+
+    api.on("select", handleSelect)
+    
+    // Start playing the first video initially
+    handleSelect();
+
+    return () => {
+      api.off("select", handleSelect)
+    }
+  }, [api])
+
 
   return (
     <div className="flex flex-col">
@@ -44,18 +78,18 @@ export default function Home() {
                  <div className="relative h-[80vh] w-full flex gap-4 -rotate-12 transform-gpu">
                     <div className="w-1/2 space-y-4 animate-marquee-vertical-slow">
                         <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/1.jpg" alt="Saree model" layout="fill" objectFit="cover" data-ai-hint="saree fashion model" />
+                           <Image src="/images/1.jpg" alt="Saree model" fill objectFit="cover" data-ai-hint="saree fashion model" />
                         </div>
                          <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/2.jpg" alt="Saree detail" layout="fill" objectFit="cover" data-ai-hint="indian textile lifestyle" />
+                           <Image src="/images/2.jpg" alt="Saree detail" fill objectFit="cover" data-ai-hint="indian textile lifestyle" />
                         </div>
                     </div>
                     <div className="w-1/2 space-y-4 animate-marquee-vertical-fast -translate-y-1/4">
                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/3.jpg" alt="Weaving loom" layout="fill" objectFit="cover" data-ai-hint="saree weaving artisan" />
+                           <Image src="/images/3.jpg" alt="Weaving loom" fill objectFit="cover" data-ai-hint="saree weaving artisan" />
                         </div>
                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/4.jpg" alt="Another saree model" layout="fill" objectFit="cover" data-ai-hint="saree office wear" />
+                           <Image src="/images/4.jpg" alt="Another saree model" fill objectFit="cover" data-ai-hint="saree office wear" />
                         </div>
                     </div>
                  </div>
@@ -64,26 +98,30 @@ export default function Home() {
       </section>
 
       {/* Video Showcase Section */}
-      <section className="bg-background py-16 lg:py-24">
-        <div className="container mx-auto px-4">
-           <div className="relative w-full aspect-video rounded-lg shadow-lg overflow-hidden">
-            {videoSources.map((src, index) => (
-              <video 
-                key={src}
-                className={cn(
-                  "absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000",
-                  activeVideoIndex === index ? "opacity-100" : "opacity-0"
-                )}
-                src={src} 
-                autoPlay
-                muted
-                playsInline
-                onEnded={handleVideoEnd}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+        <section className="bg-background py-16 lg:py-24">
+            <div className="container mx-auto px-4">
+            <Carousel setApi={setApi} className="w-full" opts={{loop: true}}>
+                <CarouselContent>
+                {videoSources.map((src, index) => (
+                    <CarouselItem key={index}>
+                    <div className="relative w-full aspect-video rounded-lg shadow-lg overflow-hidden">
+                        <video
+                        ref={(el) => (videoRefs.current[index] = el)}
+                        className="absolute top-0 left-0 w-full h-full object-cover"
+                        src={src}
+                        muted
+                        playsInline
+                        loop
+                        />
+                    </div>
+                    </CarouselItem>
+                ))}
+                </CarouselContent>
+                <CarouselPrevious className="left-4" />
+                <CarouselNext className="right-4" />
+            </Carousel>
+            </div>
+        </section>
 
       {/* Featured Products Section */}
       <section id="featured-products" className="py-16 lg:py-24 bg-card">
