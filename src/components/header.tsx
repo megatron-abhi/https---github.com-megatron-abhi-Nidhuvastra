@@ -143,6 +143,13 @@ export function Header() {
 
         <div className="flex flex-1 items-center justify-end space-x-2">
            {user ? (
+            <>
+            <Button variant="ghost" size="icon" asChild>
+                <Link href="/wishlist">
+                <Heart className="h-5 w-5" />
+                <span className="sr-only">Wishlist</span>
+                </Link>
+            </Button>
              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full">
@@ -178,6 +185,7 @@ export function Header() {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
+            </>
            ) : <AuthButton />}
           <Button variant="ghost" size="icon" asChild>
             <Link href="/cart">
