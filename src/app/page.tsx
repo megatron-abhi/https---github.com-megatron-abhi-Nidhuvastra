@@ -31,7 +31,7 @@ export default function Home() {
                 </div>
                  <div className="relative h-[40vh] md:h-[60vh] w-full ">
                      <Image
-                        src="https://placehold.co/800x1000.png"
+                        src="https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop"
                         alt="Elegant saree model"
                         layout="fill"
                         objectFit="cover"
@@ -39,7 +39,7 @@ export default function Home() {
                         data-ai-hint="saree fashion model"
                     />
                      <Image
-                        src="https://placehold.co/600x450.png"
+                        src="https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop"
                         alt="Artisan weaving a saree"
                         layout="fill"
                         objectFit="cover"
@@ -95,7 +95,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 py-16 lg:py-24">
             <div className="md:w-1/2 w-full">
               <Image
-                src="https://placehold.co/600x450.png"
+                src="https://images.unsplash.com/photo-1596206583979-a73468b355d1?q=80&w=1974&auto=format&fit=crop"
                 alt="Artisan weaving a saree"
                 width={600}
                 height={450}

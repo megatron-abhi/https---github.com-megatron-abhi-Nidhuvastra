@@ -9,9 +9,9 @@ export const products: Product[] = [
     price: 12500,
     originalPrice: 15000,
     images: [
-      { src: 'https://placehold.co/800x1000.png', alt: 'Kanjivaram Saree Front', aiHint: 'kanjivaram saree'},
-      { src: 'https://placehold.co/800x1000.png', alt: 'Kanjivaram Saree Back', aiHint: 'silk fabric detail' },
-      { src: 'https://placehold.co/800x1000.png', alt: 'Kanjivaram Saree Detail', aiHint: 'saree border gold' },
+      { src: 'https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop', alt: 'Kanjivaram Saree Front', aiHint: 'kanjivaram saree'},
+      { src: 'https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop', alt: 'Kanjivaram Saree Back', aiHint: 'silk fabric detail' },
+      { src: 'https://images.unsplash.com/photo-1596206583979-a73468b355d1?q=80&w=1974&auto=format&fit=crop', alt: 'Kanjivaram Saree Detail', aiHint: 'saree border gold' },
     ],
     rating: 4.8,
     reviewCount: 45,
@@ -33,8 +33,8 @@ export const products: Product[] = [
     category: 'Georgette Sarees',
     price: 8200,
     images: [
-      { src: 'https://placehold.co/800x1000.png', alt: 'Banarasi Saree', aiHint: 'banarasi saree model' },
-      { src: 'https://placehold.co/800x1000.png', alt: 'Banarasi Saree Detail', aiHint: 'georgette fabric floral' },
+      { src: 'https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop', alt: 'Banarasi Saree', aiHint: 'banarasi saree model' },
+      { src: 'https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop', alt: 'Banarasi Saree Detail', aiHint: 'georgette fabric floral' },
     ],
     rating: 4.5,
     reviewCount: 28,
@@ -55,8 +55,8 @@ export const products: Product[] = [
     price: 4500,
     originalPrice: 5000,
     images: [
-      { src: 'https://placehold.co/800x1000.png', alt: 'Chanderi Saree', aiHint: 'cotton saree ivory' },
-      { src: 'https://placehold.co/800x1000.png', alt: 'Chanderi Saree Fabric', aiHint: 'chanderi fabric texture' },
+      { src: 'https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop', alt: 'Chanderi Saree', aiHint: 'cotton saree ivory' },
+      { src: 'https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop', alt: 'Chanderi Saree Fabric', aiHint: 'chanderi fabric texture' },
     ],
     rating: 4.7,
     reviewCount: 62,
@@ -76,8 +76,8 @@ export const products: Product[] = [
     category: 'Printed Sarees',
     price: 3800,
     images: [
-      { src: 'https://placehold.co/800x1000.png', alt: 'Bandhani Saree', aiHint: 'bandhani saree bright' },
-      { src: 'https://placehold.co/800x1000.png', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
+      { src: 'https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop', alt: 'Bandhani Saree', aiHint: 'bandhani saree bright' },
+      { src: 'https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
     ],
     rating: 4.4,
     reviewCount: 34,
@@ -101,7 +101,7 @@ export const reviews: Review[] = [
         date: '2 weeks ago',
         rating: 5,
         text: "Absolutely stunning saree! The quality of the silk is exceptional and the color is even more beautiful in person. Received so many compliments at the wedding.",
-        avatar: "https://placehold.co/40x40.png"
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"
     },
     {
         id: 'r2',
@@ -109,7 +109,7 @@ export const reviews: Review[] = [
         date: '1 month ago',
         rating: 4,
         text: "Beautiful design and very lightweight. It was very comfortable to wear for a long day. The delivery was also very prompt. Would have liked a bit more intricacy on the border.",
-        avatar: "https://placehold.co/40x40.png"
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop"
     },
     {
         id: 'r3',
@@ -117,6 +117,6 @@ export const reviews: Review[] = [
         date: '3 months ago',
         rating: 5,
         text: "This is my second purchase from SareeShree and they never disappoint. The craftsmanship is top-notch. It's a timeless piece I will cherish forever.",
-        avatar: "https://placehold.co/40x40.png"
+        avatar: "https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=1974&auto=format&fit=crop"
     }
 ];
