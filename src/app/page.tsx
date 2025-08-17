@@ -46,7 +46,12 @@ export default function Home() {
       return
     }
     
-    handleSelect(api);
+    // Play the first video initially
+    const firstVideo = videoRefs.current[0];
+    if (firstVideo) {
+      firstVideo.play().catch(error => console.log("Video play interrupted:", error));
+    }
+    
     api.on("select", handleSelect);
 
     return () => {
@@ -109,13 +114,12 @@ export default function Home() {
                     opts={{
                         loop: true, 
                         align: 'center',
-                        slidesToScroll: 1,
                     }}
                 >
                     <CarouselContent className="-ml-4 h-[70vh]">
                     {videoSources.map((src, index) => (
-                        <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-4 flex items-center justify-center">
-                            <div className="relative w-full aspect-[9/16] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 ease-out">
+                        <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-4">
+                            <div className="relative w-full h-full rounded-lg shadow-lg overflow-hidden">
                                 <video
                                     ref={(el) => (videoRefs.current[index] = el)}
                                     className="absolute top-0 left-0 w-full h-full object-cover"
