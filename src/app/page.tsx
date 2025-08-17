@@ -7,10 +7,19 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/mock-data';
 import { ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
+  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+
+  const videoSources = ['/videos/showcase.mp4', '/videos/showcase2.mp4'];
+
+  const handleVideoEnd = () => {
+    setActiveVideoIndex((prevIndex) => (prevIndex + 1) % videoSources.length);
+  };
 
   return (
     <div className="flex flex-col">
@@ -57,16 +66,22 @@ export default function Home() {
       {/* Video Showcase Section */}
       <section className="bg-background py-16 lg:py-24">
         <div className="container mx-auto px-4">
-          <video 
-            className="w-full h-auto rounded-lg shadow-lg"
-            src="/videos/showcase.mp4" 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-          >
-            Your browser does not support the video tag.
-          </video>
+           <div className="relative w-full aspect-video rounded-lg shadow-lg overflow-hidden">
+            {videoSources.map((src, index) => (
+              <video 
+                key={src}
+                className={cn(
+                  "absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000",
+                  activeVideoIndex === index ? "opacity-100" : "opacity-0"
+                )}
+                src={src} 
+                autoPlay
+                muted
+                playsInline
+                onEnded={handleVideoEnd}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
