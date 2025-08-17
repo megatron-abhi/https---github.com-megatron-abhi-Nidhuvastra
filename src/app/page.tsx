@@ -11,32 +11,47 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center text-center text-white overflow-hidden">
-        <Image
-          src="https://placehold.co/1800x1000.png"
-          alt="Elegant saree model"
-          layout="fill"
-          objectFit="cover"
-          className="absolute inset-0 z-0 brightness-50 group-hover:scale-110 transition-transform duration-1000 ease-in-out"
-          data-ai-hint="saree fashion model"
-        />
-        <div className="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
-        <div className="relative z-10 p-4 animate-fade-in-up">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-headline mb-4 text-gray-100 drop-shadow-lg">
-            Draped in Heritage
-          </h1>
-          <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-gray-200 drop-shadow-md">
-            Experience the timeless elegance of authentic Indian sarees, crafted
-            with passion and precision.
-          </p>
-          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Link href="/collections/all">Shop Now</Link>
-          </Button>
+      <section className="relative h-[70vh] md:h-[90vh] w-full flex items-center justify-start text-left text-white overflow-hidden">
+        <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div className="relative z-10 p-4 animate-fade-in-up">
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-headline mb-4 text-gray-100 drop-shadow-lg">
+                        Modern sarees.
+                    </h1>
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-headline mb-6 text-gray-100 drop-shadow-lg">
+                        Effortless elegance.
+                    </h1>
+                    <p className="text-lg md:text-xl max-w-xl mb-8 text-gray-300 drop-shadow-md">
+                        Experience premium Indian sarees designed for comfort, quality, and modern elegance.
+                    </p>
+                    <Button asChild size="lg" variant="secondary">
+                        <Link href="/collections/all">Explore Collections</Link>
+                    </Button>
+                </div>
+                 <div className="relative h-[40vh] md:h-[60vh] w-full ">
+                     <Image
+                        src="https://placehold.co/800x1000.png"
+                        alt="Elegant saree model"
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-2xl shadow-2xl transform -rotate-3 transition-transform duration-500 hover:rotate-0"
+                        data-ai-hint="saree fashion model"
+                    />
+                     <Image
+                        src="https://placehold.co/600x450.png"
+                        alt="Artisan weaving a saree"
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-2xl shadow-2xl absolute top-1/2 left-1/4 w-1/2 h-1/2 transform rotate-6 transition-transform duration-500 hover:rotate-0"
+                        data-ai-hint="indian textile lifestyle"
+                    />
+                 </div>
+            </div>
         </div>
       </section>
 
       {/* Featured Products Section */}
-      <section id="featured-products" className="py-16 lg:py-24">
+      <section id="featured-products" className="py-16 lg:py-24 bg-card">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-headline text-center mb-12">
             Featured Collection
@@ -57,7 +72,7 @@ export default function Home() {
       </section>
       
       {/* Brand Story Teaser */}
-      <section className="bg-card">
+      <section className="bg-background">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 py-16 lg:py-24">
             <div className="md:w-1/2 w-full">
@@ -75,7 +90,7 @@ export default function Home() {
                 The Art of Saree Making
               </h3>
               <p className="text-muted-foreground mb-6 text-lg">
-                Each SareeShree creation is a testament to the rich legacy of Indian craftsmanship. We partner with skilled artisans across the country to bring you sarees that are not just garments, but stories woven in thread.
+                Each NidhuVastra creation is a testament to the rich legacy of Indian craftsmanship. We partner with skilled artisans across the country to bring you sarees that are not just garments, but stories woven in thread.
               </p>
               <Button asChild variant="link" className="text-lg p-0 h-auto text-primary">
                 <Link href="/about">

@@ -1,6 +1,6 @@
 'use server';
 /**
- * @fileOverview A customer support chatbot flow for SareeShree.
+ * @fileOverview A customer support chatbot flow for NidhuVastra.
  *
  * - chat - A function that handles the chatbot conversation.
  */
@@ -41,7 +41,7 @@ const chatFlowPrompt = ai.definePrompt({
   input: { schema: ChatInputSchema },
   output: { schema: ChatOutputSchema },
   tools: [raiseSupportTicket],
-  system: `You are a friendly and helpful customer support agent for SareeShree, an online store that sells high-quality Indian ethnic sarees.
+  system: `You are a friendly and helpful customer support agent for NidhuVastra, an online store that sells high-quality Indian ethnic sarees.
 
 Your goal is to answer customer questions, provide information about products, and help with order inquiries.
 

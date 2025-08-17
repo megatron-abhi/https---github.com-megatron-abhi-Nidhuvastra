@@ -1,5 +1,5 @@
 /**
- * @fileOverview Schemas and types for the SareeShree chatbot.
+ * @fileOverview Schemas and types for the NidhuVastra chatbot.
  *
  * - ChatMessageSchema - Zod schema for a single chat message.
  * - ChatMessage - TypeScript type for a single chat message.

@@ -29,7 +29,7 @@ export function ChatBot() {
         setIsLoading(true);
         // Initial greeting from bot
         setTimeout(() => {
-            setMessages([{ role: 'model', content: "Hello! I'm SareeShree's assistant. How can I help you today? You can ask me about our products, shipping, or return policies." }]);
+            setMessages([{ role: 'model', content: "Hello! I'm NidhuVastra's assistant. How can I help you today? You can ask me about our products, shipping, or return policies." }]);
             setIsLoading(false);
         }, 1000);
     }
@@ -98,7 +98,7 @@ export function ChatBot() {
           <Card className="flex flex-col h-[60vh] shadow-2xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Bot /> SareeShree Support
+                <Bot /> NidhuVastra Support
               </CardTitle>
               <CardDescription>
                 Ask me anything about our products or raise a support ticket.
@@ -125,7 +125,7 @@ export function ChatBot() {
                                 'max-w-[80%] rounded-lg px-4 py-2 text-sm',
                                 message.role === 'user'
                                     ? 'bg-secondary text-secondary-foreground'
-                                    : 'bg-card'
+                                    : 'bg-card border'
                                 )}
                             >
                                 {message.content}
@@ -142,7 +142,7 @@ export function ChatBot() {
                                 <div className="p-2 bg-primary rounded-full text-primary-foreground">
                                     <Bot className="h-5 w-5" />
                                 </div>
-                                <div className="bg-card rounded-lg px-4 py-2 text-sm flex items-center">
+                                <div className="bg-card border rounded-lg px-4 py-2 text-sm flex items-center">
                                     <Loader2 className="h-5 w-5 animate-spin" />
                                 </div>
                             </div>

@@ -8,9 +8,9 @@ import { AnnouncementBar } from '@/components/announcement-bar';
 import { ChatBot } from '@/components/chat-bot';
 
 export const metadata: Metadata = {
-  title: 'SareeShree',
+  title: 'NidhuVastra',
   description:
-    'Discover the finest collection of Indian ethnic sarees. Premium quality, exclusive designs.',
+    'Experience premium Indian sarees designed for comfort, quality, and modern elegance.',
 };
 
 export default function RootLayout({
@@ -28,17 +28,17 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=PT+Sans:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400..900&display=swap"
           rel="stylesheet"
         />
       </head>
       <body
         className={cn(
-          'min-h-screen bg-background font-body antialiased'
+          'min-h-screen bg-background font-body antialiased',
+          'dark'
         )}
       >
         <div className="relative flex min-h-screen flex-col">
-          <AnnouncementBar />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

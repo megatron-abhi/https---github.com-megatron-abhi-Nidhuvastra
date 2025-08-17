@@ -12,7 +12,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Logo />
             <p className="mt-4 text-muted-foreground max-w-sm">
-              Celebrating the timeless beauty of Indian heritage through our exquisite collection of handcrafted sarees.
+              Experience premium Indian sarees designed for comfort, quality, and modern elegance.
             </p>
             <div className="mt-6">
               <h4 className="font-semibold text-foreground">Stay Connected</h4>
@@ -33,6 +33,13 @@ export function Footer() {
             </ul>
           </div>
           <div>
+            <h4 className="font-semibold text-foreground mb-4">About</h4>
+            <ul className="space-y-2">
+              <li><Link href="/about" className="text-muted-foreground hover:text-primary">Our Story</Link></li>
+              <li><Link href="/journal" className="text-muted-foreground hover:text-primary">Journal</Link></li>
+            </ul>
+          </div>
+          <div>
             <h4 className="font-semibold text-foreground mb-4">Support</h4>
             <ul className="space-y-2">
               <li><Link href="/contact" className="text-muted-foreground hover:text-primary">Contact Us</Link></li>
@@ -41,17 +48,9 @@ export function Footer() {
               <li><Link href="/privacy" className="text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
             </ul>
           </div>
-          <div>
-            <h4 className="font-semibold text-foreground mb-4">Follow Us</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-muted-foreground hover:text-primary">Instagram</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary">Facebook</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary">Pinterest</a></li>
-            </ul>
-          </div>
         </div>
         <div className="border-t mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} SareeShree. All Rights Reserved.</p>
+          <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} NidhuVastra. All Rights Reserved.</p>
           <div className="mt-4 sm:mt-0">
             <TrustBadges />
           </div>

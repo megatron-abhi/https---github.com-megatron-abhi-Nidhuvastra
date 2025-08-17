@@ -14,6 +14,7 @@ import Image from 'next/image';
 import { products } from '@/lib/mock-data';
 import { Lock } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Logo } from '@/components/logo';
 
 const orderItems = [
   { product: products[0], quantity: 1 },
@@ -29,7 +30,9 @@ export default function CheckoutPage() {
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="text-center mb-8">
-            <Link href="/" className="text-3xl font-headline font-bold text-foreground">SareeShree</Link>
+            <div className="flex justify-center mb-2">
+                <Logo />
+            </div>
             <p className="text-muted-foreground mt-1">Checkout</p>
         </div>
 
