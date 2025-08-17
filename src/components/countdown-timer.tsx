@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -7,31 +8,38 @@ interface CountdownTimerProps {
 }
 
 const CountdownTimer = ({ expiryDate }: CountdownTimerProps) => {
-  const calculateTimeLeft = () => {
-    const difference = +new Date(expiryDate) - +new Date();
-    let timeLeft = {};
+    const [isClient, setIsClient] = useState(false);
+    
+    const calculateTimeLeft = () => {
+        const difference = +new Date(expiryDate) - +new Date();
+        let timeLeft = {};
 
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
-
-    return timeLeft;
-  };
+        if (difference > 0) {
+        timeLeft = {
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((difference / 1000 / 60) % 60),
+            seconds: Math.floor((difference / 1000) % 60),
+        };
+        }
+        return timeLeft;
+    };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    setIsClient(true);
+    const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    return () => clearTimeout(timer);
-  });
+    return () => clearInterval(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expiryDate]);
+
+  if (!isClient) {
+    return null; // Don't render on the server
+  }
 
   const timerComponents: JSX.Element[] = [];
 
