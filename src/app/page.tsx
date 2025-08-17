@@ -35,7 +35,8 @@ export default function Home() {
   const videoRefs = React.useRef<(HTMLVideoElement | null)[]>([]);
   const isMobile = useIsMobile();
   const [scale, setScale] = React.useState<number[]>([]);
-  const [rotate, setRotate] = React.useState<number[]>([]);
+  const [translateX, setTranslateX] = React.useState<number[]>([]);
+  const [zIndex, setZIndex] = React.useState<number[]>([]);
 
   const handleSelect = React.useCallback((api: CarouselApi) => {
     if (!api) return;
@@ -57,14 +58,20 @@ export default function Home() {
     const scrollProgress = api.scrollProgress();
     const newScale = api.scrollSnapList().map((snap, index) => {
         const distance = Math.abs(snap - scrollProgress);
-        return 1 - distance * 0.4;
+        return 1 - distance * 0.2;
     });
-     const newRotate = api.scrollSnapList().map((snap, index) => {
+    const newTranslateX = api.scrollSnapList().map((snap, index) => {
         const distance = snap - scrollProgress;
-        return distance * -15;
+        return distance * -50; // Pulls items closer
     });
+     const newZIndex = api.scrollSnapList().map((snap, index) => {
+        const distance = Math.abs(snap - scrollProgress);
+        return 10 - Math.floor(distance * 10);
+    });
+    
     setScale(newScale);
-    setRotate(newRotate);
+    setTranslateX(newTranslateX);
+    setZIndex(newZIndex);
   }, []);
 
   React.useEffect(() => {
@@ -135,12 +142,12 @@ export default function Home() {
                 <Carousel setApi={setApi} className="w-full" opts={{loop: true, align: 'center'}}>
                     <CarouselContent className="-ml-4 h-[70vh]">
                     {videoSources.map((src, index) => (
-                        <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-1/3 pl-4 flex items-center justify-center">
+                        <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-1/4 pl-4 flex items-center justify-center">
                         <div 
-                            className="relative w-[60%] aspect-[9/16] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 ease-out"
+                            className="relative w-full aspect-[9/16] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 ease-out"
                             style={{
-                                transform: `scale(${isMobile ? 1 : (scale[index] || 0.5)}) rotateY(${isMobile ? 0 : (rotate[index] || 0)}deg)`,
-                                zIndex: Math.round((scale[index] || 0) * 10)
+                                transform: `scale(${isMobile ? 1 : (scale[index] || 0.5)}) translateX(${isMobile ? 0 : (translateX[index] || 0)}%)`,
+                                zIndex: zIndex[index]
                             }}
                         >
                             <video
