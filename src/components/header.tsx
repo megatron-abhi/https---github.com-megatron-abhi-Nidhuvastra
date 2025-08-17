@@ -8,6 +8,7 @@ import {
   ShoppingCart,
   User,
   ChevronDown,
+  LogOut,
 } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
@@ -24,7 +25,15 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
+    DropdownMenuSeparator,
+    DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/hooks/use-auth';
+import { auth } from '@/lib/firebase';
+import { signOut } from 'firebase/auth';
+import { AuthButton } from './auth-button';
+import { Avatar, AvatarFallback } from './ui/avatar';
+
 
 const navLinks = [
   { href: '/about', label: 'About' },
@@ -40,6 +49,11 @@ const shopLinks = [
 
 export function Header() {
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
 
   const NavContent = () => (
     <>
@@ -128,9 +142,43 @@ export function Header() {
         </nav>
 
         <div className="flex flex-1 items-center justify-end space-x-2">
-           <Button asChild>
-                <Link href="/collections/all">Shop now</Link>
-            </Button>
+           {user ? (
+             <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                        <Avatar className="h-10 w-10">
+                            <AvatarFallback>
+                               <User />
+                            </AvatarFallback>
+                        </Avatar>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                        <div className="flex flex-col space-y-1">
+                            <p className="text-sm font-medium leading-none">My Account</p>
+                            <p className="text-xs leading-none text-muted-foreground">
+                                {user.phoneNumber}
+                            </p>
+                        </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <Heart className="mr-2 h-4 w-4" />
+                        <span>Wishlist</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>Log out</span>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+           ) : <AuthButton />}
           <Button variant="ghost" size="icon" asChild>
             <Link href="/cart">
               <ShoppingCart className="h-5 w-5" />
