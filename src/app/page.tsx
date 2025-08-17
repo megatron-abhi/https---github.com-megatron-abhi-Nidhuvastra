@@ -7,26 +7,20 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/mock-data';
 import { ArrowRight } from 'lucide-react';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
 
 const heroImages = [
     { 
-        src: "https://placehold.co/1200x800.png", 
+        src: "/images/1.jpg", 
         alt: "Elegant saree model in a vibrant Kanjivaram silk saree.",
         aiHint: "saree fashion model" 
     },
     { 
-        src: "https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop",
+        src: "/images/2.jpg",
         alt: "Woman wearing a modern cotton saree in an office environment.",
         aiHint: "indian textile lifestyle"
     },
     {
-        src: "https://images.unsplash.com/photo-1596206583979-a73468b355d1?q=80&w=1974&auto=format&fit=crop",
+        src: "/images/3.jpg",
         alt: "Artisan weaving a traditional saree on a handloom.",
         aiHint: "saree weaving artisan"
     }
@@ -56,29 +50,23 @@ export default function Home() {
                         <Link href="/collections/all">Explore Collections</Link>
                     </Button>
                 </div>
-                 <div className="relative h-[50vh] md:h-[70vh] w-full animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-                    <Carousel 
-                        plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}
-                        className="w-full h-full"
-                        opts={{ loop: true }}
-                    >
-                        <CarouselContent className="-ml-0">
-                            {heroImages.map((image, index) => (
-                                <CarouselItem key={index} className="pl-0">
-                                    <div className="w-full h-full">
-                                         <Image
-                                            src={image.src}
-                                            alt={image.alt}
-                                            fill
-                                            className="object-cover rounded-2xl shadow-2xl"
-                                            data-ai-hint={image.aiHint}
-                                            priority={index === 0}
-                                        />
-                                    </div>
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                    </Carousel>
+                 <div className="relative h-[80vh] w-full flex gap-4 -rotate-12 transform-gpu">
+                    <div className="w-1/2 space-y-4 animate-marquee-vertical-slow">
+                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
+                           <Image src="/images/1.jpg" alt="Saree model" layout="fill" objectFit="cover" data-ai-hint="saree fashion model" />
+                        </div>
+                         <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
+                           <Image src="/images/2.jpg" alt="Saree detail" layout="fill" objectFit="cover" data-ai-hint="indian textile lifestyle" />
+                        </div>
+                    </div>
+                    <div className="w-1/2 space-y-4 animate-marquee-vertical-fast -translate-y-1/4">
+                       <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
+                           <Image src="/images/3.jpg" alt="Weaving loom" layout="fill" objectFit="cover" data-ai-hint="saree weaving artisan" />
+                        </div>
+                       <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
+                           <Image src="/images/4.jpg" alt="Another saree model" layout="fill" objectFit="cover" data-ai-hint="saree office wear" />
+                        </div>
+                    </div>
                  </div>
             </div>
         </div>

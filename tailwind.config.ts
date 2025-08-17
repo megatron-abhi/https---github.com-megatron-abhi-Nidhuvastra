@@ -91,6 +91,10 @@ export default {
         'marquee': {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-100%)' },
+        },
+        'marquee-vertical': {
+          '0%': { transform: 'translateY(0%)' },
+          '100%': { transform: 'translateY(-100%)' },
         }
       },
       animation: {
@@ -98,6 +102,8 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in-up': 'fade-in-up 0.8s ease-out both',
         'marquee': 'marquee 25s linear infinite',
+        'marquee-vertical-slow': 'marquee-vertical 60s linear infinite',
+        'marquee-vertical-fast': 'marquee-vertical 30s linear infinite',
       },
     },
   },
