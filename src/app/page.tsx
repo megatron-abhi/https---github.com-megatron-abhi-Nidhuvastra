@@ -12,36 +12,36 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[70vh] md:h-[90vh] w-full flex items-center justify-start text-left text-white overflow-hidden">
-        <div className="container mx-auto px-4">
+      <section className="relative w-full flex items-center justify-start text-left overflow-hidden bg-background">
+        <div className="container mx-auto px-4 py-16 md:py-24">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div className="relative z-10 p-4 animate-fade-in-up">
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-headline mb-4 text-gray-100 drop-shadow-lg">
+                <div className="relative z-10 p-4 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-headline mb-4 text-foreground drop-shadow-lg">
                         Modern sarees.
                     </h1>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-headline mb-6 text-gray-100 drop-shadow-lg">
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-headline mb-6 text-foreground drop-shadow-lg">
                         Effortless elegance.
                     </h1>
-                    <p className="text-lg md:text-xl max-w-xl mb-8 text-gray-300 drop-shadow-md">
+                    <p className="text-lg md:text-xl max-w-xl mb-8 text-muted-foreground drop-shadow-md">
                         Experience premium Indian sarees designed for comfort, quality, and modern elegance.
                     </p>
-                    <Button asChild size="lg" variant="secondary">
+                    <Button asChild size="lg">
                         <Link href="/collections/all">Explore Collections</Link>
                     </Button>
                 </div>
-                 <div className="relative h-[40vh] md:h-[60vh] w-full ">
+                 <div className="relative h-[40vh] md:h-[60vh] w-full animate-fade-in-up" style={{animationDelay: '0.4s'}}>
                      <Image
                         src="https://images.unsplash.com/photo-1617195921829-3c8a7413a1e4?q=80&w=1974&auto=format&fit=crop"
                         alt="Elegant saree model"
                         fill
-                        className="object-cover rounded-2xl shadow-2xl transform -rotate-3 transition-transform duration-500 hover:rotate-0"
+                        className="object-cover rounded-2xl shadow-2xl transform -rotate-3 transition-transform duration-500 hover:rotate-0 hover:scale-105"
                         data-ai-hint="saree fashion model"
                     />
                      <Image
                         src="https://images.unsplash.com/photo-1620005755569-bf9a2180e2f5?q=80&w=1964&auto=format&fit=crop"
                         alt="Artisan weaving a saree"
                         fill
-                        className="object-cover rounded-2xl shadow-2xl absolute top-1/2 left-1/4 w-1/2 h-1/2 transform rotate-6 transition-transform duration-500 hover:rotate-0"
+                        className="object-cover rounded-2xl shadow-2xl absolute top-1/2 left-1/4 w-1/2 h-1/2 transform rotate-6 transition-transform duration-500 hover:rotate-0 hover:scale-105"
                         data-ai-hint="indian textile lifestyle"
                     />
                  </div>
