@@ -8,24 +8,6 @@ import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/mock-data';
 import { ArrowRight } from 'lucide-react';
 
-const heroImages = [
-    { 
-        src: "/images/1.jpg", 
-        alt: "Elegant saree model in a vibrant Kanjivaram silk saree.",
-        aiHint: "saree fashion model" 
-    },
-    { 
-        src: "/images/2.jpg",
-        alt: "Woman wearing a modern cotton saree in an office environment.",
-        aiHint: "indian textile lifestyle"
-    },
-    {
-        src: "/images/3.jpg",
-        alt: "Artisan weaving a traditional saree on a handloom.",
-        aiHint: "saree weaving artisan"
-    }
-];
-
 export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
@@ -69,6 +51,22 @@ export default function Home() {
                     </div>
                  </div>
             </div>
+        </div>
+      </section>
+
+      {/* Video Showcase Section */}
+      <section className="bg-background py-16 lg:py-24">
+        <div className="container mx-auto px-4">
+          <video 
+            className="w-full h-auto rounded-lg shadow-lg"
+            src="/videos/showcase.mp4" 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+          >
+            Your browser does not support the video tag.
+          </video>
         </div>
       </section>
 
