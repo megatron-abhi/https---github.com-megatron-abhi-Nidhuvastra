@@ -13,7 +13,6 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
-import { useRef } from 'react';
 
 const heroImages = [
     { 
@@ -36,7 +35,6 @@ const heroImages = [
 export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
-  const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
 
   return (
     <div className="flex flex-col">
@@ -60,10 +58,8 @@ export default function Home() {
                 </div>
                  <div className="relative h-[50vh] md:h-[70vh] w-full animate-fade-in-up" style={{animationDelay: '0.4s'}}>
                     <Carousel 
-                        plugins={[plugin.current]}
+                        plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}
                         className="w-full h-full"
-                        onMouseEnter={plugin.current.stop}
-                        onMouseLeave={plugin.current.reset}
                         opts={{ loop: true }}
                     >
                         <CarouselContent className="-ml-0">
