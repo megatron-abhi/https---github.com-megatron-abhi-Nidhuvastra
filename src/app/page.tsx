@@ -41,10 +41,12 @@ export default function Home() {
   const handleSelect = React.useCallback((api: CarouselApi) => {
     if (!api) return;
     const selectedIndex = api.selectedScrollSnap();
+    
+    // Play the selected video and pause others
     videoRefs.current.forEach((video, index) => {
         if (video) {
             if (index === selectedIndex) {
-                video.play();
+                video.play().catch(error => console.log("Video play interrupted:", error));
             } else {
                 video.pause();
                 video.currentTime = 0;
@@ -57,15 +59,21 @@ export default function Home() {
     if (!api) return;
     const scrollProgress = api.scrollProgress();
     const newScale = api.scrollSnapList().map((snap, index) => {
+        // Distance of the slide from the center of the viewport
         const distance = Math.abs(snap - scrollProgress);
+        // The closer to the center, the larger the scale
         return 1 - distance * 0.2;
     });
     const newTranslateX = api.scrollSnapList().map((snap, index) => {
+        // How far the slide is from the center
         const distance = snap - scrollProgress;
-        return distance * -50; // Pulls items closer
+        // Move slides towards the center
+        return distance * -50; 
     });
      const newZIndex = api.scrollSnapList().map((snap, index) => {
+        // Distance from center
         const distance = Math.abs(snap - scrollProgress);
+        // The closer to the center, the higher the z-index
         return 10 - Math.floor(distance * 10);
     });
     
@@ -79,11 +87,15 @@ export default function Home() {
       return
     }
     
+    // Initial setup
     handleSelect(api);
     handleScroll(api);
+
+    // Add event listeners
     api.on("select", handleSelect);
     api.on("scroll", handleScroll);
 
+    // Clean up on unmount
     return () => {
       api.off("select", handleSelect);
       api.off("scroll", handleScroll);
@@ -239,5 +251,4 @@ export default function Home() {
 
     </div>
   );
-
-    
+}
