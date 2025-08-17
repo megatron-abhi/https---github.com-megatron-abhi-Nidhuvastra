@@ -1,3 +1,5 @@
+
+'use client';
 import Link from 'next/link';
 import {
   Bell,
@@ -7,6 +9,7 @@ import {
   Settings,
   Users,
   ShoppingCart,
+  ShieldAlert,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -17,12 +20,60 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useAuth } from '@/hooks/use-auth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
+function Unauthorized() {
+    return (
+        <div className="flex flex-col items-center justify-center h-full">
+            <ShieldAlert className="h-16 w-16 text-destructive" />
+            <h1 className="text-3xl font-bold mt-4">Access Denied</h1>
+            <p className="text-muted-foreground mt-2">You do not have permission to view this page.</p>
+            <Button asChild className="mt-6">
+                <Link href="/">Go to Homepage</Link>
+            </Button>
+        </div>
+    )
+}
+
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');
+  const isAuthorized = user && adminUids.includes(user.uid);
+  
+  useEffect(() => {
+    if (!loading && !user) {
+        router.push('/'); // Redirect to home if not logged in
+    }
+  },[user, loading, router])
+
+
+  if (loading) {
+    return (
+       <div className="flex flex-1 items-center justify-center">
+            <p>Loading...</p>
+       </div>
+    );
+  }
+  
+  if (!isAuthorized) {
+      return (
+        <div className="flex flex-col">
+            <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                <Unauthorized />
+            </main>
+      </div>
+      )
+  }
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
