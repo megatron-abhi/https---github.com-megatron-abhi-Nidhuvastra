@@ -142,7 +142,7 @@ export default function Home() {
                 <Carousel setApi={setApi} className="w-full" opts={{loop: true, align: 'center'}}>
                     <CarouselContent className="-ml-4 h-[70vh]">
                     {videoSources.map((src, index) => (
-                        <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-1/4 pl-4 flex items-center justify-center">
+                        <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-1/3 pl-4 flex items-center justify-center">
                         <div 
                             className="relative w-full aspect-[9/16] rounded-lg shadow-lg overflow-hidden transition-transform duration-300 ease-out"
                             style={{
@@ -239,4 +239,5 @@ export default function Home() {
 
     </div>
   );
-}
+
+    
