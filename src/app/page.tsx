@@ -6,7 +6,8 @@ import { products } from '@/lib/mock-data';
 import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
-  const featuredProducts = products.slice(0, 4);
+  const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
+  const exclusiveProducts = products.filter(p => p.isExclusive);
 
   return (
     <div className="flex flex-col">
@@ -70,6 +71,23 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
+       {/* Exclusive Collection Section */}
+      {exclusiveProducts.length > 0 && (
+        <section id="exclusive-collection" className="py-16 lg:py-24 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-headline">Exclusive Collection</h2>
+              <p className="text-muted-foreground mt-2">Limited edition sarees for the discerning connoisseur.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {exclusiveProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
       
       {/* Brand Story Teaser */}
       <section className="bg-background">

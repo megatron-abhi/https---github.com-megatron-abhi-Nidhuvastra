@@ -16,6 +16,8 @@ export interface Product {
   sizes: string[];
   colors: string[];
   slug: string;
+  isExclusive?: boolean;
+  promotion?: 'Limited Time' | 'Limited Stock';
 }
 
 export interface Review {

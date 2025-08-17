@@ -4,6 +4,7 @@ import type { Product } from '@/types';
 import { Button } from './ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { Badge } from './ui/badge';
+import { Clock, Archive } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -23,7 +24,13 @@ export function ProductCard({ product }: ProductCardProps) {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               data-ai-hint={product.images[0].aiHint}
             />
-            {product.originalPrice && (
+            {product.isExclusive && (
+              <Badge variant="secondary" className="absolute top-3 left-3 flex items-center gap-1">
+                 {product.promotion === 'Limited Time' ? <Clock className="h-3 w-3" /> : <Archive className="h-3 w-3" />}
+                {product.promotion}
+              </Badge>
+            )}
+            {product.originalPrice && !product.isExclusive && (
               <Badge variant="destructive" className="absolute top-3 right-3">SALE</Badge>
             )}
           </div>

@@ -23,6 +23,8 @@ export const products: Product[] = [
     ],
     sizes: ['One Size'],
     colors: ['Maroon', 'Gold'],
+    isExclusive: true,
+    promotion: 'Limited Time',
   },
   {
     id: '2',
@@ -87,6 +89,8 @@ export const products: Product[] = [
     ],
     sizes: ['One Size'],
     colors: ['Red', 'Yellow', 'Green'],
+    isExclusive: true,
+    promotion: 'Limited Stock',
   },
 ];
 
