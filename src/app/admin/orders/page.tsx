@@ -1,5 +1,6 @@
 
 'use client'
+import { useState, useEffect } from 'react';
 import {
   File,
   ListFilter,
@@ -35,10 +36,22 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs'
-import { orders } from '@/lib/mock-data'
+import { orders as mockOrders } from '@/lib/mock-data'
+import type { Order } from '@/types';
 import { cn } from '@/lib/utils'
 
 export default function OrdersPage() {
+    const [orders, setOrders] = useState<Order[]>(mockOrders);
+    
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedOrders = localStorage.getItem('orders');
+            if (storedOrders) {
+                setOrders(JSON.parse(storedOrders));
+            }
+        }
+    }, []);
+
     return (
         <Tabs defaultValue="all">
           <div className="flex items-center">

@@ -22,6 +22,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { orders as mockOrders } from '@/lib/mock-data';
+import type { Order } from '@/types';
 
 export default function CheckoutPage() {
   const { cartItems, totalPrice, clearCart } = useCart();
@@ -48,6 +50,22 @@ export default function CheckoutPage() {
     
     // Simulate payment processing delay
     await new Promise(resolve => setTimeout(resolve, 2500));
+
+    // Create a new order object
+    const newOrder: Order = {
+        id: `ORD-${Date.now().toString().slice(-5)}`,
+        customerName: 'Test User', // Using a placeholder name
+        customerEmail: user?.phoneNumber || 'test@example.com',
+        date: new Date().toISOString().split('T')[0],
+        status: 'Pending',
+        total: total,
+    };
+
+    // Save order to localStorage to simulate backend
+    const existingOrders = JSON.parse(localStorage.getItem('orders') || JSON.stringify(mockOrders));
+    const updatedOrders = [newOrder, ...existingOrders];
+    localStorage.setItem('orders', JSON.stringify(updatedOrders));
+
 
     setIsPlacingOrder(false);
 
@@ -88,7 +106,7 @@ export default function CheckoutPage() {
               <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
                   <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" type="email" placeholder="you@example.com" />
+                  <Input id="email" type="email" placeholder="you@example.com" defaultValue={user?.phoneNumber ? `${user.phoneNumber}@example.com` : ""} />
                 </div>
                 <div>
                   <Label htmlFor="first-name">First Name</Label>

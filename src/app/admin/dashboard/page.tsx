@@ -1,4 +1,6 @@
 
+'use client';
+
 import Link from 'next/link';
 import {
   Activity,
@@ -11,6 +13,7 @@ import {
   Search,
   Users,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -30,10 +33,22 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { orders, customers } from '@/lib/mock-data';
+import { orders as mockOrders, customers } from '@/lib/mock-data';
+import type { Order } from '@/types';
 import { cn } from '@/lib/utils';
 
 export default function Dashboard() {
+  const [orders, setOrders] = useState<Order[]>(mockOrders);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedOrders = localStorage.getItem('orders');
+      if (storedOrders) {
+        setOrders(JSON.parse(storedOrders));
+      }
+    }
+  }, []);
+
   const recentOrders = orders.slice(0, 5);
   const recentCustomers = customers.slice(0, 5);
 
