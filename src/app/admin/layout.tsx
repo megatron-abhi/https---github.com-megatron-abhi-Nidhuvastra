@@ -1,4 +1,5 @@
 
+
 'use client';
 import Link from 'next/link';
 import {
@@ -10,6 +11,7 @@ import {
   Users,
   ShoppingCart,
   ShieldAlert,
+  LogOut,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,16 +25,42 @@ import {
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { Logo } from '@/components/logo';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function Unauthorized() {
     return (
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center h-full rounded-lg border border-dashed shadow-sm p-8 text-center">
             <ShieldAlert className="h-16 w-16 text-destructive" />
             <h1 className="text-3xl font-bold mt-4">Access Denied</h1>
             <p className="text-muted-foreground mt-2">You do not have permission to view this page.</p>
             <Button asChild className="mt-6">
                 <Link href="/">Go to Homepage</Link>
             </Button>
+        </div>
+    )
+}
+
+function LoadingScreen() {
+    return (
+        <div className="flex flex-col">
+            <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                 <div className="flex items-center">
+                    <Skeleton className="h-9 w-32" />
+                </div>
+                <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+                    <div className="flex flex-col items-center gap-1 text-center">
+                        <h3 className="text-2xl font-bold tracking-tight">
+                            Loading Admin Panel
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                            Please wait while we verify your credentials...
+                        </p>
+                    </div>
+                </div>
+            </main>
         </div>
     )
 }
@@ -46,8 +74,10 @@ export default function AdminLayout({
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');
-  const isAuthorized = user && adminUids.includes(user.uid);
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push('/');
+  };
   
   useEffect(() => {
     if (!loading && !user) {
@@ -55,18 +85,25 @@ export default function AdminLayout({
     }
   },[user, loading, router])
 
-
   if (loading) {
-    return (
-       <div className="flex flex-1 items-center justify-center">
-            <p>Loading...</p>
-       </div>
-    );
+    return <LoadingScreen />;
   }
+  
+  const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');
+  const isAuthorized = user && adminUids.includes(user.uid);
   
   if (!isAuthorized) {
       return (
         <div className="flex flex-col">
+            <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-muted/40 px-6">
+                <Link href="/" className="lg:hidden">
+                    <Package2 className="h-6 w-6" />
+                    <span className="sr-only">Home</span>
+                </Link>
+                <div className="flex-1">
+                    <h1 className="font-semibold text-lg">Unauthorized</h1>
+                </div>
+            </header>
             <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
                 <Unauthorized />
             </main>
@@ -80,8 +117,8 @@ export default function AdminLayout({
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/admin/dashboard" className="flex items-center gap-2 font-semibold">
-              <Package2 className="h-6 w-6" />
-              <span className="">NidhuVastra Admin</span>
+              <Logo />
+              <span className="">SareeShree Admin</span>
             </Link>
           </div>
           <div className="flex-1">
@@ -120,20 +157,10 @@ export default function AdminLayout({
             </nav>
           </div>
           <div className="mt-auto p-4">
-            <Card>
-              <CardHeader className="p-2 pt-0 md:p-4">
-                <CardTitle>Upgrade to Pro</CardTitle>
-                <CardDescription>
-                  Unlock all features and get unlimited access to our support
-                  team.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                <Button size="sm" className="w-full">
-                  Upgrade
-                </Button>
-              </CardContent>
-            </Card>
+             <Button size="sm" variant="ghost" className="w-full justify-start" onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+            </Button>
           </div>
         </div>
       </div>

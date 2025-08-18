@@ -34,6 +34,7 @@ import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
 import { AuthButton } from './auth-button';
 import { Avatar, AvatarFallback } from './ui/avatar';
+import { Skeleton } from './ui/skeleton';
 
 
 const navLinks = [
@@ -50,11 +51,7 @@ const shopLinks = [
 
 export function Header() {
   const pathname = usePathname();
-  const { user } = useAuth();
-
-  if (user) {
-    console.log("Your Admin UID is:", user.uid);
-  }
+  const { user, loading } = useAuth();
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -131,10 +128,10 @@ export function Header() {
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[300px]">
                   <div className="p-4">
-                     <div className="flex items-center gap-2">
+                     <Link href="/" className="flex items-center gap-2">
                         <Logo />
-                        <span className="text-xl font-bold text-foreground">NidhuVastra</span>
-                    </div>
+                        <span className="text-xl font-bold text-foreground">SareeShree</span>
+                    </Link>
                   </div>
                   <nav className="flex flex-col gap-4 p-4">
                     <NavContent />
@@ -142,10 +139,10 @@ export function Header() {
                 </SheetContent>
               </Sheet>
             </div>
-             <div className="hidden md:flex items-center gap-2">
+             <Link href="/" className="hidden md:flex items-center gap-2">
                 <Logo />
-                <span className="text-xl font-bold text-foreground">NidhuVastra</span>
-            </div>
+                <span className="text-xl font-bold text-foreground">SareeShree</span>
+            </Link>
         </div>
 
         <nav className="hidden md:flex md:items-center md:gap-2 md:mx-6">
@@ -153,7 +150,9 @@ export function Header() {
         </nav>
 
         <div className="flex flex-1 items-center justify-end space-x-2">
-           {user ? (
+           {loading ? (
+             <Skeleton className="h-10 w-24" />
+           ) : user ? (
             <>
             <Button variant="ghost" size="icon" asChild>
                 <Link href="/wishlist">
@@ -181,13 +180,17 @@ export function Header() {
                         </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                     <DropdownMenuItem asChild>
+                      <Link href="/admin/dashboard">
                         <User className="mr-2 h-4 w-4" />
-                        <span>Profile</span>
+                        <span>Dashboard</span>
+                      </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/wishlist">
                         <Heart className="mr-2 h-4 w-4" />
                         <span>Wishlist</span>
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}>

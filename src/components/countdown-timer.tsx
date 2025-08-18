@@ -9,8 +9,10 @@ interface CountdownTimerProps {
 
 const CountdownTimer = ({ expiryDate }: CountdownTimerProps) => {
     const [timeLeft, setTimeLeft] = useState<any>(null);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
+        setIsMounted(true);
         const calculateTimeLeft = () => {
             const difference = +new Date(expiryDate) - +new Date();
             let newTimeLeft = {};
@@ -26,21 +28,32 @@ const CountdownTimer = ({ expiryDate }: CountdownTimerProps) => {
             return newTimeLeft;
         };
 
-        // Set initial time on mount (client-side only)
+        // Set initial time right away
         setTimeLeft(calculateTimeLeft());
 
         const timer = setInterval(() => {
-            setTimeLeft(calculateTime-left());
+            setTimeLeft(calculateTimeLeft());
         }, 1000);
 
         return () => clearInterval(timer);
     }, [expiryDate]);
+    
+    if (!isMounted) {
+        return (
+             <div className="bg-destructive/20 text-destructive-foreground p-2 rounded-md mt-2">
+                <h4 className="text-sm font-semibold text-center mb-2 text-destructive">Offer Ends In</h4>
+                <div className="h-9 flex justify-center items-center">
+                    <span className="text-destructive font-bold text-xs">Loading...</span>
+                </div>
+            </div>
+        );
+    }
 
     if (!timeLeft || Object.keys(timeLeft).length === 0) {
         return (
             <div className="bg-destructive/20 text-destructive-foreground p-2 rounded-md mt-2">
                 <h4 className="text-sm font-semibold text-center mb-2 text-destructive">Offer Ended</h4>
-                <div className="flex justify-center gap-3">
+                <div className="h-9 flex justify-center items-center">
                     <span className="text-destructive font-bold">Time's up!</span>
                 </div>
             </div>
@@ -50,12 +63,12 @@ const CountdownTimer = ({ expiryDate }: CountdownTimerProps) => {
     const timerComponents: JSX.Element[] = [];
 
     Object.keys(timeLeft).forEach((interval) => {
-        if (!timeLeft[interval] && timeLeft[interval] !== 0) {
+        if (timeLeft[interval] === undefined) {
             return;
         }
 
         timerComponents.push(
-            <div key={interval} className="flex flex-col items-center">
+            <div key={interval} className="flex flex-col items-center w-10">
                 <span className="font-bold text-lg">{timeLeft[interval].toString().padStart(2, '0')}</span>
                 <span className="text-xs uppercase">{interval}</span>
             </div>
@@ -65,7 +78,7 @@ const CountdownTimer = ({ expiryDate }: CountdownTimerProps) => {
   return (
     <div className="bg-destructive/20 text-destructive-foreground p-2 rounded-md mt-2">
         <h4 className="text-sm font-semibold text-center mb-2 text-destructive">Offer Ends In</h4>
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center gap-2">
             {timerComponents.length ? timerComponents : <span className="text-destructive font-bold">Loading...</span>}
         </div>
     </div>
