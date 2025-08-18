@@ -77,6 +77,7 @@ export default function AdminLayout({
   const handleLogout = async () => {
     // Clear mock user if it exists
     if (sessionStorage.getItem('mockUser')) {
+        sessionStorage.removeItem('mockUser');
         setMockUser(null);
     } else {
         await signOut(auth);
@@ -94,8 +95,9 @@ export default function AdminLayout({
     return <LoadingScreen />;
   }
   
+  // Updated authorization check
   const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');
-  const isAuthorized = user && adminUids.includes(user.uid);
+  const isAuthorized = user && 'uid' in user && adminUids.includes(user.uid);
   
   if (!isAuthorized) {
       return (
