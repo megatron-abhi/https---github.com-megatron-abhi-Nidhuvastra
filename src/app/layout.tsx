@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
@@ -8,6 +9,7 @@ import { AnnouncementBar } from '@/components/announcement-bar';
 import { ChatBot } from '@/components/chat-bot';
 import { AuthProvider } from '@/hooks/use-auth';
 import { CartProvider } from '@/hooks/use-cart';
+import { WishlistProvider } from '@/hooks/use-wishlist';
 
 export const metadata: Metadata = {
   title: 'NidhuVastra',
@@ -41,14 +43,16 @@ export default function RootLayout({
       >
         <AuthProvider>
           <CartProvider>
-            <div className="relative flex min-h-screen flex-col">
-              <AnnouncementBar />
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-              <ChatBot />
-            </div>
-            <Toaster />
+            <WishlistProvider>
+              <div className="relative flex min-h-screen flex-col">
+                <AnnouncementBar />
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <ChatBot />
+              </div>
+              <Toaster />
+            </WishlistProvider>
           </CartProvider>
         </AuthProvider>
       </body>

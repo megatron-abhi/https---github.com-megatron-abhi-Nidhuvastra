@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import CountdownTimer from './countdown-timer';
 import { useToast } from '@/hooks/use-toast';
 import { useCart } from '@/hooks/use-cart';
+import { useWishlist } from '@/hooks/use-wishlist';
 
 interface ProductCardProps {
   product: Product;
@@ -22,13 +23,31 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const hasSecondImage = product.images.length > 1;
   const { user } = useAuth();
-  const [isClient, setIsClient] = useState(false);
   const { toast } = useToast();
   const { addToCart } = useCart();
-
+  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  
+  const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!user) {
+        toast({
+            title: "Authentication Required",
+            description: "Please log in to manage your wishlist.",
+            variant: "destructive"
+        });
+        return;
+    }
+    if (isInWishlist(product.id)) {
+        removeFromWishlist(product.id);
+    } else {
+        addToWishlist(product);
+    }
+  }
   
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault(); // prevent navigation
@@ -70,8 +89,8 @@ export function ProductCard({ product }: ProductCardProps) {
               />
             )}
             {isClient && user && (
-              <Button variant="ghost" size="icon" className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white text-rose-500">
-                  <Heart />
+              <Button variant="ghost" size="icon" className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white text-rose-500" onClick={handleWishlistToggle}>
+                  <Heart className={cn(isInWishlist(product.id) && 'fill-current')}/>
                   <span className="sr-only">Add to wishlist</span>
               </Button>
             )}
