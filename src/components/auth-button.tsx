@@ -32,6 +32,8 @@ export function AuthButton() {
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const testPhoneNumber = '+919876543210';
+  const testOtp = '111111';
 
   const setupRecaptcha = () => {
     // Check if recaptcha verifier is already created
@@ -48,6 +50,15 @@ export function AuthButton() {
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (phoneNumber === testPhoneNumber) {
+        setStep('otp');
+        toast({
+            title: "Test Mode",
+            description: "Enter the test OTP to continue.",
+        });
+        return;
+    }
     
     if (!/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
         toast({
@@ -71,7 +82,6 @@ export function AuthButton() {
       });
     } catch (error: any) {
       console.error(error);
-      // For local development with emulator, you might need test numbers.
       if (error.code === 'auth/missing-phone-number') {
         toast({
             title: "Error",
@@ -80,8 +90,8 @@ export function AuthButton() {
         });
       } else {
         toast({
-            title: "Error",
-            description: "Could not send OTP. If you're developing locally, ensure the Firebase emulators are running and you're using a test phone number.",
+            title: "Firebase Error",
+            description: "Could not send OTP. This may be due to Firebase project configuration (e.g., billing not enabled for production). Using test numbers can bypass this.",
             variant: "destructive",
         });
       }
@@ -94,15 +104,29 @@ export function AuthButton() {
     e.preventDefault();
     setIsLoading(true);
 
+    if (phoneNumber === testPhoneNumber && otp === testOtp) {
+        toast({
+            title: "Test Login Successful",
+            description: "You are logged in with a test account.",
+        });
+        resetState(true);
+        setIsLoading(false);
+        // This is a mock sign-in, it won't create a real session.
+        // For full testing, use Firebase emulators.
+        return;
+    }
+
     try {
         const result = await window.confirmationResult?.confirm(otp);
         if (result?.user) {
             const user = result.user;
-            // Check if user exists in Realtime Database
+            
+            // Log the user's UID to the console
+            console.log("Firebase User Logged In:", user);
+            
             const userRef = ref(db, 'users/' + user.uid);
             const snapshot = await get(userRef);
             if (!snapshot.exists()) {
-                // New user, create a record
                 await set(userRef, {
                     uid: user.uid,
                     phoneNumber: user.phoneNumber,
@@ -118,7 +142,7 @@ export function AuthButton() {
                     description: "You have been logged in successfully.",
                 });
             }
-            resetState(true); // Close dialog on success
+            resetState(true); 
         } else {
             throw new Error("Invalid OTP or confirmation result.");
         }
@@ -147,9 +171,15 @@ export function AuthButton() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && resetState(true)}>
+    <Dialog open={open} onOpenChange={(isOpen) => {
+        if (!isOpen) {
+            resetState(true);
+        } else {
+            setOpen(true);
+        }
+     }}>
       <DialogTrigger asChild>
-        <Button variant="outline" onClick={() => setOpen(true)}>Login</Button>
+        <Button variant="outline">Login</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         {step === 'phone' ? (
