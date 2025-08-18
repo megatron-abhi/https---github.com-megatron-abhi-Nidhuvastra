@@ -1,6 +1,8 @@
+
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, MoreHorizontal, Edit } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,6 +22,13 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { products } from '@/lib/mock-data';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export default function ProductsPage() {
   return (
@@ -57,7 +66,9 @@ export default function ProductsPage() {
                 <TableHead className="hidden md:table-cell">
                   Total Sales
                 </TableHead>
-                <TableHead className="hidden md:table-cell">Created at</TableHead>
+                 <TableHead className="hidden md:table-cell">
+                  Stock
+                </TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>
@@ -82,11 +93,27 @@ export default function ProductsPage() {
                   </TableCell>
                   <TableCell>₹{product.price.toLocaleString('en-IN')}</TableCell>
                    <TableCell className="hidden md:table-cell">25</TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    2023-07-12 10:42 AM
-                  </TableCell>
-                   <TableCell>
-                    {/* Add actions here later */}
+                  <TableCell className="hidden md:table-cell">{product.stock}</TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                            aria-haspopup="true"
+                            size="icon"
+                            variant="ghost"
+                            >
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem asChild>
+                                <Link href={`/admin/products/edit/${product.slug}`}>Edit</Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>Delete</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))}

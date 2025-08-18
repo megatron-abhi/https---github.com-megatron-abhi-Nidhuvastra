@@ -12,6 +12,7 @@ export const products: Product[] = [
     category: 'Silk Sarees',
     price: 12500,
     originalPrice: 15000,
+    stock: 15,
     images: [
       { src: '/images/1.jpg', alt: 'Kanjivaram Saree Front', aiHint: 'kanjivaram saree'},
       { src: '/images/2.jpg', alt: 'Kanjivaram Saree Back', aiHint: 'silk fabric detail' },
@@ -37,6 +38,7 @@ export const products: Product[] = [
     slug: 'elegant-banarasi-georgette-saree',
     category: 'Georgette Sarees',
     price: 8200,
+    stock: 25,
     images: [
       { src: '/images/4.jpg', alt: 'Banarasi Saree', aiHint: 'banarasi saree model' },
       { src: '/images/5.jpg', alt: 'Banarasi Saree Detail', aiHint: 'georgette fabric floral' },
@@ -59,6 +61,7 @@ export const products: Product[] = [
     category: 'Cotton Sarees',
     price: 4500,
     originalPrice: 5000,
+    stock: 50,
     images: [
       { src: '/images/6.jpg', alt: 'Chanderi Saree', aiHint: 'cotton saree ivory' },
       { src: '/images/7.jpg', alt: 'Chanderi Saree Fabric', aiHint: 'chanderi fabric texture' },
@@ -80,6 +83,7 @@ export const products: Product[] = [
     slug: 'vibrant-bandhani-printed-saree',
     category: 'Printed Sarees',
     price: 3800,
+    stock: 30,
     images: [
       { src: '/images/8.jpg', alt: 'Bandhani Saree', aiHint: 'bandhani saree bright' },
       { src: '/images/9.jpg', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },

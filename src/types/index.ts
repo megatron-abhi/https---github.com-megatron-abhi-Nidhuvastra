@@ -19,6 +19,7 @@ export interface Product {
   isExclusive?: boolean;
   promotion?: 'Limited Time' | 'Limited Stock';
   offerEndDate?: string;
+  stock?: number;
 }
 
 export interface Review {
