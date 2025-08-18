@@ -23,12 +23,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { Logo } from '@/components/logo';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
+
 
 function Unauthorized() {
     return (
@@ -73,6 +75,7 @@ export default function AdminLayout({
 }) {
   const { user, loading, setMockUser } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     // Clear mock user if it exists
@@ -132,14 +135,20 @@ export default function AdminLayout({
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
                 href="/admin/dashboard"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                    pathname === "/admin/dashboard" && "bg-muted text-primary"
+                )}
               >
                 <Home className="h-4 w-4" />
                 Dashboard
               </Link>
               <Link
                 href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                    pathname === "/admin/orders" && "bg-muted text-primary"
+                )}
               >
                 <ShoppingCart className="h-4 w-4" />
                 Orders
@@ -149,14 +158,20 @@ export default function AdminLayout({
               </Link>
               <Link
                 href="/admin/products"
-                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+                className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                    pathname.startsWith("/admin/products") && "bg-muted text-primary"
+                )}
               >
                 <Package className="h-4 w-4" />
                 Products{' '}
               </Link>
               <Link
                 href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                    pathname === "/admin/customers" && "bg-muted text-primary"
+                )}
               >
                 <Users className="h-4 w-4" />
                 Customers
