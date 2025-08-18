@@ -139,7 +139,7 @@ export function Header() {
                 </SheetContent>
               </Sheet>
             </div>
-             <Link href="/" className="hidden md:flex items-center gap-2">
+             <Link href="/" className="hidden md:flex items-center gap-2" aria-label="SareeShree Home">
                 <Logo />
                 <span className="text-xl font-bold text-foreground">SareeShree</span>
             </Link>
@@ -151,7 +151,7 @@ export function Header() {
 
         <div className="flex flex-1 items-center justify-end space-x-2">
            {loading ? (
-             <Skeleton className="h-10 w-24" />
+             <Skeleton className="h-10 w-24 rounded-md" />
            ) : user ? (
             <>
             <Button variant="ghost" size="icon" asChild>

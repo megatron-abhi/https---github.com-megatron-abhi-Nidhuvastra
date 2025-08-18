@@ -1,9 +1,9 @@
-import Link from 'next/link';
+
 import Image from 'next/image';
 
 export function Logo() {
   return (
-    <Link href="/" className="flex items-center space-x-2" aria-label="NidhuVastra Home">
+    <>
       <Image
         src="/images/logo.png"
         alt="NidhuVastra Logo"
@@ -13,6 +13,6 @@ export function Logo() {
         data-ai-hint="logo"
       />
       <span className="sr-only">NidhuVastra</span>
-    </Link>
+    </>
   );
 }
