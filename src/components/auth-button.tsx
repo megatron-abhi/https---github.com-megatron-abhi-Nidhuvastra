@@ -32,7 +32,6 @@ export function AuthButton() {
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const [isTestMode, setIsTestMode] = useState(false);
 
   const setupRecaptcha = () => {
     // Check if recaptcha verifier is already created
@@ -50,18 +49,6 @@ export function AuthButton() {
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (phoneNumber === '+919876543210') {
-        setIsTestMode(true);
-        setStep('otp');
-        toast({
-            title: "Test Mode",
-            description: "Please enter the test OTP.",
-        });
-        return;
-    }
-
-    setIsTestMode(false);
-
     if (!/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
         toast({
             title: "Invalid Phone Number",
@@ -84,11 +71,20 @@ export function AuthButton() {
       });
     } catch (error: any) {
       console.error(error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to send OTP. Please try again.",
-        variant: "destructive",
-      });
+      // For local development with emulator, you might need test numbers.
+      if (error.code === 'auth/missing-phone-number') {
+        toast({
+            title: "Error",
+            description: "Please enter a phone number.",
+            variant: "destructive"
+        });
+      } else {
+        toast({
+            title: "Error",
+            description: "Could not send OTP. If you're developing locally, ensure the Firebase emulators are running and you're using a test phone number.",
+            variant: "destructive",
+        });
+      }
     } finally {
         setIsLoading(false);
     }
@@ -97,23 +93,6 @@ export function AuthButton() {
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
-    if (isTestMode && otp === '111111') {
-        toast({
-            title: "Test Login Successful",
-            description: "You are now logged in with a test account.",
-        });
-        setOpen(false);
-        // Note: This is a mock success message. A full test user object would require
-        // more complex setup, but this allows bypassing the UI lock.
-        // For full functionality, you would need to enable billing or use the Firebase emulator.
-        setIsLoading(false);
-        // We can't create a real user session this way, so we just close the dialog.
-        // The UI will still think the user is logged out.
-        // This is a workaround to unblock UI testing.
-        return;
-    }
-
 
     try {
         const result = await window.confirmationResult?.confirm(otp);
@@ -139,15 +118,10 @@ export function AuthButton() {
                     description: "You have been logged in successfully.",
                 });
             }
-            setOpen(false); // Close dialog on success
+            resetState(true); // Close dialog on success
         } else {
             throw new Error("Invalid OTP or confirmation result.");
         }
-        
-        // Reset state after successful login
-        setStep('phone');
-        setPhoneNumber('');
-        setOtp('');
     } catch (error: any) {
       console.error(error);
       toast({
@@ -160,19 +134,20 @@ export function AuthButton() {
     }
   };
 
-  const resetState = () => {
-    setOpen(false);
+  const resetState = (shouldClose: boolean) => {
+    if (shouldClose) {
+        setOpen(false);
+    }
     setTimeout(() => {
         setStep('phone');
         setPhoneNumber('');
         setOtp('');
         setIsLoading(false);
-        setIsTestMode(false);
     }, 300); // Delay to allow dialog to close gracefully
   };
 
   return (
-    <Dialog open={open} onOpenChange={resetState}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && resetState(true)}>
       <DialogTrigger asChild>
         <Button variant="outline" onClick={() => setOpen(true)}>Login</Button>
       </DialogTrigger>
@@ -223,7 +198,7 @@ export function AuthButton() {
                 Verify OTP
               </Button>
             </form>
-            <Button variant="link" onClick={() => { setStep('phone'); setOtp(''); setIsTestMode(false); }}>
+            <Button variant="link" onClick={() => resetState(false)}>
                 Use a different phone number
             </Button>
           </>
