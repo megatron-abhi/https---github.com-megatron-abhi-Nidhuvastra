@@ -31,10 +31,22 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { orders, customers } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
 
 export default function Dashboard() {
   const recentOrders = orders.slice(0, 5);
   const recentCustomers = customers.slice(0, 5);
+
+  const getStatusBadgeClass = (status: string) => {
+    switch (status) {
+        case 'Pending':
+            return 'bg-yellow-500/20 text-yellow-700';
+        case 'Shipped':
+            return 'bg-blue-500/20 text-blue-700';
+        default:
+            return '';
+    }
+  }
 
   return (
     <>
@@ -133,9 +145,7 @@ export default function Dashboard() {
                                     order.status === 'Cancelled' ? 'destructive' :
                                     'secondary'
                                 }
-                                className={cn(order.status === 'Pending' && 'bg-yellow-500/20 text-yellow-700',
-                                            order.status === 'Shipped' && 'bg-blue-500/20 text-blue-700'
-                                )}
+                                className={getStatusBadgeClass(order.status)}
                             >
                             {order.status}
                             </Badge>
