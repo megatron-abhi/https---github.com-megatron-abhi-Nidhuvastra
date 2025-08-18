@@ -135,7 +135,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </span>
           )}
         </div>
-        <Button size="sm" variant="outline" onClick={handleAddToCart}>Add to Cart</Button>
+        {isClient && <Button size="sm" variant="outline" onClick={handleAddToCart}>Add to Cart</Button>}
       </CardFooter>
     </Card>
   );

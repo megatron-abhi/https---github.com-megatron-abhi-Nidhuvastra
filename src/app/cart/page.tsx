@@ -8,6 +8,7 @@ import type { CartItem as CartItemType } from '@/hooks/use-cart';
 import { Minus, Plus, Trash2, ShieldQuestion } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { useCart } from '@/hooks/use-cart';
+import { useEffect, useState } from 'react';
 
 const CartItem = ({ item }: { item: CartItemType }) => {
     const { updateQuantity, removeFromCart } = useCart();
@@ -112,13 +113,18 @@ function LoggedOutCart() {
 
 export default function CartPage() {
   const { user, loading } = useAuth();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   
   return (
     <div className="bg-background">
       <div className="container mx-auto px-4 py-8 md:py-12">
         <h1 className="text-3xl md:text-4xl font-headline text-center mb-8">Your Shopping Cart</h1>
         
-        {loading ? (
+        {loading || !isClient ? (
              <div className="text-center py-16">
                 <p className="text-xl text-muted-foreground">Loading your cart...</p>
             </div>

@@ -161,7 +161,7 @@ export function Header() {
         </nav>
 
         <div className="flex flex-1 items-center justify-end space-x-2">
-           {loading ? (
+           {loading || !isClient ? (
              <Skeleton className="h-10 w-24 rounded-md" />
            ) : user ? (
             <>
@@ -213,7 +213,7 @@ export function Header() {
                 </DropdownMenuContent>
             </DropdownMenu>
             </>
-           ) : isClient ? <AuthButton /> : <Skeleton className="h-10 w-24 rounded-md" />}
+           ) : <AuthButton />}
           <Button variant="ghost" size="icon" asChild className="relative">
             <Link href="/cart">
               <ShoppingCart className="h-5 w-5" />
