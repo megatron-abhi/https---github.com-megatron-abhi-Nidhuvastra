@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { notFound, useRouter } from 'next/navigation';
+import { notFound, useRouter, useParams } from 'next/navigation';
 import { products, reviews as mockReviews } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
 import {
@@ -37,8 +37,10 @@ import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { useCart } from '@/hooks/use-cart';
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
-  const product = products.find((p) => p.slug === params.slug);
+export default function ProductPage() {
+  const params = useParams();
+  const slug = typeof params.slug === 'string' ? params.slug : '';
+  const product = products.find((p) => p.slug === slug);
   const { user } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
