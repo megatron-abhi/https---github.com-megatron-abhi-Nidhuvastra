@@ -13,9 +13,10 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 import { Loader2 } from 'lucide-react';
+import { ref, set, get, serverTimestamp } from 'firebase/database';
 
 declare global {
     interface Window {
@@ -81,11 +82,31 @@ export function AuthButton() {
     e.preventDefault();
     setIsLoading(true);
     try {
-        await window.confirmationResult?.confirm(otp);
-        toast({
-            title: "Success",
-            description: "You have been logged in successfully.",
-        });
+        const result = await window.confirmationResult?.confirm(otp);
+        if (result?.user) {
+            const user = result.user;
+            // Check if user exists in Realtime Database
+            const userRef = ref(db, 'users/' + user.uid);
+            const snapshot = await get(userRef);
+            if (!snapshot.exists()) {
+                // New user, create a record
+                await set(userRef, {
+                    uid: user.uid,
+                    phoneNumber: user.phoneNumber,
+                    createdAt: serverTimestamp(),
+                });
+                toast({
+                    title: "Account Created!",
+                    description: "You have been logged in successfully.",
+                });
+            } else {
+                 toast({
+                    title: "Welcome Back!",
+                    description: "You have been logged in successfully.",
+                });
+            }
+        }
+        
         setOpen(false);
         setStep('phone');
         setPhoneNumber('');
