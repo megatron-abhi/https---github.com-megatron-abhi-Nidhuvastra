@@ -9,6 +9,7 @@ import {
   ChevronDown,
   LogOut,
   ShoppingCart,
+  LayoutDashboard,
 } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
@@ -63,6 +64,9 @@ export function Header() {
   const handleLogout = async () => {
     await signOut(auth);
   };
+  
+  const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');
+  const isAuthorizedAdmin = user && adminUids.includes(user.uid);
 
   const NavContent = () => (
     <>
@@ -187,12 +191,14 @@ export function Header() {
                         </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                     <DropdownMenuItem asChild>
-                      <Link href="/admin/dashboard">
-                        <User className="mr-2 h-4 w-4" />
-                        <span>Dashboard</span>
-                      </Link>
-                    </DropdownMenuItem>
+                     {isAuthorizedAdmin && (
+                        <DropdownMenuItem asChild>
+                        <Link href="/admin/dashboard">
+                            <LayoutDashboard className="mr-2 h-4 w-4" />
+                            <span>Dashboard</span>
+                        </Link>
+                        </DropdownMenuItem>
+                     )}
                     <DropdownMenuItem asChild>
                       <Link href="/wishlist">
                         <Heart className="mr-2 h-4 w-4" />
