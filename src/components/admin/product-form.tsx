@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Upload } from 'lucide-react';
+import { Upload, CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -23,6 +23,11 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import type { Product } from '@/types';
 import { useForm, Controller } from 'react-hook-form';
+import { Switch } from '@/components/ui/switch';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 interface ProductFormProps {
     initialData?: Product;
@@ -30,7 +35,7 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ initialData, onSave }: ProductFormProps) {
-    const { register, handleSubmit, control, formState: { errors } } = useForm<Product>({
+    const { register, handleSubmit, control, formState: { errors }, watch } = useForm<Product>({
         defaultValues: initialData || {
             name: '',
             description: '',
@@ -45,14 +50,22 @@ export function ProductForm({ initialData, onSave }: ProductFormProps) {
                 { src: '/images/placeholder.png', alt: 'Placeholder 3', aiHint: 'placeholder' },
             ],
             status: 'draft',
+            isExclusive: false,
+            promotion: undefined,
+            offerEndDate: undefined,
         }
     });
+
+    const isExclusive = watch('isExclusive');
+    const promotionType = watch('promotion');
     
     const onSubmit = (data: any) => {
-        // Temp conversion for colors string
         const processedData = {
             ...data,
-            colors: typeof data.colors === 'string' ? data.colors.split(',').map(s => s.trim()) : data.colors
+            colors: typeof data.colors === 'string' ? data.colors.split(',').map(s => s.trim()) : data.colors,
+            // Ensure promotion fields are cleared if not exclusive
+            promotion: data.isExclusive ? data.promotion : undefined,
+            offerEndDate: data.isExclusive && data.promotion === 'Limited Time' ? data.offerEndDate : undefined,
         };
         onSave(processedData);
     };
@@ -159,6 +172,86 @@ export function ProductForm({ initialData, onSave }: ProductFormProps) {
                       </div>
                     </div>
                   </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Promotions</CardTitle>
+                        <CardDescription>
+                            Manage exclusive status and limited-time offers for this product.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <div className="flex items-center space-x-2">
+                            <Controller
+                                name="isExclusive"
+                                control={control}
+                                render={({ field }) => (
+                                    <Switch
+                                        id="isExclusive"
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                )}
+                            />
+                             <Label htmlFor="isExclusive">Exclusive Product</Label>
+                        </div>
+
+                        {isExclusive && (
+                           <div className="grid gap-6 sm:grid-cols-2">
+                               <div className="grid gap-3">
+                                    <Label htmlFor="promotion">Promotion Type</Label>
+                                    <Controller
+                                        name="promotion"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <SelectTrigger id="promotion" aria-label="Select promotion type">
+                                                    <SelectValue placeholder="Select type" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="Limited Time">Limited Time</SelectItem>
+                                                    <SelectItem value="Limited Stock">Limited Stock</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        )}
+                                    />
+                               </div>
+                               {promotionType === 'Limited Time' && (
+                                   <div className="grid gap-3">
+                                       <Label htmlFor="offerEndDate">Offer End Date</Label>
+                                        <Controller
+                                            name="offerEndDate"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <Button
+                                                            variant="outline"
+                                                            className={cn(
+                                                            "w-full justify-start text-left font-normal",
+                                                            !field.value && "text-muted-foreground"
+                                                            )}
+                                                        >
+                                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                                            {field.value ? format(new Date(field.value), "PPP") : <span>Pick a date</span>}
+                                                        </Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-auto p-0">
+                                                        <Calendar
+                                                            mode="single"
+                                                            selected={field.value ? new Date(field.value) : undefined}
+                                                            onSelect={(date) => field.onChange(date?.toISOString())}
+                                                            initialFocus
+                                                        />
+                                                    </PopoverContent>
+                                                </Popover>
+                                            )}
+                                        />
+                                   </div>
+                               )}
+                           </div>
+                        )}
+                    </CardContent>
                 </Card>
               </div>
               <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
