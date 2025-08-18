@@ -29,18 +29,16 @@ if (process.env.NODE_ENV === 'development') {
     // Note: The RTDB emulator needs to be started with `firebase emulators:start`
     try {
         connectDatabaseEmulator(db, 'localhost', 9000);
-        console.log("Connected to Realtime Database Emulator.");
     } catch(e) {
-        console.warn("Could not connect to Realtime Database Emulator. Make sure it's running.", e);
+        // Silently ignore if emulator is not running
     }
     
     // Point to the Auth emulator
     // Note: The Auth emulator needs to be started with `firebase emulators:start`
     try {
         connectAuthEmulator(auth, "http://localhost:9099", { disableWarnings: true });
-        console.log("Connected to Auth Emulator.");
     } catch(e) {
-        console.warn("Could not connect to Auth Emulator. Make sure it's running.", e);
+        // Silently ignore if emulator is not running
     }
 }
 

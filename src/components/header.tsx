@@ -53,7 +53,7 @@ const shopLinks = [
 
 export function Header() {
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const { user, loading, setMockUser } = useAuth();
   const { cartCount } = useCart();
   const [isClient, setIsClient] = useState(false);
 
@@ -62,7 +62,11 @@ export function Header() {
   }, []);
 
   const handleLogout = async () => {
-    await signOut(auth);
+    if (sessionStorage.getItem('mockUser')) {
+        setMockUser(null);
+    } else {
+        await signOut(auth);
+    }
   };
   
   const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');

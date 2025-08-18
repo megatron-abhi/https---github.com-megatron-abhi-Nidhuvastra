@@ -71,11 +71,16 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, loading } = useAuth();
+  const { user, loading, setMockUser } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
-    await signOut(auth);
+    // Clear mock user if it exists
+    if (sessionStorage.getItem('mockUser')) {
+        setMockUser(null);
+    } else {
+        await signOut(auth);
+    }
     router.push('/');
   };
   

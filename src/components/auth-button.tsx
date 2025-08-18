@@ -14,13 +14,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { auth, db } from '@/lib/firebase';
-import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult, connectAuthEmulator } from 'firebase/auth';
+import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 import { Loader2 } from 'lucide-react';
 import { ref, set, get, serverTimestamp } from 'firebase/database';
+import { useAuth } from '@/hooks/use-auth';
 
-const TEST_PHONE_NUMBER = '+919876543210';
-const TEST_OTP = '111111';
-
+// Test credentials
+const TEST_USER_PHONE = '+919876543210';
+const TEST_USER_OTP = '111111';
+const TEST_ADMIN_PHONE = '+918310320951';
+const TEST_ADMIN_OTP = '222222';
 
 declare global {
     interface Window {
@@ -36,6 +39,7 @@ export function AuthButton() {
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { setMockUser } = useAuth();
 
   const setupRecaptcha = () => {
     if (window.recaptchaVerifier) {
@@ -58,14 +62,16 @@ export function AuthButton() {
     setIsLoading(true);
 
     // Test mode bypass
-    if (phoneNumber === TEST_PHONE_NUMBER) {
+    if ([TEST_USER_PHONE, TEST_ADMIN_PHONE].includes(phoneNumber)) {
         setStep('otp');
+        const role = phoneNumber === TEST_ADMIN_PHONE ? 'Admin' : 'User';
+        const testOtp = phoneNumber === TEST_ADMIN_PHONE ? TEST_ADMIN_OTP : TEST_USER_OTP;
         toast({
-            title: "OTP Sent (Test Mode)",
-            description: `Enter the test OTP ${TEST_OTP}.`,
+            title: `OTP Sent (${role} Test Mode)`,
+            description: `Enter the test OTP ${testOtp}.`,
         });
-        setIsLoading(false); // Stop loading for test mode
-        return; // Important: exit the function here to prevent network call
+        setIsLoading(false);
+        return;
     }
         
     if (!/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
@@ -90,11 +96,10 @@ export function AuthButton() {
         description: "An OTP has been sent to your phone number.",
       });
     } catch (error: any) {
-      console.error(error);
       if (error.code === 'auth/network-request-failed') {
           toast({
               title: "Network Error",
-              description: "Could not connect to Firebase. If you're developing locally, ensure the Firebase Emulator is running or use the test phone number.",
+              description: "Could not connect to Firebase. Using test numbers might solve this for local development.",
               variant: "destructive",
           })
       } else if (error.code === 'auth/too-many-requests') {
@@ -120,22 +125,17 @@ export function AuthButton() {
     setIsLoading(true);
 
     // Test mode bypass
-    if (phoneNumber === TEST_PHONE_NUMBER && otp === TEST_OTP) {
-        toast({
-            title: "Welcome!",
-            description: "You have been logged in successfully in test mode.",
-        });
+    if (phoneNumber === TEST_USER_PHONE && otp === TEST_USER_OTP) {
+        setMockUser({ uid: 'test-user-uid', phoneNumber: TEST_USER_PHONE });
+        toast({ title: "Welcome!", description: "Logged in as test user." });
         resetState(true);
-        // This won't create a real user session in Firebase, but allows UI testing.
-        // For a real session, the emulator or a live project is needed.
-        // We will mock the user creation for the purpose of the demo
-        // In a real app, this part would be handled by the actual Firebase auth result.
-        setTimeout(() => {
-           // A more robust solution would be to use a mock user object
-           // For simplicity, we just close the dialog. The useAuth hook will not pick up a user.
-           // To fully test as a logged-in user, Firebase emulators are required.
-           // However, to satisfy the UI, we'll proceed as if logged in.
-        }, 500); 
+        setIsLoading(false);
+        return;
+    }
+    if (phoneNumber === TEST_ADMIN_PHONE && otp === TEST_ADMIN_OTP) {
+        setMockUser({ uid: 'test-admin-uid', phoneNumber: TEST_ADMIN_PHONE });
+        toast({ title: "Welcome, Admin!", description: "Logged in as test admin." });
+        resetState(true);
         setIsLoading(false);
         return;
     }
@@ -168,10 +168,9 @@ export function AuthButton() {
             throw new Error("Invalid OTP or confirmation result.");
         }
     } catch (error: any) {
-      console.error(error);
       toast({
         title: "Error",
-        description: error.code === 'auth/invalid-verification-code' ? "Invalid OTP. Please try again." : error.message,
+        description: error.code === 'auth/invalid-verification-code' ? "Invalid OTP. Please try again." : "Failed to verify OTP.",
         variant: "destructive",
       });
     } finally {
