@@ -28,12 +28,15 @@ export default function AccountOrdersPage() {
     const { user } = useAuth();
     
     useEffect(() => {
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && user) {
             const allOrders: Order[] = JSON.parse(localStorage.getItem('orders') || JSON.stringify(mockOrders));
-            if (user) {
-                // In a real app, you'd filter by user ID. Here we'll simulate it based on email for the mock user.
-                const userEmail = user?.phoneNumber ? `${user.phoneNumber}@example.com` : (user as any).email;
-                const userOrders = allOrders.filter(o => o.customerEmail === userEmail);
+            
+            // In a real app, you'd filter by user ID. 
+            // Here we'll simulate it based on the mock user's phone number.
+            const userIdentifier = user?.phoneNumber;
+            
+            if(userIdentifier) {
+                const userOrders = allOrders.filter(o => o.customerEmail === userIdentifier);
                 setOrders(userOrders);
             }
         }
