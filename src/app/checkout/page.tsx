@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
-import { Lock, CreditCard, Wallet, Truck } from 'lucide-react';
+import { Lock, CreditCard, Wallet, Truck, Loader2 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Logo } from '@/components/logo';
 import { useCart } from '@/hooks/use-cart';
@@ -29,6 +29,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [paymentMethod, setPaymentMethod] = useState('card');
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   const shipping = totalPrice > 5000 ? 0 : 99;
   const total = totalPrice + shipping;
@@ -42,8 +43,14 @@ export default function CheckoutPage() {
     }
   },[user, loading, cartItems, router]);
 
-  const handlePlaceOrder = () => {
-    // In a real app, this would submit the order to a backend
+  const handlePlaceOrder = async () => {
+    setIsPlacingOrder(true);
+    
+    // Simulate payment processing delay
+    await new Promise(resolve => setTimeout(resolve, 2500));
+
+    setIsPlacingOrder(false);
+
     toast({
         title: "Order Placed!",
         description: "Thank you for your purchase. We've received your order and will process it shortly."
@@ -223,8 +230,18 @@ export default function CheckoutPage() {
                     <span>Total</span>
                     <span>₹{total.toLocaleString('en-IN')}</span>
                 </div>
-                <Button size="lg" className="w-full mt-6" onClick={handlePlaceOrder}>
-                    <Lock className="mr-2 h-4 w-4" /> Place Order
+                <Button size="lg" className="w-full mt-6" onClick={handlePlaceOrder} disabled={isPlacingOrder}>
+                    {isPlacingOrder ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Processing...
+                        </>
+                    ) : (
+                        <>
+                            <Lock className="mr-2 h-4 w-4" />
+                            Place Order
+                        </>
+                    )}
                 </Button>
               </CardContent>
             </Card>
