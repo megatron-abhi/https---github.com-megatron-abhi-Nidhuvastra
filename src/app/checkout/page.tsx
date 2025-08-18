@@ -13,20 +13,22 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
-import { Lock } from 'lucide-react';
+import { Lock, CreditCard, Wallet, Truck } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Logo } from '@/components/logo';
 import { useCart } from '@/hooks/use-cart';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 export default function CheckoutPage() {
   const { cartItems, totalPrice, clearCart } = useCart();
   const { user, loading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const [paymentMethod, setPaymentMethod] = useState('card');
 
   const shipping = totalPrice > 5000 ? 0 : 99;
   const total = totalPrice + shipping;
@@ -117,29 +119,66 @@ export default function CheckoutPage() {
                 <CardTitle>Payment Information</CardTitle>
                 <CardDescription>All transactions are secure and encrypted.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="card-number">Card Number</Label>
-                  <Input id="card-number" placeholder="•••• •••• •••• ••••" />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+              <CardContent>
+                <RadioGroup defaultValue="card" onValueChange={setPaymentMethod} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <div>
-                    <Label htmlFor="expiry-date">Expiry Date</Label>
-                    <Input id="expiry-date" placeholder="MM / YY" />
+                    <RadioGroupItem value="card" id="card" className="peer sr-only" />
+                    <Label htmlFor="card" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                      <CreditCard className="mb-3 h-6 w-6" />
+                      Card
+                    </Label>
                   </div>
                   <div>
-                    <Label htmlFor="cvc">CVC</Label>
-                    <Input id="cvc" placeholder="•••" />
+                    <RadioGroupItem value="upi" id="upi" className="peer sr-only" />
+                    <Label htmlFor="upi" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                      <Wallet className="mb-3 h-6 w-6" />
+                      UPI
+                    </Label>
                   </div>
-                </div>
-                <div>
-                  <Label htmlFor="name-on-card">Name on Card</Label>
-                  <Input id="name-on-card" placeholder="John Doe" />
-                </div>
-                <div className="flex items-center space-x-2 pt-2">
-                    <Checkbox id="same-as-shipping" />
-                    <Label htmlFor="same-as-shipping" className="text-sm">Billing address is the same as my shipping address</Label>
-                </div>
+                  <div>
+                    <RadioGroupItem value="cod" id="cod" className="peer sr-only" />
+                    <Label htmlFor="cod" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary">
+                      <Truck className="mb-3 h-6 w-6" />
+                      Cash on Delivery
+                    </Label>
+                  </div>
+                </RadioGroup>
+
+                {paymentMethod === 'card' && (
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="card-number">Card Number</Label>
+                      <Input id="card-number" placeholder="•••• •••• •••• ••••" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="expiry-date">Expiry Date</Label>
+                        <Input id="expiry-date" placeholder="MM / YY" />
+                      </div>
+                      <div>
+                        <Label htmlFor="cvc">CVC</Label>
+                        <Input id="cvc" placeholder="•••" />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="name-on-card">Name on Card</Label>
+                      <Input id="name-on-card" placeholder="John Doe" />
+                    </div>
+                  </div>
+                )}
+                {paymentMethod === 'upi' && (
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="upi-id">UPI ID</Label>
+                      <Input id="upi-id" placeholder="yourname@bank" />
+                    </div>
+                  </div>
+                )}
+                 {paymentMethod === 'cod' && (
+                  <div className="text-center p-4 bg-secondary/30 rounded-md">
+                    <p className="text-sm text-muted-foreground">You will pay in cash upon delivery of your order.</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
