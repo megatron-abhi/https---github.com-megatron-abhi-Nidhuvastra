@@ -9,9 +9,10 @@ import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { Badge } from './ui/badge';
 import { Clock, Archive, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import CountdownTimer from './countdown-timer';
 import { useAuth } from '@/hooks/use-auth';
 import { useEffect, useState } from 'react';
+import CountdownTimer from './countdown-timer';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProductCardProps {
   product: Product;
@@ -21,10 +22,27 @@ export function ProductCard({ product }: ProductCardProps) {
   const hasSecondImage = product.images.length > 1;
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+  
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault(); // prevent navigation
+    if (!user) {
+        toast({
+            title: "Authentication Required",
+            description: "Please log in to add items to your cart.",
+            variant: "destructive"
+        });
+        return;
+    }
+    toast({
+        title: "Added to Cart!",
+        description: `${product.name} has been added to your cart.`
+    });
+  }
 
   return (
     <Card className="group overflow-hidden rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col">
@@ -88,7 +106,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </span>
           )}
         </div>
-        <Button size="sm" variant="outline">Add to Cart</Button>
+        <Button size="sm" variant="outline" onClick={handleAddToCart}>Add to Cart</Button>
       </CardFooter>
     </Card>
   );

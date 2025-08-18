@@ -1,3 +1,6 @@
+
+'use client';
+
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { products, reviews as mockReviews } from '@/lib/mock-data';
@@ -29,15 +32,47 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Plus, Minus } from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = products.find((p) => p.slug === params.slug);
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [quantity, setQuantity] = useState(1);
 
   if (!product) {
     notFound();
   }
   
   const relatedProducts = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
+
+  const handleCartAction = (action: 'add' | 'buy') => {
+    if (!user) {
+        toast({
+            title: "Authentication Required",
+            description: `Please log in to ${action === 'add' ? 'add items to your cart' : 'buy now'}.`,
+            variant: "destructive"
+        });
+        return;
+    }
+    
+    // In a real app, you would add logic here to add the item to the cart
+    // or proceed to checkout.
+    if (action === 'add') {
+        toast({
+            title: "Added to Cart!",
+            description: `${quantity} x ${product.name} has been added to your cart.`
+        });
+    } else {
+        toast({
+            title: "Proceeding to Checkout",
+            description: "Redirecting you to the checkout page..."
+        });
+        // router.push('/checkout');
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
@@ -116,15 +151,15 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <div className="flex items-center gap-4 mb-6">
             <Label htmlFor="quantity" className="text-sm font-semibold">Quantity</Label>
             <div className="flex items-center border rounded-md">
-              <Button variant="ghost" size="icon" className="h-9 w-9"><Minus className="h-4 w-4" /></Button>
-              <Input id="quantity" type="number" defaultValue={1} className="w-14 h-9 text-center border-0 focus-visible:ring-0" />
-              <Button variant="ghost" size="icon" className="h-9 w-9"><Plus className="h-4 w-4" /></Button>
+              <Button variant="ghost" size="icon" className="h-9 w-9" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus className="h-4 w-4" /></Button>
+              <Input id="quantity" type="number" value={quantity} className="w-14 h-9 text-center border-0 focus-visible:ring-0" readOnly />
+              <Button variant="ghost" size="icon" className="h-9 w-9" onClick={() => setQuantity(q => q + 1)}><Plus className="h-4 w-4" /></Button>
             </div>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <Button size="lg" className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90">Add to Cart</Button>
-            <Button size="lg" variant="default" className="flex-1">Buy Now</Button>
+            <Button size="lg" className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90" onClick={() => handleCartAction('add')}>Add to Cart</Button>
+            <Button size="lg" variant="default" className="flex-1" onClick={() => handleCartAction('buy')}>Buy Now</Button>
           </div>
           
           <Accordion type="single" collapsible className="w-full">

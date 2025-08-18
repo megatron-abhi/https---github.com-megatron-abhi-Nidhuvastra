@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { products } from '@/lib/mock-data';
 import type { Product } from '@/types';
-import { Minus, Plus, Trash2 } from 'lucide-react';
+import { Minus, Plus, Trash2, ShieldQuestion } from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
 
 // Mock cart data
 const cartItems = [
@@ -47,31 +48,28 @@ const CartItem = ({ item }: { item: { product: Product, quantity: number, color:
     </div>
 );
 
-export default function CartPage() {
-  const subtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
-  const shipping = subtotal > 5000 ? 0 : 99;
-  const total = subtotal + shipping;
+function LoggedInCart() {
+    const subtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+    const shipping = subtotal > 5000 ? 0 : 99;
+    const total = subtotal + shipping;
 
-  return (
-    <div className="bg-background">
-      <div className="container mx-auto px-4 py-8 md:py-12">
-        <h1 className="text-3xl md:text-4xl font-headline text-center mb-8">Your Shopping Cart</h1>
-        
-        {cartItems.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-xl text-muted-foreground mb-4">Your cart is empty.</p>
-            <Button asChild>
-                <Link href="/">Continue Shopping</Link>
-            </Button>
-          </div>
-        ) : (
-          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+    return (
+         <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
             <div className="lg:col-span-2 bg-card p-6 rounded-lg shadow-sm">
                 <h2 className="text-xl font-semibold mb-4">Cart Items ({cartItems.length})</h2>
                 <Separator />
-                <div className="divide-y">
-                    {cartItems.map((item) => <CartItem key={item.product.id} item={item} />)}
-                </div>
+                {cartItems.length > 0 ? (
+                    <div className="divide-y">
+                        {cartItems.map((item) => <CartItem key={item.product.id} item={item} />)}
+                    </div>
+                ) : (
+                     <div className="text-center py-16">
+                        <p className="text-xl text-muted-foreground mb-4">Your cart is empty.</p>
+                        <Button asChild>
+                            <Link href="/">Continue Shopping</Link>
+                        </Button>
+                    </div>
+                )}
             </div>
 
             <div className="lg:col-span-1">
@@ -92,12 +90,45 @@ export default function CartPage() {
                             <span>₹{total.toLocaleString('en-IN')}</span>
                         </div>
                     </div>
-                    <Button asChild size="lg" className="w-full mt-6">
+                    <Button asChild size="lg" className="w-full mt-6" disabled={cartItems.length === 0}>
                         <Link href="/checkout">Proceed to Checkout</Link>
                     </Button>
                 </div>
             </div>
           </div>
+    )
+}
+
+function LoggedOutCart() {
+    return (
+        <div className="text-center py-16 bg-card rounded-lg flex flex-col items-center">
+            <ShieldQuestion className="h-16 w-16 text-primary mb-4" />
+            <h3 className="text-2xl font-semibold">Please Log In</h3>
+            <p className="text-muted-foreground mt-2 mb-6 max-w-sm">You need to be logged in to view your cart and make purchases. Please log in or create an account to continue.</p>
+            <Button asChild>
+                {/* This should trigger the login modal */}
+                <Link href="#">Login to Continue</Link>
+            </Button>
+      </div>
+    )
+}
+
+export default function CartPage() {
+  const { user, loading } = useAuth();
+  
+  return (
+    <div className="bg-background">
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <h1 className="text-3xl md:text-4xl font-headline text-center mb-8">Your Shopping Cart</h1>
+        
+        {loading ? (
+             <div className="text-center py-16">
+                <p className="text-xl text-muted-foreground">Loading your cart...</p>
+            </div>
+        ) : user ? (
+          <LoggedInCart />
+        ) : (
+          <LoggedOutCart />
         )}
       </div>
     </div>
