@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import {
   Activity,
@@ -29,8 +30,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { orders, customers } from '@/lib/mock-data';
 
 export default function Dashboard() {
+  const recentOrders = orders.slice(0, 5);
+  const recentCustomers = customers.slice(0, 5);
+
   return (
     <>
       <div className="flex items-center">
@@ -51,13 +56,13 @@ export default function Dashboard() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
+            <CardTitle className="text-sm font-medium">New Customers</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
+            <div className="text-2xl font-bold">+23</div>
             <p className="text-xs text-muted-foreground">
-              +180.1% from last month
+              +18.1% from last month
             </p>
           </CardContent>
         </Card>
@@ -96,7 +101,7 @@ export default function Dashboard() {
               </CardDescription>
             </div>
             <Button asChild size="sm" className="ml-auto gap-1">
-              <Link href="#">
+              <Link href="/admin/orders">
                 View All
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
@@ -107,55 +112,64 @@ export default function Dashboard() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Customer</TableHead>
-                  <TableHead>Type</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead className="hidden md:table-cell">Date</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <div className="font-medium">Liam Johnson</div>
-                    <div className="hidden text-sm text-muted-foreground md:inline">
-                      liam@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell>Sale</TableCell>
-                  <TableCell>
-                    <Badge className="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell>2023-06-23</TableCell>
-                  <TableCell className="text-right">₹250.00</TableCell>
-                </TableRow>
-                {/* ... other rows */}
+                {recentOrders.map((order) => (
+                    <TableRow key={order.id}>
+                        <TableCell>
+                            <div className="font-medium">{order.customerName}</div>
+                            <div className="hidden text-sm text-muted-foreground md:inline">
+                                {order.customerEmail}
+                            </div>
+                        </TableCell>
+                        <TableCell>
+                            <Badge 
+                                variant={
+                                    order.status === 'Delivered' ? 'default' :
+                                    order.status === 'Cancelled' ? 'destructive' :
+                                    'secondary'
+                                }
+                                className={cn(order.status === 'Pending' && 'bg-yellow-500/20 text-yellow-700',
+                                            order.status === 'Shipped' && 'bg-blue-500/20 text-blue-700'
+                                )}
+                            >
+                            {order.status}
+                            </Badge>
+                        </TableCell>
+                         <TableCell className="hidden md:table-cell">{order.date}</TableCell>
+                        <TableCell className="text-right">₹{order.total.toLocaleString('en-IN')}</TableCell>
+                    </TableRow>
+                ))}
               </TableBody>
             </Table>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Recent Sales</CardTitle>
+            <CardTitle>Recent Customers</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-8">
-            <div className="flex items-center gap-4">
-              <Avatar className="hidden h-9 w-9 sm:flex">
-                <AvatarImage src="/images/1.jpg" alt="Avatar" />
-                <AvatarFallback>OM</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-1">
-                <p className="text-sm font-medium leading-none">
-                  Olivia Martin
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  olivia.martin@email.com
-                </p>
-              </div>
-              <div className="ml-auto font-medium">+₹1,999.00</div>
-            </div>
-             {/* ... other sales items */}
+            {recentCustomers.map(customer => (
+                <div key={customer.id} className="flex items-center gap-4">
+                    <Avatar className="hidden h-9 w-9 sm:flex">
+                        <AvatarImage src={`/images/avatar${customer.id.slice(-1)}.jpg`} alt="Avatar" />
+                        <AvatarFallback>{customer.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                    </Avatar>
+                    <div className="grid gap-1">
+                        <p className="text-sm font-medium leading-none">
+                        {customer.name}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                        {customer.email}
+                        </p>
+                    </div>
+                    <div className="ml-auto font-medium">+₹{customer.totalSpent.toLocaleString('en-IN')}</div>
+                </div>
+            ))}
           </CardContent>
         </Card>
       </div>
