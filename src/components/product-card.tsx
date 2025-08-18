@@ -26,7 +26,6 @@ export function ProductCard({ product }: ProductCardProps) {
     setIsClient(true);
   }, []);
 
-
   return (
     <Card className="group overflow-hidden rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col">
       <Link href={`/product/${product.slug}`}>

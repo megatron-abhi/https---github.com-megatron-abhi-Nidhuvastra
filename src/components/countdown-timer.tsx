@@ -15,7 +15,7 @@ const CountdownTimer = ({ expiryDate }: CountdownTimerProps) => {
         setIsMounted(true);
         const calculateTimeLeft = () => {
             const difference = +new Date(expiryDate) - +new Date();
-            let newTimeLeft = {};
+            let newTimeLeft: { [key: string]: number } = {};
 
             if (difference > 0) {
                 newTimeLeft = {
@@ -39,14 +39,7 @@ const CountdownTimer = ({ expiryDate }: CountdownTimerProps) => {
     }, [expiryDate]);
     
     if (!isMounted) {
-        return (
-             <div className="bg-destructive/20 text-destructive-foreground p-2 rounded-md mt-2">
-                <h4 className="text-sm font-semibold text-center mb-2 text-destructive">Offer Ends In</h4>
-                <div className="h-9 flex justify-center items-center">
-                    <span className="text-destructive font-bold text-xs">Loading...</span>
-                </div>
-            </div>
-        );
+        return null;
     }
 
     if (!timeLeft || Object.keys(timeLeft).length === 0) {
