@@ -22,54 +22,80 @@ export const WishlistProvider = ({ children }: { children: React.ReactNode }) =>
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { toast } = useToast();
-
-  const getWishlistRef = useCallback((userId: string) => {
-    return ref(db, `wishlists/${userId}`);
-  }, []);
   
-  // Effect to load wishlist from Firebase for logged-in user
+  const isMockUser = user && 'uid' in user && user.uid.startsWith('test-');
+
+  // Load wishlist from appropriate source
   useEffect(() => {
+    setLoading(true);
     if (user) {
-      setLoading(true);
-      const wishlistRef = getWishlistRef(user.uid);
-      const unsubscribe = onValue(wishlistRef, (snapshot) => {
-        const data = snapshot.val();
-        setWishlistItems(data ? Object.values(data) as Product[] : []);
+      if (isMockUser) {
+        // Handle mock user with localStorage
+        const storedWishlist = localStorage.getItem(`wishlist_${user.uid}`);
+        setWishlistItems(storedWishlist ? JSON.parse(storedWishlist) : []);
         setLoading(false);
-      });
-      return () => unsubscribe();
+      } else {
+        // Handle real user with Firebase
+        const wishlistRef = ref(db, `wishlists/${user.uid}`);
+        const unsubscribe = onValue(wishlistRef, (snapshot) => {
+          const data = snapshot.val();
+          setWishlistItems(data ? Object.values(data) as Product[] : []);
+          setLoading(false);
+        });
+        return () => unsubscribe();
+      }
     } else {
-      // Handle guest user - for now, clear wishlist
+      // No user, clear wishlist
       setWishlistItems([]);
       setLoading(false);
     }
-  }, [user, getWishlistRef]);
+  }, [user, isMockUser]);
+
+  // Persist wishlist for mock users
+  useEffect(() => {
+    if (user && isMockUser) {
+      localStorage.setItem(`wishlist_${user.uid}`, JSON.stringify(wishlistItems));
+    }
+  }, [wishlistItems, user, isMockUser]);
+
 
   const addToWishlist = (product: Product) => {
     if (!user) {
       toast({ title: "Please log in to save to your wishlist.", variant: "destructive" });
       return;
     }
-    const productRef = ref(db, `wishlists/${user.uid}/${product.id}`);
-    set(productRef, product)
-        .then(() => {
-            toast({ title: "Added to Wishlist!", description: `${product.name} has been saved.` });
-        })
-        .catch((error) => {
-            toast({ title: "Error", description: "Could not add to wishlist. " + error.message, variant: "destructive" });
-        });
+    
+    if (isMockUser) {
+        setWishlistItems(prev => [...prev, product]);
+        toast({ title: "Added to Wishlist!", description: `${product.name} has been saved.` });
+    } else {
+        const productRef = ref(db, `wishlists/${user.uid}/${product.id}`);
+        set(productRef, product)
+            .then(() => {
+                toast({ title: "Added to Wishlist!", description: `${product.name} has been saved.` });
+            })
+            .catch((error) => {
+                toast({ title: "Error", description: "Could not add to wishlist. " + error.message, variant: "destructive" });
+            });
+    }
   };
 
   const removeFromWishlist = (productId: string) => {
     if (!user) return;
-    const productRef = ref(db, `wishlists/${user.uid}/${productId}`);
-    remove(productRef)
-     .then(() => {
+    
+    if (isMockUser) {
+        setWishlistItems(prev => prev.filter(item => item.id !== productId));
         toast({ title: "Removed from Wishlist" });
-    })
-    .catch((error) => {
-        toast({ title: "Error", description: "Could not remove from wishlist. " + error.message, variant: "destructive" });
-    });
+    } else {
+        const productRef = ref(db, `wishlists/${user.uid}/${productId}`);
+        remove(productRef)
+        .then(() => {
+            toast({ title: "Removed from Wishlist" });
+        })
+        .catch((error) => {
+            toast({ title: "Error", description: "Could not remove from wishlist. " + error.message, variant: "destructive" });
+        });
+    }
   };
   
   const isInWishlist = (productId: string) => {
