@@ -70,7 +70,7 @@ export function Header() {
   };
   
   const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');
-  const isAuthorizedAdmin = user && adminUids.includes(user.uid);
+  const isAuthorizedAdmin = user && 'uid' in user && adminUids.includes(user.uid);
 
   const NavContent = () => (
     <>
@@ -195,12 +195,19 @@ export function Header() {
                         </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                     {isAuthorizedAdmin && (
+                     {isAuthorizedAdmin ? (
                         <DropdownMenuItem asChild>
                         <Link href="/admin/dashboard">
                             <LayoutDashboard className="mr-2 h-4 w-4" />
-                            <span>Dashboard</span>
+                            <span>Admin Dashboard</span>
                         </Link>
+                        </DropdownMenuItem>
+                     ) : (
+                        <DropdownMenuItem asChild>
+                            <Link href="/account/profile">
+                                <User className="mr-2 h-4 w-4" />
+                                <span>My Profile</span>
+                            </Link>
                         </DropdownMenuItem>
                      )}
                     <DropdownMenuItem asChild>
