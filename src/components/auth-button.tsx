@@ -14,9 +14,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { auth, db } from '@/lib/firebase';
-import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
+import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult, connectAuthEmulator } from 'firebase/auth';
 import { Loader2 } from 'lucide-react';
 import { ref, set, get, serverTimestamp } from 'firebase/database';
+
+// In development, use the local auth emulator
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined' && !(auth as any)._emulator) {
+    connectAuthEmulator(auth, "http://localhost:9099", { disableWarnings: true });
+}
 
 declare global {
     interface Window {
@@ -32,8 +37,6 @@ export function AuthButton() {
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const testPhoneNumber = '+919876543210';
-  const testOtp = '111111';
 
   const setupRecaptcha = () => {
     // Check if recaptcha verifier is already created
@@ -50,16 +53,7 @@ export function AuthButton() {
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (phoneNumber === testPhoneNumber) {
-        setStep('otp');
-        toast({
-            title: "Test Mode",
-            description: "Enter the test OTP to continue.",
-        });
-        return;
-    }
-    
+        
     if (!/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
         toast({
             title: "Invalid Phone Number",
@@ -88,10 +82,17 @@ export function AuthButton() {
             description: "Please enter a phone number.",
             variant: "destructive"
         });
-      } else {
+      } else if (error.code === 'auth/too-many-requests') {
+          toast({
+              title: "Too Many Requests",
+              description: "You've tried to sign in too many times. Please try again later.",
+              variant: "destructive"
+          })
+      }
+      else {
         toast({
             title: "Firebase Error",
-            description: "Could not send OTP. This may be due to Firebase project configuration (e.g., billing not enabled for production). Using test numbers can bypass this.",
+            description: "Could not send OTP. For development, you can use test numbers to bypass SMS. See Firebase docs for details.",
             variant: "destructive",
         });
       }
@@ -104,25 +105,10 @@ export function AuthButton() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (phoneNumber === testPhoneNumber && otp === testOtp) {
-        toast({
-            title: "Test Login Successful",
-            description: "You are logged in with a test account.",
-        });
-        resetState(true);
-        setIsLoading(false);
-        // This is a mock sign-in, it won't create a real session.
-        // For full testing, use Firebase emulators.
-        return;
-    }
-
     try {
         const result = await window.confirmationResult?.confirm(otp);
         if (result?.user) {
             const user = result.user;
-            
-            // Log the user's UID to the console
-            console.log("Firebase User Logged In:", user);
             
             const userRef = ref(db, 'users/' + user.uid);
             const snapshot = await get(userRef);
