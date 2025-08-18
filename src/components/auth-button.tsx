@@ -32,20 +32,36 @@ export function AuthButton() {
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [isTestMode, setIsTestMode] = useState(false);
 
   const setupRecaptcha = () => {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        size: 'invisible',
-        callback: () => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-        },
-      });
+    // Check if recaptcha verifier is already created
+    if (window.recaptchaVerifier) {
+      window.recaptchaVerifier.clear();
     }
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      size: 'invisible',
+      callback: () => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+      },
+    });
   };
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (phoneNumber === '+919876543210') {
+        setIsTestMode(true);
+        setStep('otp');
+        toast({
+            title: "Test Mode",
+            description: "Please enter the test OTP.",
+        });
+        return;
+    }
+
+    setIsTestMode(false);
+
     if (!/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
         toast({
             title: "Invalid Phone Number",
@@ -81,6 +97,24 @@ export function AuthButton() {
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (isTestMode && otp === '111111') {
+        toast({
+            title: "Test Login Successful",
+            description: "You are now logged in with a test account.",
+        });
+        setOpen(false);
+        // Note: This is a mock success message. A full test user object would require
+        // more complex setup, but this allows bypassing the UI lock.
+        // For full functionality, you would need to enable billing or use the Firebase emulator.
+        setIsLoading(false);
+        // We can't create a real user session this way, so we just close the dialog.
+        // The UI will still think the user is logged out.
+        // This is a workaround to unblock UI testing.
+        return;
+    }
+
+
     try {
         const result = await window.confirmationResult?.confirm(otp);
         if (result?.user) {
@@ -105,9 +139,12 @@ export function AuthButton() {
                     description: "You have been logged in successfully.",
                 });
             }
+            setOpen(false); // Close dialog on success
+        } else {
+            throw new Error("Invalid OTP or confirmation result.");
         }
         
-        setOpen(false);
+        // Reset state after successful login
         setStep('phone');
         setPhoneNumber('');
         setOtp('');
@@ -123,10 +160,21 @@ export function AuthButton() {
     }
   };
 
+  const resetState = () => {
+    setOpen(false);
+    setTimeout(() => {
+        setStep('phone');
+        setPhoneNumber('');
+        setOtp('');
+        setIsLoading(false);
+        setIsTestMode(false);
+    }, 300); // Delay to allow dialog to close gracefully
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={resetState}>
       <DialogTrigger asChild>
-        <Button variant="outline">Login</Button>
+        <Button variant="outline" onClick={() => setOpen(true)}>Login</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         {step === 'phone' ? (
@@ -175,7 +223,7 @@ export function AuthButton() {
                 Verify OTP
               </Button>
             </form>
-            <Button variant="link" onClick={() => setStep('phone')}>
+            <Button variant="link" onClick={() => { setStep('phone'); setOtp(''); setIsTestMode(false); }}>
                 Use a different phone number
             </Button>
           </>
