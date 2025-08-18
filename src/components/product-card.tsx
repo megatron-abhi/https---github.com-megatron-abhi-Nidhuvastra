@@ -28,6 +28,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
   
   const [isClient, setIsClient] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -46,6 +48,7 @@ export function ProductCard({ product }: ProductCardProps) {
         removeFromWishlist(product.id);
     } else {
         addToWishlist(product);
+        setIsAnimating(true);
     }
   }
   
@@ -88,11 +91,19 @@ export function ProductCard({ product }: ProductCardProps) {
                 data-ai-hint={product.images[1].aiHint}
               />
             )}
-            {isClient && user && (
-              <Button variant="ghost" size="icon" className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white text-rose-500" onClick={handleWishlistToggle}>
-                  <Heart className={cn(isInWishlist(product.id) && 'fill-current')}/>
-                  <span className="sr-only">Add to wishlist</span>
-              </Button>
+             {isClient && user && (
+               <div className="absolute top-3 right-3">
+                {isAnimating && (
+                    <Heart 
+                      className="absolute top-0 right-0 text-rose-500 fill-current animate-heart-float"
+                      onAnimationEnd={() => setIsAnimating(false)}
+                    />
+                )}
+                <Button variant="ghost" size="icon" className="relative bg-white/80 backdrop-blur-sm rounded-full hover:bg-white text-rose-500" onClick={handleWishlistToggle}>
+                    <Heart className={cn(isInWishlist(product.id) && 'fill-current')}/>
+                    <span className="sr-only">Add to wishlist</span>
+                </Button>
+               </div>
             )}
             {product.isExclusive && (
               <Badge variant="secondary" className="absolute top-3 left-3 flex items-center gap-1">
@@ -111,7 +122,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <h3 className="text-lg font-semibold leading-tight mb-2 group-hover:text-primary transition-colors">{product.name}</h3>
         </Link>
         <p className="text-sm text-muted-foreground">{product.category}</p>
-        {isClient && product.promotion === 'Limited Time' && product.offerEndDate && (
+         {isClient && product.promotion === 'Limited Time' && product.offerEndDate && (
           <CountdownTimer expiryDate={product.offerEndDate} />
         )}
       </CardContent>

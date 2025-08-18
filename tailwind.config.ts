@@ -95,6 +95,10 @@ export default {
         'marquee-vertical': {
           '0%': { transform: 'translateY(0%)' },
           '100%': { transform: 'translateY(-100%)' },
+        },
+        'heart-float': {
+            '0%': { transform: 'translateY(0) scale(1)', opacity: '1' },
+            '100%': { transform: 'translateY(-60px) scale(1.5)', opacity: '0' },
         }
       },
       animation: {
@@ -104,6 +108,7 @@ export default {
         'marquee': 'marquee 25s linear infinite',
         'marquee-vertical-slow': 'marquee-vertical 60s linear infinite',
         'marquee-vertical-fast': 'marquee-vertical 30s linear infinite',
+        'heart-float': 'heart-float 0.8s ease-out forwards',
       },
     },
   },
