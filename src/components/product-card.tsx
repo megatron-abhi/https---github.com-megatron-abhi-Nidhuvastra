@@ -76,7 +76,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <h3 className="text-lg font-semibold leading-tight mb-2 group-hover:text-primary transition-colors">{product.name}</h3>
         </Link>
         <p className="text-sm text-muted-foreground">{product.category}</p>
-        {product.promotion === 'Limited Time' && product.offerEndDate && (
+        {isClient && product.promotion === 'Limited Time' && product.offerEndDate && (
           <CountdownTimer expiryDate={product.offerEndDate} />
         )}
       </CardContent>
