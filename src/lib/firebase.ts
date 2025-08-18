@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getDatabase } from 'firebase/database';
+import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { getDatabase, connectDatabaseEmulator } from 'firebase/database';
 import { getAnalytics } from "firebase/analytics";
 
 // Your web app's Firebase configuration
@@ -22,6 +22,29 @@ const firebaseConfig = {
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const db = getDatabase(app);
+
+// Connect to emulators in development
+if (process.env.NODE_ENV === 'development') {
+    // Point to the RTDB emulator
+    // Note: The RTDB emulator needs to be started with `firebase emulators:start`
+    try {
+        connectDatabaseEmulator(db, 'localhost', 9000);
+        console.log("Connected to Realtime Database Emulator.");
+    } catch(e) {
+        console.warn("Could not connect to Realtime Database Emulator. Make sure it's running.", e);
+    }
+    
+    // Point to the Auth emulator
+    // Note: The Auth emulator needs to be started with `firebase emulators:start`
+    try {
+        connectAuthEmulator(auth, "http://localhost:9099", { disableWarnings: true });
+        console.log("Connected to Auth Emulator.");
+    } catch(e) {
+        console.warn("Could not connect to Auth Emulator. Make sure it's running.", e);
+    }
+}
+
+
 // Conditionally initialize analytics only in the browser
 if (typeof window !== 'undefined') {
     getAnalytics(app);

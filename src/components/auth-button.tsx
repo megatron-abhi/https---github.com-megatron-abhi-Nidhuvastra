@@ -18,10 +18,9 @@ import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult, connectAu
 import { Loader2 } from 'lucide-react';
 import { ref, set, get, serverTimestamp } from 'firebase/database';
 
-// In development, use the local auth emulator
-if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined' && !(auth as any)._emulator) {
-    connectAuthEmulator(auth, "http://localhost:9099", { disableWarnings: true });
-}
+const TEST_PHONE_NUMBER = '+919876543210';
+const TEST_OTP = '111111';
+
 
 declare global {
     interface Window {
@@ -39,20 +38,33 @@ export function AuthButton() {
   const { toast } = useToast();
 
   const setupRecaptcha = () => {
-    // Check if recaptcha verifier is already created
     if (window.recaptchaVerifier) {
       window.recaptchaVerifier.clear();
     }
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      size: 'invisible',
-      callback: () => {
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-      },
-    });
+    try {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+            size: 'invisible',
+            callback: () => {
+                // reCAPTCHA solved
+            },
+        });
+    } catch(error) {
+        console.error("Recaptcha setup error:", error);
+    }
   };
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Test mode bypass
+    if (phoneNumber === TEST_PHONE_NUMBER) {
+        setStep('otp');
+        toast({
+            title: "OTP Sent (Test Mode)",
+            description: `Enter the test OTP ${TEST_OTP}.`,
+        });
+        return;
+    }
         
     if (!/^\+[1-9]\d{1,14}$/.test(phoneNumber)) {
         toast({
@@ -76,23 +88,22 @@ export function AuthButton() {
       });
     } catch (error: any) {
       console.error(error);
-      if (error.code === 'auth/missing-phone-number') {
-        toast({
-            title: "Error",
-            description: "Please enter a phone number.",
-            variant: "destructive"
-        });
+      if (error.code === 'auth/network-request-failed') {
+          toast({
+              title: "Network Error",
+              description: "Could not connect to Firebase. If you're developing locally, ensure the Firebase Emulator is running or use the test phone number.",
+              variant: "destructive",
+          })
       } else if (error.code === 'auth/too-many-requests') {
           toast({
               title: "Too Many Requests",
               description: "You've tried to sign in too many times. Please try again later.",
               variant: "destructive"
           })
-      }
-      else {
+      } else {
         toast({
-            title: "Firebase Error",
-            description: "Could not send OTP. For development, you can use test numbers to bypass SMS. See Firebase docs for details.",
+            title: "Authentication Error",
+            description: error.message || "Could not send OTP.",
             variant: "destructive",
         });
       }
@@ -104,6 +115,19 @@ export function AuthButton() {
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    // Test mode bypass
+    if (phoneNumber === TEST_PHONE_NUMBER && otp === TEST_OTP) {
+        toast({
+            title: "Welcome!",
+            description: "You have been logged in successfully in test mode.",
+        });
+        resetState(true);
+        setIsLoading(false);
+        // This won't create a real user session in Firebase, but allows UI testing.
+        // For a real session, the emulator or a live project is needed.
+        return;
+    }
 
     try {
         const result = await window.confirmationResult?.confirm(otp);
@@ -136,7 +160,7 @@ export function AuthButton() {
       console.error(error);
       toast({
         title: "Error",
-        description: error.message || "Invalid OTP. Please try again.",
+        description: error.code === 'auth/invalid-verification-code' ? "Invalid OTP. Please try again." : error.message,
         variant: "destructive",
       });
     } finally {
