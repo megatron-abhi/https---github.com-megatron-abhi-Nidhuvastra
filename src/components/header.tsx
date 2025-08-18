@@ -5,11 +5,10 @@ import Link from 'next/link';
 import {
   Heart,
   Menu,
-  Search,
-  ShoppingCart,
   User,
   ChevronDown,
   LogOut,
+  ShoppingCart,
 } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
@@ -20,7 +19,6 @@ import {
 } from '@/components/ui/sheet';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Input } from './ui/input';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -35,6 +33,7 @@ import { signOut } from 'firebase/auth';
 import { AuthButton } from './auth-button';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Skeleton } from './ui/skeleton';
+import { useEffect, useState } from 'react';
 
 
 const navLinks = [
@@ -52,6 +51,11 @@ const shopLinks = [
 export function Header() {
   const pathname = usePathname();
   const { user, loading } = useAuth();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -146,11 +150,11 @@ export function Header() {
         </div>
 
         <nav className="hidden md:flex md:items-center md:gap-2 md:mx-6">
-          <NavContent />
+          {isClient && <NavContent />}
         </nav>
 
         <div className="flex flex-1 items-center justify-end space-x-2">
-           {loading ? (
+           {loading || !isClient ? (
              <Skeleton className="h-10 w-24 rounded-md" />
            ) : user ? (
             <>

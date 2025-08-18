@@ -1,3 +1,6 @@
+
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/types';
@@ -7,6 +10,8 @@ import { Badge } from './ui/badge';
 import { Clock, Archive, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import CountdownTimer from './countdown-timer';
+import { useAuth } from '@/hooks/use-auth';
+import { useEffect, useState } from 'react';
 
 interface ProductCardProps {
   product: Product;
@@ -14,6 +19,13 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const hasSecondImage = product.images.length > 1;
+  const { user } = useAuth();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
 
   return (
     <Card className="group overflow-hidden rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col">
@@ -41,10 +53,12 @@ export function ProductCard({ product }: ProductCardProps) {
                 data-ai-hint={product.images[1].aiHint}
               />
             )}
-             <Button variant="ghost" size="icon" className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white text-rose-500">
-                <Heart />
-                <span className="sr-only">Add to wishlist</span>
-             </Button>
+            {isClient && user && (
+              <Button variant="ghost" size="icon" className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white text-rose-500">
+                  <Heart />
+                  <span className="sr-only">Add to wishlist</span>
+              </Button>
+            )}
             {product.isExclusive && (
               <Badge variant="secondary" className="absolute top-3 left-3 flex items-center gap-1">
                  {product.promotion === 'Limited Time' ? <Clock className="h-3 w-3" /> : <Archive className="h-3 w-3" />}
