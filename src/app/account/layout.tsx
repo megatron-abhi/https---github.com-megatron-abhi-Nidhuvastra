@@ -16,6 +16,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { Card, CardContent } from '@/components/ui/card';
 
 
 function Unauthorized() {
@@ -117,11 +118,11 @@ export default function AccountLayout({
             </nav>
         </aside>
         <main className="md:col-span-3">
-            <Card>
-                <CardContent className="p-6">
-                    {children}
-                </CardContent>
-            </Card>
+          <Card>
+              <CardContent className="p-6">
+                  {children}
+              </CardContent>
+          </Card>
         </main>
       </div>
     </div>
