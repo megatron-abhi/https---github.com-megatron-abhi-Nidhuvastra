@@ -144,10 +144,10 @@ export default function AdminLayout({
                 Dashboard
               </Link>
               <Link
-                href="#"
+                href="/admin/orders"
                 className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                    pathname === "/admin/orders" && "bg-muted text-primary"
+                    pathname.startsWith("/admin/orders") && "bg-muted text-primary"
                 )}
               >
                 <ShoppingCart className="h-4 w-4" />
@@ -167,10 +167,10 @@ export default function AdminLayout({
                 Products{' '}
               </Link>
               <Link
-                href="#"
+                href="/admin/customers"
                 className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                    pathname === "/admin/customers" && "bg-muted text-primary"
+                    pathname.startsWith("/admin/customers") && "bg-muted text-primary"
                 )}
               >
                 <Users className="h-4 w-4" />

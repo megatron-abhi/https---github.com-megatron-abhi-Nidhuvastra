@@ -1,4 +1,4 @@
-import type { Product, Review } from '@/types';
+import type { Product, Review, Order, Customer } from '@/types';
 
 // Set offer end date to be 3 days from now
 const offerEndDate = new Date();
@@ -31,6 +31,7 @@ export const products: Product[] = [
     isExclusive: true,
     promotion: 'Limited Time',
     offerEndDate: offerEndDate.toISOString(),
+    status: 'active',
   },
   {
     id: '2',
@@ -53,6 +54,7 @@ export const products: Product[] = [
     ],
     sizes: ['One Size'],
     colors: ['Beige', 'Silver'],
+    status: 'active',
   },
   {
     id: '3',
@@ -76,6 +78,7 @@ export const products: Product[] = [
     ],
     sizes: ['One Size'],
     colors: ['Ivory', 'Gold'],
+    status: 'active',
   },
   {
     id: '4',
@@ -100,6 +103,7 @@ export const products: Product[] = [
     colors: ['Red', 'Yellow', 'Green'],
     isExclusive: true,
     promotion: 'Limited Stock',
+    status: 'active',
   },
 ];
 
@@ -127,5 +131,95 @@ export const reviews: Review[] = [
         rating: 5,
         text: "This is my second purchase from SareeShree and they never disappoint. The craftsmanship is top-notch. It's a timeless piece I will cherish forever.",
         avatar: "/images/avatar3.jpg"
+    }
+];
+
+export const orders: Order[] = [
+  {
+    id: 'ORD-001',
+    customerName: 'Priya Sharma',
+    customerEmail: 'priya.s@example.com',
+    date: '2024-07-28',
+    status: 'Shipped',
+    total: 12500,
+  },
+  {
+    id: 'ORD-002',
+    customerName: 'Anjali Mehta',
+    customerEmail: 'anjali.m@example.com',
+    date: '2024-07-27',
+    status: 'Delivered',
+    total: 8200,
+  },
+  {
+    id: 'ORD-003',
+    customerName: 'Sunita Rao',
+    customerEmail: 'sunita.r@example.com',
+    date: '2024-07-25',
+    status: 'Delivered',
+    total: 4500,
+  },
+  {
+    id: 'ORD-004',
+    customerName: 'Kavita Singh',
+    customerEmail: 'kavita.s@example.com',
+    date: '2024-07-29',
+    status: 'Pending',
+    total: 3800,
+  },
+   {
+    id: 'ORD-005',
+    customerName: 'Meera Iyer',
+    customerEmail: 'meera.i@example.com',
+    date: '2024-07-26',
+    status: 'Cancelled',
+    total: 8200,
+  },
+   {
+    id: 'ORD-006',
+    customerName: 'Rohan Desai',
+    customerEmail: 'rohan.d@example.com',
+    date: '2024-07-30',
+    status: 'Pending',
+    total: 17000,
+  }
+];
+
+export const customers: Customer[] = [
+    {
+        id: 'CUST-001',
+        name: 'Priya Sharma',
+        email: 'priya.s@example.com',
+        phone: '+91 98765 43210',
+        joinedDate: '2024-01-15',
+        totalOrders: 3,
+        totalSpent: 25300,
+    },
+    {
+        id: 'CUST-002',
+        name: 'Anjali Mehta',
+        email: 'anjali.m@example.com',
+        phone: '+91 98765 43211',
+        joinedDate: '2024-03-22',
+        totalOrders: 1,
+        totalSpent: 8200,
+    },
+    {
+        id: 'CUST-003',
+        name: 'Sunita Rao',
+        email: 'sunita.r@example.com',
+        phone: '+91 98765 43212',
+        joinedDate: '2023-11-05',
+        totalOrders: 5,
+        totalSpent: 41000,
+    },
+     {
+        id: 'CUST-004',
+        name: 'Rohan Desai',
+        email: 'rohan.d@example.com',
+        phone: '+91 83103 20951',
+        joinedDate: '2024-05-10',
+        totalOrders: 2,
+        totalSpent: 21500,
     }
 ];

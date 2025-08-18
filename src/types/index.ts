@@ -20,6 +20,7 @@ export interface Product {
   promotion?: 'Limited Time' | 'Limited Stock';
   offerEndDate?: string;
   stock?: number;
+  status?: 'active' | 'draft';
 }
 
 export interface Review {
@@ -29,4 +30,23 @@ export interface Review {
   rating: number;
   text: string;
   avatar: string;
+}
+
+export interface Order {
+  id: string;
+  customerName: string;
+  customerEmail: string;
+  date: string;
+  status: 'Pending' | 'Shipped' | 'Delivered' | 'Cancelled';
+  total: number;
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  joinedDate: string;
+  totalOrders: number;
+  totalSpent: number;
 }
