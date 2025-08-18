@@ -13,6 +13,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useEffect, useState } from 'react';
 import CountdownTimer from './countdown-timer';
 import { useToast } from '@/hooks/use-toast';
+import { useCart } from '@/hooks/use-cart';
 
 interface ProductCardProps {
   product: Product;
@@ -23,6 +24,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const { user } = useAuth();
   const [isClient, setIsClient] = useState(false);
   const { toast } = useToast();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     setIsClient(true);
@@ -38,10 +40,7 @@ export function ProductCard({ product }: ProductCardProps) {
         });
         return;
     }
-    toast({
-        title: "Added to Cart!",
-        description: `${product.name} has been added to your cart.`
-    });
+    addToCart(product, 1, product.colors[0], product.sizes[0]);
   }
 
   return (

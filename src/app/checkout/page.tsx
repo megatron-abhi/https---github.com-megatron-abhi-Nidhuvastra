@@ -1,3 +1,5 @@
+
+'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,21 +13,51 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
-import { products } from '@/lib/mock-data';
 import { Lock } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Logo } from '@/components/logo';
-
-const orderItems = [
-  { product: products[0], quantity: 1 },
-  { product: products[2], quantity: 1 },
-];
-
-const subtotal = orderItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
-const shipping = subtotal > 5000 ? 0 : 99;
-const total = subtotal + shipping;
+import { useCart } from '@/hooks/use-cart';
+import { useAuth } from '@/hooks/use-auth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 export default function CheckoutPage() {
+  const { cartItems, totalPrice, clearCart } = useCart();
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const shipping = totalPrice > 5000 ? 0 : 99;
+  const total = totalPrice + shipping;
+
+  useEffect(() => {
+    if (!loading && !user) {
+        router.push('/cart');
+    }
+    if (!loading && user && cartItems.length === 0) {
+        router.push('/collections/all');
+    }
+  },[user, loading, cartItems, router]);
+
+  const handlePlaceOrder = () => {
+    // In a real app, this would submit the order to a backend
+    toast({
+        title: "Order Placed!",
+        description: "Thank you for your purchase. We've received your order and will process it shortly."
+    });
+    clearCart();
+    router.push('/');
+  }
+
+  if (loading || !user || cartItems.length === 0) {
+      return (
+        <div className="container mx-auto px-4 py-8 md:py-12 text-center">
+            <p>Loading checkout...</p>
+        </div>
+      )
+  }
+
   return (
     <div className="bg-background min-h-screen">
       <div className="container mx-auto px-4 py-8 md:py-12">
@@ -120,7 +152,7 @@ export default function CheckoutPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {orderItems.map(item => (
+                  {cartItems.map(item => (
                     <div key={item.product.id} className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <div className="relative w-16 h-20 rounded-md overflow-hidden border">
@@ -140,7 +172,7 @@ export default function CheckoutPage() {
                 <div className="space-y-2 text-muted-foreground">
                     <div className="flex justify-between">
                         <span>Subtotal</span>
-                        <span>₹{subtotal.toLocaleString('en-IN')}</span>
+                        <span>₹{totalPrice.toLocaleString('en-IN')}</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Shipping</span>
@@ -152,7 +184,7 @@ export default function CheckoutPage() {
                     <span>Total</span>
                     <span>₹{total.toLocaleString('en-IN')}</span>
                 </div>
-                <Button size="lg" className="w-full mt-6">
+                <Button size="lg" className="w-full mt-6" onClick={handlePlaceOrder}>
                     <Lock className="mr-2 h-4 w-4" /> Place Order
                 </Button>
               </CardContent>

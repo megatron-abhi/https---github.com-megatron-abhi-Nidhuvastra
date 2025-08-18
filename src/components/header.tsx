@@ -34,6 +34,8 @@ import { AuthButton } from './auth-button';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Skeleton } from './ui/skeleton';
 import { useEffect, useState } from 'react';
+import { useCart } from '@/hooks/use-cart';
+import { Badge } from './ui/badge';
 
 
 const navLinks = [
@@ -51,6 +53,7 @@ const shopLinks = [
 export function Header() {
   const pathname = usePathname();
   const { user, loading } = useAuth();
+  const { cartCount } = useCart();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -130,14 +133,14 @@ export function Header() {
                     <span className="sr-only">Open menu</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-[300px]">
-                  <div className="p-4">
+                <SheetContent side="left" className="w-[300px] p-0">
+                  <div className="p-4 border-b">
                      <Link href="/" className="flex items-center gap-2">
                         <Logo />
                         <span className="text-xl font-bold text-foreground">SareeShree</span>
                     </Link>
                   </div>
-                  <nav className="flex flex-col gap-4 p-4">
+                  <nav className="flex flex-col gap-1 p-4">
                     <NavContent />
                   </nav>
                 </SheetContent>
@@ -150,11 +153,11 @@ export function Header() {
         </div>
 
         <nav className="hidden md:flex md:items-center md:gap-2 md:mx-6">
-          {isClient && <NavContent />}
+          <NavContent />
         </nav>
 
         <div className="flex flex-1 items-center justify-end space-x-2">
-           {loading || !isClient ? (
+           {loading ? (
              <Skeleton className="h-10 w-24 rounded-md" />
            ) : user ? (
             <>
@@ -204,10 +207,13 @@ export function Header() {
                 </DropdownMenuContent>
             </DropdownMenu>
             </>
-           ) : <AuthButton />}
-          <Button variant="ghost" size="icon" asChild>
+           ) : isClient ? <AuthButton /> : <Skeleton className="h-10 w-24 rounded-md" />}
+          <Button variant="ghost" size="icon" asChild className="relative">
             <Link href="/cart">
               <ShoppingCart className="h-5 w-5" />
+              {isClient && cartCount > 0 && (
+                <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{cartCount}</Badge>
+              )}
               <span className="sr-only">Shopping Cart</span>
             </Link>
           </Button>

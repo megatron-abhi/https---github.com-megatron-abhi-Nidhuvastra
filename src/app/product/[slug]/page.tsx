@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { products, reviews as mockReviews } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
 import {
@@ -35,12 +35,18 @@ import { Plus, Minus } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
+import { useCart } from '@/hooks/use-cart';
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const product = products.find((p) => p.slug === params.slug);
   const { user } = useAuth();
   const { toast } = useToast();
+  const router = useRouter();
+  const { addToCart } = useCart();
+  
   const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState(product?.colors[0] || '');
+  const [selectedSize, setSelectedSize] = useState(product?.sizes[0] || '');
 
   if (!product) {
     notFound();
@@ -58,19 +64,10 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         return;
     }
     
-    // In a real app, you would add logic here to add the item to the cart
-    // or proceed to checkout.
-    if (action === 'add') {
-        toast({
-            title: "Added to Cart!",
-            description: `${quantity} x ${product.name} has been added to your cart.`
-        });
-    } else {
-        toast({
-            title: "Proceeding to Checkout",
-            description: "Redirecting you to the checkout page..."
-        });
-        // router.push('/checkout');
+    addToCart(product, quantity, selectedColor, selectedSize);
+
+    if (action === 'buy') {
+        router.push('/checkout');
     }
   };
 
@@ -126,7 +123,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div>
               <Label htmlFor="color" className="text-sm font-semibold">Color</Label>
-              <Select defaultValue={product.colors[0]}>
+              <Select value={selectedColor} onValueChange={setSelectedColor}>
                 <SelectTrigger id="color" className="w-full mt-1">
                   <SelectValue placeholder="Select color" />
                 </SelectTrigger>
@@ -137,7 +134,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             </div>
             <div>
               <Label htmlFor="size" className="text-sm font-semibold">Size</Label>
-               <Select defaultValue={product.sizes[0]}>
+               <Select value={selectedSize} onValueChange={setSelectedSize}>
                 <SelectTrigger id="size" className="w-full mt-1">
                   <SelectValue placeholder="Select size" />
                 </SelectTrigger>
