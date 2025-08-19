@@ -37,6 +37,7 @@ import { Skeleton } from './ui/skeleton';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/hooks/use-cart';
 import { Badge } from './ui/badge';
+import { ThemeToggle } from './theme-toggle';
 
 
 const navLinks = [
@@ -226,6 +227,7 @@ export function Header() {
             </DropdownMenu>
             </>
            ) : <AuthButton />}
+           <ThemeToggle />
           <Button variant="ghost" size="icon" asChild className="relative">
             <Link href="/cart">
               <ShoppingCart className="h-5 w-5" />

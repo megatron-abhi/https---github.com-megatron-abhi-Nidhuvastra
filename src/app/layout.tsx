@@ -13,6 +13,7 @@ import { WishlistProvider } from '@/hooks/use-wishlist';
 import { ChatBotLoader } from '@/components/chat-bot-loader';
 import { usePathname } from 'next/navigation';
 import { WelcomeBanner } from '@/components/welcome-banner';
+import { ThemeProvider } from '@/components/theme-provider';
 
 
 // This is a client component, so metadata should be exported from a server component if needed.
@@ -28,6 +29,12 @@ function AppProviders({ children }: { children: React.ReactNode }) {
     const isAdminPage = pathname.startsWith('/admin');
     
     return (
+      <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
@@ -42,6 +49,7 @@ function AppProviders({ children }: { children: React.ReactNode }) {
             </WishlistProvider>
           </CartProvider>
         </AuthProvider>
+      </ThemeProvider>
     )
 }
 
