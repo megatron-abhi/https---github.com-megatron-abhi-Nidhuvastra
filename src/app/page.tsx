@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full flex items-center justify-start overflow-hidden bg-background">
+       <section className="relative w-full flex items-center justify-start text-left overflow-hidden bg-background">
         <div className="container mx-auto px-4 py-16 md:py-24">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative z-10 p-4 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
@@ -48,21 +48,27 @@ export default function Home() {
                         <Link href="/collections/all">Explore Collections</Link>
                     </Button>
                 </div>
-                <div className="relative h-[80vh] w-full flex gap-4">
-                    <div className="w-1/2 space-y-4 pt-12">
+                <div className="relative h-[80vh] w-full flex gap-4 -rotate-12 transform-gpu">
+                    <div className="w-1/2 space-y-4 animate-marquee-vertical-slow">
                         <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/img01.jpg" alt="Saree model" fill className="object-cover" data-ai-hint="saree fashion model" priority />
+                           <Image src="/images/img01.jpg" alt="Saree model" fill className="object-cover" data-ai-hint="saree fashion model" />
                         </div>
                          <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
                            <Image src="/images/img02.jpg" alt="Saree detail" fill className="object-cover" data-ai-hint="indian textile lifestyle" />
                         </div>
+                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
+                           <Image src="/images/5.jpg" alt="Saree detail" fill className="object-cover" data-ai-hint="indian textile lifestyle" />
+                        </div>
                     </div>
-                    <div className="w-1/2 space-y-4">
+                    <div className="w-1/2 space-y-4 animate-marquee-vertical-fast -translate-y-1/4">
                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
                            <Image src="/images/img03.jpg" alt="Weaving loom" fill className="object-cover" data-ai-hint="saree weaving artisan" />
                         </div>
                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
                            <Image src="/images/img04.jpg" alt="Another saree model" fill className="object-cover" data-ai-hint="saree office wear" />
+                        </div>
+                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
+                           <Image src="/images/6.jpg" alt="Another saree model" fill className="object-cover" data-ai-hint="saree office wear" />
                         </div>
                     </div>
                  </div>

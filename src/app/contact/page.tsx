@@ -61,7 +61,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                     <h3 className="text-xl font-semibold">Visit Us</h3>
-                    <p className="text-muted-foreground">123 Silk Lane, Weaver's Colony <br/>Varanasi, Uttar Pradesh, 221002</p>
+                    <p className="text-muted-foreground">Mysuru<br/> Karnataka, India 570017</p>
                 </div>
             </div>
           </div>
