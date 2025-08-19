@@ -95,7 +95,12 @@ export default {
         'heart-float': {
             '0%': { transform: 'translateY(0) scale(1)', opacity: '1' },
             '100%': { transform: 'translateY(-60px) scale(1.5)', opacity: '0' },
-        }
+        },
+        'fade-in-delayed': {
+          '0%': { opacity: '0' },
+          '50%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -103,6 +108,7 @@ export default {
         'fade-in-up': 'fade-in-up 0.8s ease-out both',
         'marquee': 'marquee 25s linear infinite',
         'heart-float': 'heart-float 0.8s ease-out forwards',
+        'fade-in-delayed': 'fade-in-delayed 0.8s ease-out both',
       },
     },
   },
