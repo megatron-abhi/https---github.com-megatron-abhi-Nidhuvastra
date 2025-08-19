@@ -1,6 +1,3 @@
-
-'use client';
-
 import { cn } from "@/lib/utils";
 
 export const LoadingSaree = ({ className, message }: { className?: string; message?: string }) => {
