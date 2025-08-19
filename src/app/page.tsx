@@ -21,12 +21,16 @@ import React from 'react';
 export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
-  const videoSources = ['/videos/showcase.mp4', '/videos/showcase2.mp4', '/videos/showcase3.mp4'];
+  const videoSources = [
+    { video: '/videos/showcase.mp4', poster: '/images/1.jpg' },
+    { video: '/videos/showcase2.mp4', poster: '/images/4.jpg' },
+    { video: '/videos/showcase3.mp4', poster: '/images/6.jpg' },
+  ];
  
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full flex items-center justify-start text-left overflow-hidden bg-background">
+      <section className="relative w-full flex items-center justify-start overflow-hidden bg-background">
         <div className="container mx-auto px-4 py-16 md:py-24">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="relative z-10 p-4 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
@@ -87,10 +91,11 @@ export default function Home() {
                     <CarouselContent className="-ml-4 h-[70vh]">
                     {videoSources.map((src, index) => (
                         <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-4">
-                            <div className="relative w-full h-full rounded-lg shadow-lg overflow-hidden">
+                            <div className="relative w-full h-full rounded-lg shadow-lg overflow-hidden bg-muted">
                                 <video
                                     className="absolute top-0 left-0 w-full h-full object-cover"
-                                    src={src}
+                                    src={src.video}
+                                    poster={src.poster}
                                     muted
                                     playsInline
                                     autoPlay
