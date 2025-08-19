@@ -37,10 +37,6 @@ function Unauthorized() {
 function LoadingScreen() {
     return (
          <div className="container mx-auto px-4 py-8 md:py-12">
-            <div className="text-center mb-12">
-                <Skeleton className="h-12 w-64 mx-auto" />
-                <Skeleton className="h-6 w-96 mx-auto mt-4" />
-            </div>
             <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm min-h-[400px]">
                 <LoadingSaree message="Loading your account..." />
             </div>
