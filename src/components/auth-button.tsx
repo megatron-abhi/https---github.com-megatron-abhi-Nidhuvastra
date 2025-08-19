@@ -47,16 +47,22 @@ export function AuthButton() {
 
   useEffect(() => {
     if (open && !window.recaptchaVerifier) {
-      try {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-            size: 'invisible',
-            callback: () => {
-                // reCAPTCHA solved
-            },
-        });
-      } catch(error) {
-        console.error("Recaptcha setup error:", error);
-      }
+      // Use a timeout to ensure the container is rendered
+      setTimeout(() => {
+        const recaptchaContainer = document.getElementById('recaptcha-container');
+        if (recaptchaContainer && !window.recaptchaVerifier) {
+            try {
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+                    size: 'invisible',
+                    callback: () => {
+                        // reCAPTCHA solved
+                    },
+                });
+            } catch(error) {
+                console.error("Recaptcha setup error:", error);
+            }
+        }
+      }, 100);
     }
   }, [open]);
   
@@ -137,8 +143,6 @@ export function AuthButton() {
     e.preventDefault();
     setIsLoading(true);
     
-    const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || TEST_ADMIN_UID).split(',');
-
     // Test mode bypass
     if (phoneNumber === TEST_USER_PHONE && otp === TEST_USER_OTP) {
         const mockUser = { uid: 'test-user-uid', phoneNumber: TEST_USER_PHONE };
