@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/mock-data';
 import { ArrowRight, Star } from 'lucide-react';
-import React from 'react';
 import { AnnouncementBar } from '@/components/announcement-bar';
 import { ReviewStars } from '@/components/review-stars';
 
@@ -44,12 +43,12 @@ export default function Home() {
 
             {/* Center Image */}
              <div className="md:col-span-4 h-[60vh] md:h-full w-full relative z-0 flex items-center justify-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                <div className="relative w-[80%] h-full">
+                <div className="relative w-full h-full">
                     <Image
                     src="/images/herimage.png"
                     alt="Hero image of a model wearing a saree"
                     fill
-                    className="object-contain object-bottom"
+                    className="object-cover object-bottom"
                     data-ai-hint="saree fashion model"
                     />
                 </div>
