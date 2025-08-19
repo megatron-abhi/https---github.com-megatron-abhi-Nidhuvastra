@@ -42,16 +42,15 @@ export default function Home() {
             </div>
 
             {/* Center Image */}
-             <div className="md:col-span-4 h-[60vh] md:h-full w-full relative z-0 flex items-center justify-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                <div className="relative w-full h-full">
-                    <Image
-                    src="/images/herimage.png"
-                    alt="Hero image of a model wearing a saree"
-                    fill
-                    className="object-cover object-bottom"
-                    data-ai-hint="saree fashion model"
-                    />
-                </div>
+            <div className="md:col-span-4 relative z-0 flex items-center justify-center animate-fade-in min-h-[80vh] md:min-h-screen" style={{ animationDelay: '0.4s' }}>
+                <Image
+                src="/images/herimage.png"
+                alt="Hero image of a model wearing a saree"
+                fill
+                className="object-cover object-bottom"
+                data-ai-hint="saree fashion model"
+                priority
+                />
             </div>
 
 
