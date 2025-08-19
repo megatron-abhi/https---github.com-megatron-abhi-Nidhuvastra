@@ -19,7 +19,7 @@ export default function AboutPage() {
         <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16 mb-24">
           <div className="md:w-1/2 w-full">
             <Image
-              src="/images/2.jpg"
+              src="/images/5.jpg"
               alt="Artisan weaving a saree with intricate details"
               width={600}
               height={450}
