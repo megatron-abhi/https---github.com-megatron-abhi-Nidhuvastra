@@ -1,4 +1,5 @@
 
+
 'use client';
 import Link from 'next/link';
 import {
@@ -11,12 +12,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
+import { LoadingSaree } from '@/components/loading-saree';
 
 
 function Unauthorized() {
@@ -34,18 +36,13 @@ function Unauthorized() {
 
 function LoadingScreen() {
     return (
-        <div className="container mx-auto px-4 py-8 md:py-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="md:col-span-1">
-                   <div className="space-y-2">
-                     <Skeleton className="h-8 w-full" />
-                     <Skeleton className="h-8 w-full" />
-                     <Skeleton className="h-8 w-full" />
-                   </div>
-                </div>
-                <div className="md:col-span-3">
-                   <Skeleton className="h-96 w-full" />
-                </div>
+         <div className="container mx-auto px-4 py-8 md:py-12">
+            <div className="text-center mb-12">
+                <Skeleton className="h-12 w-64 mx-auto" />
+                <Skeleton className="h-6 w-96 mx-auto mt-4" />
+            </div>
+            <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm min-h-[400px]">
+                <LoadingSaree message="Loading your account..." />
             </div>
         </div>
     )
@@ -60,6 +57,11 @@ export default function AccountLayout({
   const { user, loading, setMockUser } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleLogout = async () => {
     if (sessionStorage.getItem('mockUser')) {
@@ -71,7 +73,7 @@ export default function AccountLayout({
     router.push('/');
   };
   
-  if (loading) {
+  if (loading || !isClient) {
     return <LoadingScreen />;
   }
   
@@ -118,11 +120,13 @@ export default function AccountLayout({
             </nav>
         </aside>
         <main className="md:col-span-3">
-          <Card>
-              <CardContent className="p-6">
-                  {children}
-              </CardContent>
-          </Card>
+          {isClient && (
+            <Card>
+                <CardContent className="p-6">
+                    {children}
+                </CardContent>
+            </Card>
+          )}
         </main>
       </div>
     </div>
