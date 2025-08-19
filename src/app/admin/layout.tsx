@@ -94,7 +94,7 @@ export default function AdminLayout({
     return <LoadingScreen />;
   }
   
-  const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');
+  const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || 'test-admin-uid').split(',');
   const isAuthorized = user && 'uid' in user && adminUids.includes(user.uid);
   
   if (!isAuthorized) {

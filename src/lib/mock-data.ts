@@ -153,7 +153,7 @@ export const products: Product[] = [
     category: 'Printed Sarees',
     price: 3800,
     stock: 30,
-    videoSrc: '/videos/showcase4.mp4',
+    videoSrc: '/videos/showcase1.mp4',
     images: [
       { src: '/images/latest01.png', alt: 'Bandhani Saree', aiHint: 'bandhani saree bright' },
       { src: '/images/latest02.png', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
