@@ -46,11 +46,11 @@ export default function Home() {
              <div className="md:col-span-4 h-[60vh] md:h-full w-full relative z-0 flex items-center justify-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
                 <div className="relative w-[80%] h-full">
                     <Image
-                    src="/images/6.jpg"
-                    alt="Model wearing a modern saree"
+                    src="/images/herimage.png"
+                    alt="Hero image of a model wearing a saree"
                     fill
                     className="object-contain object-bottom"
-                    data-ai-hint="saree office wear"
+                    data-ai-hint="saree fashion model"
                     />
                 </div>
             </div>
