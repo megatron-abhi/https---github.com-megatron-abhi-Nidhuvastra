@@ -14,6 +14,7 @@ export const products: Product[] = [
     price: 12500,
     originalPrice: 15000,
     stock: 15,
+    videoSrc: '/videos/showcase.mp4',
     images: [
       { src: '/images/img01.jpg', alt: 'Kanjivaram Saree Front', aiHint: 'kanjivaram saree'},
       { src: '/images/5.jpg', alt: 'Kanjivaram Saree Back', aiHint: 'silk fabric detail' },

@@ -72,6 +72,12 @@ export default function ProductPage() {
         router.push('/checkout');
     }
   };
+  
+  const mediaItems = [];
+  if (product.videoSrc) {
+    mediaItems.push({ type: 'video', src: product.videoSrc });
+  }
+  product.images.forEach(img => mediaItems.push({ type: 'image', ...img }));
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
@@ -80,17 +86,28 @@ export default function ProductPage() {
         <div>
           <Carousel className="w-full">
             <CarouselContent>
-              {product.images.map((image, index) => (
+              {mediaItems.map((media, index) => (
                 <CarouselItem key={index}>
-                  <div className="aspect-w-4 aspect-h-5">
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      width={800}
-                      height={1000}
-                      className="w-full h-full object-cover rounded-lg shadow-lg"
-                      data-ai-hint={image.aiHint}
-                    />
+                  <div className="aspect-w-4 aspect-h-5 bg-muted rounded-lg shadow-lg overflow-hidden">
+                    {media.type === 'video' ? (
+                        <video
+                            src={media.src}
+                            className="w-full h-full object-cover"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                        />
+                    ) : (
+                        <Image
+                          src={media.src}
+                          alt={media.alt || 'Product image'}
+                          width={800}
+                          height={1000}
+                          className="w-full h-full object-cover"
+                          data-ai-hint={media.aiHint}
+                        />
+                    )}
                   </div>
                 </CarouselItem>
               ))}
