@@ -98,7 +98,6 @@ export default function AdminLayout({
     return <LoadingScreen />;
   }
   
-  // Updated authorization check
   const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');
   const isAuthorized = user && 'uid' in user && adminUids.includes(user.uid);
   
@@ -128,7 +127,7 @@ export default function AdminLayout({
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/admin/dashboard" className="flex items-center gap-2 font-semibold">
               <Logo />
-              <span className="">SareeShree Admin</span>
+              <span className="">NidhuVastra Admin</span>
             </Link>
           </div>
           <div className="flex-1">
