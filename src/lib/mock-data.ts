@@ -187,7 +187,7 @@ export const reviews: Review[] = [
         date: '2 weeks ago',
         rating: 5,
         text: "Absolutely stunning saree! The quality of the silk is exceptional and the color is even more beautiful in person. Received so many compliments at the wedding.",
-        avatar: "/images/avatar1.jpg"
+        avatar: "https://placehold.co/100x100.png"
     },
     {
         id: 'r2',
@@ -195,7 +195,7 @@ export const reviews: Review[] = [
         date: '1 month ago',
         rating: 4,
         text: "Beautiful design and very lightweight. It was very comfortable to wear for a long day. The delivery was also very prompt. Would have liked a bit more intricacy on the border.",
-        avatar: "/images/avatar2.jpg"
+        avatar: "https://placehold.co/100x100.png"
     },
     {
         id: 'r3',
@@ -203,7 +203,7 @@ export const reviews: Review[] = [
         date: '3 months ago',
         rating: 5,
         text: "This is my second purchase from SareeShree and they never disappoint. The craftsmanship is top-notch. It's a timeless piece I will cherish forever.",
-        avatar: "/images/avatar3.jpg"
+        avatar: "https://placehold.co/100x100.png"
     }
 ];
 

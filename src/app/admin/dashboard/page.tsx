@@ -14,7 +14,7 @@ import {
   Users,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
+import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -181,7 +181,7 @@ export default function Dashboard() {
             {recentCustomers.map(customer => (
                 <div key={customer.id} className="flex items-center gap-4">
                     <Avatar className="hidden h-9 w-9 sm:flex">
-                        <AvatarImage src={`/images/avatar${customer.id.slice(-1)}.jpg`} alt="Avatar" />
+                        <Image src={"https://placehold.co/40x40.png"} alt="Avatar" width={40} height={40}/>
                         <AvatarFallback>{customer.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                     </Avatar>
                     <div className="grid gap-1">
