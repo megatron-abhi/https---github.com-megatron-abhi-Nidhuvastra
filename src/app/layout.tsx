@@ -12,6 +12,7 @@ import { CartProvider } from '@/hooks/use-cart';
 import { WishlistProvider } from '@/hooks/use-wishlist';
 import { ChatBotLoader } from '@/components/chat-bot-loader';
 import { usePathname } from 'next/navigation';
+import { WelcomeBanner } from '@/components/welcome-banner';
 
 
 // This is a client component, so metadata should be exported from a server component if needed.
@@ -31,6 +32,7 @@ function AppProviders({ children }: { children: React.ReactNode }) {
           <CartProvider>
             <WishlistProvider>
               <div className="relative flex min-h-screen flex-col">
+                {!isAdminPage && <WelcomeBanner />}
                 {!isAdminPage && <Header />}
                 <main className="flex-1">{children}</main>
                 {!isAdminPage && <Footer />}
