@@ -157,7 +157,7 @@ export default function ProductPage() {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <Button size="lg" className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90" onClick={() => handleCartAction('add')}>Add to Cart</Button>
+            <Button size="lg" variant="outline" className="flex-1" onClick={() => handleCartAction('add')}>Add to Cart</Button>
             <Button size="lg" variant="default" className="flex-1" onClick={() => handleCartAction('buy')}>Buy Now</Button>
           </div>
           
