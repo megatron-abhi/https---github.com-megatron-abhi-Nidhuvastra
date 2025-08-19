@@ -88,6 +88,15 @@ export default {
             transform: 'translateY(0)',
           },
         },
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'fade-in-slow': {
+          '0%': { opacity: '0' },
+          '75%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
         'marquee': {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-100%)' },
@@ -107,10 +116,6 @@ export default {
         'fade-in-delayed': {
           '0%': { opacity: '0' },
           '50%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-         'fade-in': {
-          '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
         'fade-out': {
@@ -137,12 +142,13 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in-up': 'fade-in-up 0.8s ease-out both',
+        'fade-in': 'fade-in 1s ease-out both',
+        'fade-in-slow': 'fade-in 1.5s ease-out both',
         'marquee': 'marquee 25s linear infinite',
         'marquee-vertical-slow': 'marquee-vertical-slow 40s linear infinite',
         'marquee-vertical-fast': 'marquee-vertical-fast 40s linear infinite',
         'heart-float': 'heart-float 0.8s ease-out forwards',
         'fade-in-delayed': 'fade-in-delayed 0.8s ease-out both',
-        'fade-in': 'fade-in 0.5s ease-out forwards',
         'fade-out': 'fade-out 1s ease-out forwards',
         'package-to-truck': 'package-to-truck 3s ease-in-out forwards',
         'truck-drive': 'truck-drive 3s ease-in-out forwards',

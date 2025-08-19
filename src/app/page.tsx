@@ -6,119 +6,76 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/mock-data';
-import { ArrowRight } from 'lucide-react';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
+import { ArrowRight, Star } from 'lucide-react';
 import React from 'react';
 import { AnnouncementBar } from '@/components/announcement-bar';
+import { ReviewStars } from '@/components/review-stars';
 
 
 export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
-  const videoSources = [
-    { video: '/videos/showcase.mp4', poster: '/images/1.jpg' },
-    { video: '/videos/showcase2.mp4', poster: '/images/4.jpg' },
-    { video: '/videos/showcase3.mp4', poster: '/images/6.jpg' },
-  ];
  
   return (
     <div className="flex flex-col">
       <AnnouncementBar />
       {/* Hero Section */}
-       <section className="relative w-full flex items-center justify-start text-left overflow-hidden bg-background">
-        <div className="container mx-auto px-4 py-16 md:py-24">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div className="relative z-10 p-4 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-headline mb-4 text-foreground drop-shadow-lg">
-                        Modern sarees.
-                    </h1>
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-headline mb-6 text-foreground drop-shadow-lg">
-                        Effortless elegance.
-                    </h1>
-                    <p className="text-lg md:text-xl max-w-xl mb-8 text-muted-foreground drop-shadow-md">
-                        Experience premium Indian sarees designed for comfort, quality, and modern elegance.
+       <section className="relative w-full overflow-hidden bg-background">
+        <div className="container mx-auto px-4">
+          <div className="relative grid grid-cols-1 md:grid-cols-12 items-center min-h-[80vh] md:min-h-screen py-16 md:py-0">
+            {/* Background Text */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <h1 className="text-[20vw] md:text-[25vw] lg:text-[20vw] font-extrabold text-foreground/5 tracking-tighter animate-fade-in-slow">
+                ELEGANCE
+              </h1>
+            </div>
+
+            {/* Left Column */}
+            <div className="md:col-span-4 z-10 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              <h1 className="text-5xl md:text-7xl font-headline mb-6 text-foreground">
+                Modern Sarees. Effortless Elegance.
+              </h1>
+               <div className="pl-4 border-l-2 border-primary">
+                 <p className="text-muted-foreground italic">
+                   "Timeless, wearable, and truly well made."
+                 </p>
+               </div>
+            </div>
+
+            {/* Center Image */}
+             <div className="md:col-span-4 h-[60vh] md:h-full w-full relative z-0 flex items-center justify-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                <div className="relative w-[80%] h-full">
+                    <Image
+                    src="/images/6.jpg"
+                    alt="Model wearing a modern saree"
+                    fill
+                    className="object-contain object-bottom"
+                    data-ai-hint="saree office wear"
+                    />
+                </div>
+            </div>
+
+
+            {/* Right Column */}
+            <div className="md:col-span-4 z-10 flex flex-col items-start md:items-end animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+                <div className="md:text-right">
+                    <p className="text-muted-foreground max-w-sm mb-6">
+                        Timeless essentials for the modern minimalist. Designed to simplify your wardrobe — and elevate your everyday.
                     </p>
                     <Button asChild size="lg">
-                        <Link href="/collections/all">Explore Collections</Link>
+                        <Link href="/collections/all">Shop Collection</Link>
                     </Button>
+                    <div className="flex items-center gap-2 mt-8 md:justify-end">
+                        <ReviewStars rating={4.9} />
+                        <p className="text-sm text-muted-foreground">4.9 / 5.0 (450 Reviews)</p>
+                    </div>
                 </div>
-                <div className="relative h-[80vh] w-full flex gap-4 -rotate-12 transform-gpu">
-                    <div className="w-1/2 space-y-4 animate-marquee-vertical-slow">
-                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/img01.jpg" alt="Saree model" fill className="object-cover" data-ai-hint="saree fashion model" />
-                        </div>
-                         <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/img02.jpg" alt="Saree detail" fill className="object-cover" data-ai-hint="indian textile lifestyle" />
-                        </div>
-                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/5.jpg" alt="Saree detail" fill className="object-cover" data-ai-hint="indian textile lifestyle" />
-                        </div>
-                    </div>
-                    <div className="w-1/2 space-y-4 animate-marquee-vertical-fast -translate-y-1/4">
-                       <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/img03.jpg" alt="Weaving loom" fill className="object-cover" data-ai-hint="saree weaving artisan" />
-                        </div>
-                       <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/img04.jpg" alt="Another saree model" fill className="object-cover" data-ai-hint="saree office wear" />
-                        </div>
-                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/6.jpg" alt="Another saree model" fill className="object-cover" data-ai-hint="saree office wear" />
-                        </div>
-                    </div>
-                 </div>
             </div>
+
+          </div>
         </div>
       </section>
 
-      {/* Video Showcase Section */}
-        <section className="bg-background py-16 lg:py-24 overflow-hidden">
-            <div className="container mx-auto px-4">
-                 <h2 className="text-3xl md:text-4xl font-headline text-center mb-12">
-                    Behind the Weave
-                </h2>
-                <Carousel 
-                    className="w-full" 
-                    opts={{
-                        loop: true, 
-                        align: 'center',
-                    }}
-                    plugins={[
-                        Autoplay({
-                          delay: 5000,
-                          stopOnInteraction: true,
-                        }),
-                    ]}
-                >
-                    <CarouselContent className="-ml-4 h-[70vh]">
-                    {videoSources.map((src, index) => (
-                        <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-4">
-                            <div className="relative w-full h-full rounded-lg shadow-lg overflow-hidden bg-muted">
-                                <video
-                                    className="absolute top-0 left-0 w-full h-full object-cover"
-                                    src={src.video}
-                                    poster={src.poster}
-                                    muted
-                                    playsInline
-                                    autoPlay
-                                    loop
-                                />
-                            </div>
-                        </CarouselItem>
-                    ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-4 hidden md:flex" />
-                    <CarouselNext className="right-4 hidden md:flex" />
-                </Carousel>
-            </div>
-        </section>
-      
       {/* Announcement Bar */}
       <AnnouncementBar />
 

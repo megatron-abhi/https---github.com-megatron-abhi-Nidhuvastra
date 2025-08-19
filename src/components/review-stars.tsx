@@ -7,7 +7,7 @@ interface ReviewStarsProps {
   starSize?: number;
 }
 
-export function ReviewStars({ rating, className, starSize = 4 }: ReviewStarsProps) {
+export function ReviewStars({ rating, className, starSize = 5 }: ReviewStarsProps) {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
@@ -15,18 +15,18 @@ export function ReviewStars({ rating, className, starSize = 4 }: ReviewStarsProp
   return (
     <div className={cn('flex items-center gap-0.5', className)}>
       {[...Array(fullStars)].map((_, i) => (
-        <Star key={`full-${i}`} className={cn(`h-${starSize} w-${starSize}`, 'text-primary fill-primary')} />
+        <Star key={`full-${i}`} className={cn(`h-${starSize} w-${starSize}`, 'text-foreground fill-foreground')} />
       ))}
       {hasHalfStar && (
         <div className="relative">
-          <Star key="half" className={cn(`h-${starSize} w-${starSize}`, 'text-primary fill-muted')} />
+          <Star key="half" className={cn(`h-${starSize} w-${starSize}`, 'text-foreground fill-muted')} />
           <div className="absolute top-0 left-0 h-full w-1/2 overflow-hidden">
-            <Star className={cn(`h-${starSize} w-${starSize}`, 'text-primary fill-primary')} />
+            <Star className={cn(`h-${starSize} w-${starSize}`, 'text-foreground fill-foreground')} />
           </div>
         </div>
       )}
       {[...Array(emptyStars)].map((_, i) => (
-        <Star key={`empty-${i}`} className={cn(`h-${starSize} w-${starSize}`, 'text-primary fill-muted')} />
+        <Star key={`empty-${i}`} className={cn(`h-${starSize} w-${starSize}`, 'text-foreground fill-muted')} />
       ))}
     </div>
   );
