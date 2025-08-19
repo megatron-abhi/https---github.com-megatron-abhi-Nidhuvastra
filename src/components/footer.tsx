@@ -12,7 +12,6 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2">
                  <Logo />
-                 <span className="text-xl font-bold text-foreground">NidhuVastra</span>
             </div>
             <p className="mt-4 text-muted-foreground max-w-sm">
               Experience premium Indian sarees designed for comfort, quality, and modern elegance.

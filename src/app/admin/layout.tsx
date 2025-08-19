@@ -51,7 +51,7 @@ function LoadingScreen() {
             <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-muted/40 px-6">
                  <div className="flex items-center gap-2 font-semibold">
                     <Logo />
-                    <span className="">NidhuVastra Admin</span>
+                    <span className="">Admin Panel</span>
                 </div>
             </header>
             <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -123,7 +123,7 @@ export default function AdminLayout({
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/admin/dashboard" className="flex items-center gap-2 font-semibold">
               <Logo />
-              <span className="">NidhuVastra Admin</span>
+              <span className="">Admin Panel</span>
             </Link>
           </div>
           <div className="flex-1">

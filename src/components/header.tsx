@@ -147,7 +147,6 @@ export function Header() {
                   <div className="p-4 border-b">
                      <Link href="/" className="flex items-center gap-2">
                         <Logo />
-                        <span className="text-xl font-bold text-foreground">NidhuVastra</span>
                     </Link>
                   </div>
                   <nav className="flex flex-col gap-1 p-4">
@@ -158,7 +157,6 @@ export function Header() {
             </div>
              <Link href="/" className="hidden md:flex items-center gap-2" aria-label="NidhuVastra Home">
                 <Logo />
-                <span className="text-xl font-bold text-foreground">NidhuVastra</span>
             </Link>
         </div>
 
