@@ -45,6 +45,7 @@ export const products: Product[] = [
     category: 'Georgette Sarees',
     price: 8200,
     stock: 25,
+    videoSrc: '/videos/showcase2.mp4',
     images: [
       { src: '/images/7.jpg', alt: 'Banarasi Saree', aiHint: 'banarasi saree model' },
       { src: '/images/4.jpg', alt: 'Banarasi Saree Detail', aiHint: 'georgette fabric floral' },
@@ -96,6 +97,7 @@ export const products: Product[] = [
     category: 'Printed Sarees',
     price: 3800,
     stock: 30,
+    videoSrc: '/videos/showcase.mp4',
     images: [
       { src: '/images/13.jpg', alt: 'Bandhani Saree', aiHint: 'bandhani saree bright' },
       { src: '/images/14.jpg', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
@@ -127,7 +129,39 @@ export const products: Product[] = [
     stock: 30,
     images: [
       { src: '/images/17.jpg', alt: 'Bandhani Saree', aiHint: 'bandhani saree bright' },
-      { src: '/images/2.jpg', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
+      { src: '/images/img02.jpg', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
+
+    ],
+    rating: 4.4,
+    reviewCount: 34,
+    description: "A celebration of color, this Bandhani printed saree from Gujarat is a joyous addition to any wardrobe. The vibrant patterns are created using traditional tie-dye techniques.",
+    details: [
+      'Soft and flowing chiffon material',
+      'Authentic Bandhani print',
+      'Perfect for cultural events and festivals',
+    ],
+    sizes: ['One Size'],
+    colors: ['Red', 'Yellow', 'Green'],
+    isExclusive: true,
+    promotion: 'Limited Stock',
+    status: 'active',
+  },
+  {
+    id: '6',
+    name: 'White and Purple fancy Ajrakh printed crepe silk saree [Product Code: 002]',
+    slug: 'silk-saree',
+    category: 'Printed Sarees',
+    price: 3800,
+    stock: 30,
+    videoSrc: '/videos/showcase4.mp4',
+    images: [
+      { src: '/images/latest01.png', alt: 'Bandhani Saree', aiHint: 'bandhani saree bright' },
+      { src: '/images/latest02.png', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
+      { src: '/images/latest03.png', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
+      { src: '/images/latest04.png', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
+      { src: '/images/latest05.png', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
+      { src: '/images/latest06.png', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
+      { src: '/images/latest07.png', alt: 'Bandhani Saree Print Detail', aiHint: 'tie dye fabric' },
 
     ],
     rating: 4.4,

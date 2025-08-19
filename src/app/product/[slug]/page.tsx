@@ -88,7 +88,7 @@ export default function ProductPage() {
             <CarouselContent>
               {mediaItems.map((media, index) => (
                 <CarouselItem key={index}>
-                  <div className="aspect-w-4 aspect-h-5 bg-muted rounded-lg shadow-lg overflow-hidden">
+                  <div className="aspect-[4/5] bg-muted rounded-lg shadow-lg overflow-hidden">
                     {media.type === 'video' ? (
                         <video
                             src={media.src}
