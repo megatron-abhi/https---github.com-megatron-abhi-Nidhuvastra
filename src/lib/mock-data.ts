@@ -45,7 +45,7 @@ export const products: Product[] = [
     category: 'Georgette Sarees',
     price: 8200,
     stock: 25,
-    videoSrc: '/videos/showcase2.mp4',
+    videoSrc: '/videos/showcase3.mp4',
     images: [
       { src: '/images/7.jpg', alt: 'Banarasi Saree', aiHint: 'banarasi saree model' },
       { src: '/images/4.jpg', alt: 'Banarasi Saree Detail', aiHint: 'georgette fabric floral' },
