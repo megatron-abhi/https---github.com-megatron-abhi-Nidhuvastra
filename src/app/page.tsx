@@ -43,27 +43,21 @@ export default function Home() {
                         <Link href="/collections/all">Explore Collections</Link>
                     </Button>
                 </div>
-                <div className="relative h-[80vh] w-full flex gap-4 -rotate-12 transform-gpu">
-                    <div className="w-1/2 space-y-4 animate-marquee-vertical-slow">
+                <div className="relative h-[80vh] w-full flex gap-4">
+                    <div className="w-1/2 space-y-4 pt-12">
                         <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
                            <Image src="/images/img01.jpg" alt="Saree model" fill objectFit="cover" data-ai-hint="saree fashion model" />
                         </div>
                          <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
                            <Image src="/images/img02.jpg" alt="Saree detail" fill objectFit="cover" data-ai-hint="indian textile lifestyle" />
                         </div>
-                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/img06.jpg" alt="Saree detail" fill objectFit="cover" data-ai-hint="indian textile lifestyle" />
-                        </div>
                     </div>
-                    <div className="w-1/2 space-y-4 animate-marquee-vertical-fast -translate-y-1/4">
+                    <div className="w-1/2 space-y-4">
                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
                            <Image src="/images/img03.jpg" alt="Weaving loom" fill objectFit="cover" data-ai-hint="saree weaving artisan" />
                         </div>
                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
                            <Image src="/images/img04.jpg" alt="Another saree model" fill objectFit="cover" data-ai-hint="saree office wear" />
-                        </div>
-                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/img05.jpg" alt="Another saree model" fill objectFit="cover" data-ai-hint="saree office wear" />
                         </div>
                     </div>
                  </div>
