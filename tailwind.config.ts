@@ -109,6 +109,21 @@ export default {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
+        'package-to-truck': {
+            '0%': { transform: 'translateX(0)', opacity: '1' },
+            '20%': { transform: 'translateX(-60px) rotate(-20deg)', opacity: '1' },
+            '40%': { transform: 'translateX(-60px) rotate(-20deg)', opacity: '0' },
+            '100%': { transform: 'translateX(-60px) rotate(-20deg)', opacity: '0' },
+        },
+        'truck-drive': {
+            '0%, 40%': { transform: 'translateX(0)' },
+            '60%': { transform: 'translateX(20px)' },
+            '100%': { transform: 'translateX(300px)' },
+        },
+        'road-lines': {
+            '0%, 50%': { backgroundPosition: '0% 0' },
+            '100%': { backgroundPosition: '-200% 0' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -119,6 +134,9 @@ export default {
         'fade-in-delayed': 'fade-in-delayed 0.8s ease-out both',
         'fade-in': 'fade-in 0.5s ease-out forwards',
         'fade-out': 'fade-out 1s ease-out forwards',
+        'package-to-truck': 'package-to-truck 3s ease-in-out forwards',
+        'truck-drive': 'truck-drive 3s ease-in-out forwards',
+        'road-lines': 'road-lines 1.5s linear infinite forwards',
       },
     },
   },
