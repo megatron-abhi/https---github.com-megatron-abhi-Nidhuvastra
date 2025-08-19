@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -41,21 +41,20 @@ export function AuthButton() {
   const { toast } = useToast();
   const { setMockUser } = useAuth();
 
-  const setupRecaptcha = () => {
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
-    }
-    try {
+  useEffect(() => {
+    if (open && !window.recaptchaVerifier) {
+      try {
         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
             size: 'invisible',
             callback: () => {
                 // reCAPTCHA solved
             },
         });
-    } catch(error) {
+      } catch(error) {
         console.error("Recaptcha setup error:", error);
+      }
     }
-  };
+  }, [open]);
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +83,6 @@ export function AuthButton() {
         return;
     }
     
-    setupRecaptcha();
     const appVerifier = window.recaptchaVerifier!;
     
     try {

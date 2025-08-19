@@ -14,7 +14,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { type CarouselApi } from "@/components/ui/carousel"
+import Autoplay from 'embla-carousel-autoplay';
 import React from 'react';
 
 
@@ -22,24 +22,7 @@ export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
   const videoSources = ['/videos/showcase.mp4', '/videos/showcase2.mp4', '/videos/showcase3.mp4'];
-  const [api, setApi] = React.useState<CarouselApi>()
-  const videoRefs = React.useRef<(HTMLVideoElement | null)[]>([]);
-
-  React.useEffect(() => {
-    if (!api) {
-      return
-    }
-
-    // Play all videos when the component is ready
-    videoRefs.current.forEach((video) => {
-        if (video) {
-            video.play().catch(error => console.log("Video play interrupted:", error));
-        }
-    });
-
-  }, [api])
-
-
+ 
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -60,21 +43,27 @@ export default function Home() {
                         <Link href="/collections/all">Explore Collections</Link>
                     </Button>
                 </div>
-                 <div className="relative h-[80vh] w-full flex gap-4 -rotate-12 transform-gpu">
+                <div className="relative h-[80vh] w-full flex gap-4 -rotate-12 transform-gpu">
                     <div className="w-1/2 space-y-4 animate-marquee-vertical-slow">
                         <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/1.jpg" alt="Saree model" fill objectFit="cover" data-ai-hint="saree fashion model" />
+                           <Image src="/images/img01.jpg" alt="Saree model" fill objectFit="cover" data-ai-hint="saree fashion model" />
                         </div>
                          <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/2.jpg" alt="Saree detail" fill objectFit="cover" data-ai-hint="indian textile lifestyle" />
+                           <Image src="/images/img02.jpg" alt="Saree detail" fill objectFit="cover" data-ai-hint="indian textile lifestyle" />
+                        </div>
+                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
+                           <Image src="/images/img06.jpg" alt="Saree detail" fill objectFit="cover" data-ai-hint="indian textile lifestyle" />
                         </div>
                     </div>
                     <div className="w-1/2 space-y-4 animate-marquee-vertical-fast -translate-y-1/4">
                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/3.jpg" alt="Weaving loom" fill objectFit="cover" data-ai-hint="saree weaving artisan" />
+                           <Image src="/images/img03.jpg" alt="Weaving loom" fill objectFit="cover" data-ai-hint="saree weaving artisan" />
                         </div>
                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/4.jpg" alt="Another saree model" fill objectFit="cover" data-ai-hint="saree office wear" />
+                           <Image src="/images/img04.jpg" alt="Another saree model" fill objectFit="cover" data-ai-hint="saree office wear" />
+                        </div>
+                        <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
+                           <Image src="/images/img05.jpg" alt="Another saree model" fill objectFit="cover" data-ai-hint="saree office wear" />
                         </div>
                     </div>
                  </div>
@@ -89,23 +78,28 @@ export default function Home() {
                     Behind the Weave
                 </h2>
                 <Carousel 
-                    setApi={setApi} 
                     className="w-full" 
                     opts={{
                         loop: true, 
                         align: 'center',
                     }}
+                    plugins={[
+                        Autoplay({
+                          delay: 5000,
+                          stopOnInteraction: true,
+                        }),
+                    ]}
                 >
                     <CarouselContent className="-ml-4 h-[70vh]">
                     {videoSources.map((src, index) => (
                         <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-4">
                             <div className="relative w-full h-full rounded-lg shadow-lg overflow-hidden">
                                 <video
-                                    ref={(el) => (videoRefs.current[index] = el)}
                                     className="absolute top-0 left-0 w-full h-full object-cover"
                                     src={src}
                                     muted
                                     playsInline
+                                    autoPlay
                                     loop
                                 />
                             </div>
