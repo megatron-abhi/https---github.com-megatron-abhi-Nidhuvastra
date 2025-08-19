@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import React from 'react';
+import { AnnouncementBar } from '@/components/announcement-bar';
 
 
 export default function Home() {
@@ -114,6 +115,9 @@ export default function Home() {
       {/* Featured Products Section */}
       <section id="featured-products" className="py-16 lg:py-24 bg-card">
         <div className="container mx-auto px-4">
+          <div className="mb-12">
+            <AnnouncementBar />
+          </div>
           <h2 className="text-3xl md:text-4xl font-headline text-center mb-12">
             Featured Collection
           </h2>

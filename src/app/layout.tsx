@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { AnnouncementBar } from '@/components/announcement-bar';
 import { AuthProvider } from '@/hooks/use-auth';
 import { CartProvider } from '@/hooks/use-cart';
 import { WishlistProvider } from '@/hooks/use-wishlist';
@@ -32,7 +31,6 @@ function AppProviders({ children }: { children: React.ReactNode }) {
           <CartProvider>
             <WishlistProvider>
               <div className="relative flex min-h-screen flex-col">
-                {!isAdminPage && <AnnouncementBar />}
                 {!isAdminPage && <Header />}
                 <main className="flex-1">{children}</main>
                 {!isAdminPage && <Footer />}
