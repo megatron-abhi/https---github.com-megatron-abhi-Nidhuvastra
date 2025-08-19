@@ -1,3 +1,4 @@
+
 import type { Product, Review, Order, Customer } from '@/types';
 
 // Set offer end date to be 3 days from now
