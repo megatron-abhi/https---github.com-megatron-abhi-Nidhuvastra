@@ -30,6 +30,7 @@ export default function Home() {
  
   return (
     <div className="flex flex-col">
+      <AnnouncementBar />
       {/* Hero Section */}
        <section className="relative w-full flex items-center justify-start text-left overflow-hidden bg-background">
         <div className="container mx-auto px-4 py-16 md:py-24">
@@ -121,9 +122,6 @@ export default function Home() {
       {/* Featured Products Section */}
       <section id="featured-products" className="py-16 lg:py-24 bg-card">
         <div className="container mx-auto px-4">
-          <div className="mb-12">
-            <AnnouncementBar />
-          </div>
           <h2 className="text-3xl md:text-4xl font-headline text-center mb-12">
             Featured Collection
           </h2>
