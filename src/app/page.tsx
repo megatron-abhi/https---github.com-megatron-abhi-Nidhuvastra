@@ -46,7 +46,7 @@ export default function Home() {
                 <div className="relative h-[80vh] w-full flex gap-4">
                     <div className="w-1/2 space-y-4 pt-12">
                         <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
-                           <Image src="/images/img01.jpg" alt="Saree model" fill objectFit="cover" data-ai-hint="saree fashion model" />
+                           <Image src="/images/img01.jpg" alt="Saree model" fill objectFit="cover" data-ai-hint="saree fashion model" priority />
                         </div>
                          <div className="h-[40vh] relative rounded-2xl shadow-2xl overflow-hidden">
                            <Image src="/images/img02.jpg" alt="Saree detail" fill objectFit="cover" data-ai-hint="indian textile lifestyle" />

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -37,9 +38,10 @@ export function ChatBot() {
 
   useEffect(() => {
     // Scroll to the bottom when a new message is added
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({
-        top: scrollAreaRef.current.scrollHeight,
+    const scrollArea = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollArea) {
+      scrollArea.scrollTo({
+        top: scrollArea.scrollHeight,
         behavior: 'smooth',
       });
     }
