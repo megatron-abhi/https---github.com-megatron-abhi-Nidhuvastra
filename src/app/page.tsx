@@ -118,6 +118,9 @@ export default function Home() {
                 </Carousel>
             </div>
         </section>
+      
+      {/* Announcement Bar */}
+      <AnnouncementBar />
 
       {/* Featured Products Section */}
       <section id="featured-products" className="py-16 lg:py-24 bg-card">
