@@ -63,13 +63,14 @@ export function Header() {
 
   const handleLogout = async () => {
     if (sessionStorage.getItem('mockUser')) {
+        sessionStorage.removeItem('mockUser');
         setMockUser(null);
     } else {
         await signOut(auth);
     }
   };
   
-  const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || '').split(',');
+  const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || 'test-admin-uid').split(',');
   const isAuthorizedAdmin = user && 'uid' in user && adminUids.includes(user.uid);
 
   const NavContent = () => (

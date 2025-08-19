@@ -18,12 +18,15 @@ import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'fi
 import { Loader2 } from 'lucide-react';
 import { ref, set, get, serverTimestamp } from 'firebase/database';
 import { useAuth } from '@/hooks/use-auth';
+import { useRouter } from 'next/navigation';
 
 // Test credentials
 const TEST_USER_PHONE = '+919876543210';
 const TEST_USER_OTP = '111111';
 const TEST_ADMIN_PHONE = '+918310320951';
 const TEST_ADMIN_OTP = '222222';
+const TEST_ADMIN_UID = 'test-admin-uid';
+
 
 declare global {
     interface Window {
@@ -40,6 +43,7 @@ export function AuthButton() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { setMockUser } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (open && !window.recaptchaVerifier) {
@@ -55,6 +59,9 @@ export function AuthButton() {
       }
     }
   }, [open]);
+  
+  const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || 'test-admin-uid').split(',');
+  const isAuthorizedAdmin = (uid: string) => adminUids.includes(uid);
 
   const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,23 +125,37 @@ export function AuthButton() {
     }
   };
 
+  const handleLoginSuccess = (uid: string) => {
+    if (isAuthorizedAdmin(uid)) {
+        router.push('/admin/dashboard');
+    } else {
+        router.push('/');
+    }
+  };
+
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    
+    const adminUids = (process.env.NEXT_PUBLIC_ADMIN_UIDS || TEST_ADMIN_UID).split(',');
 
     // Test mode bypass
     if (phoneNumber === TEST_USER_PHONE && otp === TEST_USER_OTP) {
-        setMockUser({ uid: 'test-user-uid', phoneNumber: TEST_USER_PHONE });
+        const mockUser = { uid: 'test-user-uid', phoneNumber: TEST_USER_PHONE };
+        setMockUser(mockUser);
         toast({ title: "Welcome!", description: "Logged in as test user." });
         resetState(true);
         setIsLoading(false);
+        handleLoginSuccess(mockUser.uid);
         return;
     }
     if (phoneNumber === TEST_ADMIN_PHONE && otp === TEST_ADMIN_OTP) {
-        setMockUser({ uid: 'test-admin-uid', phoneNumber: TEST_ADMIN_PHONE });
+        const mockUser = { uid: TEST_ADMIN_UID, phoneNumber: TEST_ADMIN_PHONE };
+        setMockUser(mockUser);
         toast({ title: "Welcome, Admin!", description: "Logged in as test admin." });
         resetState(true);
         setIsLoading(false);
+        handleLoginSuccess(mockUser.uid);
         return;
     }
 
@@ -161,7 +182,8 @@ export function AuthButton() {
                     description: "You have been logged in successfully.",
                 });
             }
-            resetState(true); 
+            resetState(true);
+            handleLoginSuccess(user.uid); 
         } else {
             throw new Error("Invalid OTP or confirmation result.");
         }
