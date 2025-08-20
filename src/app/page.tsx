@@ -32,11 +32,12 @@ export default function Home() {
             <div className="absolute inset-0 flex justify-center items-end z-10 pointer-events-none">
               <div className="relative w-full max-w-lg h-[80vh] animate-fade-in" style={{ animationDelay: '0.4s' }}>
                 <Image
-                    src="/images/main.png"
+                    src="/images/herimage.png"
                     alt="Hero image of a model wearing a saree"
                     fill
                     className="object-contain object-bottom"
                     data-ai-hint="saree fashion model"
+                    quality={100}
                     priority
                 />
               </div>
