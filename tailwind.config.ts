@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Playfair Display', 'serif'],
+        body: ['PT Sans', 'sans-serif'],
+        headline: ['Playfair', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -92,6 +92,10 @@ export default {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        'fade-out': {
+          'from': { opacity: '1' },
+          'to': { opacity: '0' },
+        },
         'fade-in-slow': {
           '0%': { opacity: '0' },
           '75%': { opacity: '0' },
@@ -118,10 +122,6 @@ export default {
           '50%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-        'fade-out': {
-          '0%': { opacity: '1' },
-          '100%': { opacity: '0' },
-        },
         'package-to-truck': {
             '0%': { transform: 'translateX(0)', opacity: '1' },
             '20%': { transform: 'translateX(-60px) rotate(-20deg)', opacity: '1' },
@@ -142,14 +142,14 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in-up': 'fade-in-up 0.8s ease-out both',
-        'fade-in': 'fade-in 1s ease-out both',
+        'fade-in': 'fade-in 1s ease-in-out',
+        'fade-out': 'fade-out 1s ease-in-out',
         'fade-in-slow': 'fade-in 1.5s ease-out both',
         'marquee': 'marquee 25s linear infinite',
         'marquee-vertical-slow': 'marquee-vertical-slow 40s linear infinite',
         'marquee-vertical-fast': 'marquee-vertical-fast 40s linear infinite',
         'heart-float': 'heart-float 0.8s ease-out forwards',
         'fade-in-delayed': 'fade-in-delayed 0.8s ease-out both',
-        'fade-out': 'fade-out 1s ease-out forwards',
         'package-to-truck': 'package-to-truck 3s ease-in-out forwards',
         'truck-drive': 'truck-drive 3s ease-in-out forwards',
         'road-lines': 'road-lines 1.5s linear infinite forwards',

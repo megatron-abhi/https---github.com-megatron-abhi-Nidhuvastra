@@ -9,12 +9,27 @@ import { products } from '@/lib/mock-data';
 import { ArrowRight, Star } from 'lucide-react';
 import { AnnouncementBar } from '@/components/announcement-bar';
 import { ReviewStars } from '@/components/review-stars';
+import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 
+const heroImages = [
+    { src: '/images/main.png', alt: 'Model wearing a modern saree', hint: 'saree fashion model' },
+    { src: '/images/main1.png', alt: 'Model wearing an elegant saree', hint: 'elegant saree' }
+];
 
 export default function Home() {
   const featuredProducts = products.filter(p => !p.isExclusive).slice(0, 4);
   const exclusiveProducts = products.filter(p => p.isExclusive);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
  
+  useEffect(() => {
+    const timer = setInterval(() => {
+        setCurrentImageIndex(prevIndex => (prevIndex + 1) % heroImages.length);
+    }, 4000); // Change image every 4 seconds
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -28,19 +43,25 @@ export default function Home() {
               </h1>
             </div>
 
-            {/* Center Image - Sticker-like */}
+            {/* Center Image - Slideshow */}
             <div className="absolute inset-0 flex justify-center items-end z-10 pointer-events-none">
-              <div className="relative w-full max-w-lg h-[80vh] animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                <Image
-                    src="/images/herimage.png"
-                    alt="Hero image of a model wearing a saree"
-                    fill
-                    className="object-contain object-bottom"
-                    data-ai-hint="saree fashion model"
-                    quality={100}
-                    priority
-                />
-              </div>
+                <div className="relative w-full max-w-lg h-[80vh]">
+                    {heroImages.map((image, index) => (
+                         <Image
+                            key={index}
+                            src={image.src}
+                            alt={image.alt}
+                            fill
+                            className={cn(
+                                'object-contain object-bottom transition-opacity duration-1000 ease-in-out',
+                                index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                            )}
+                            data-ai-hint={image.hint}
+                            quality={100}
+                            priority={index === 0} // Prioritize the first image
+                        />
+                    ))}
+                </div>
             </div>
 
             {/* Content Grid */}
