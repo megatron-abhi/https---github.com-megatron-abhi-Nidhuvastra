@@ -17,7 +17,6 @@ export default function Home() {
  
   return (
     <div className="flex flex-col">
-      <AnnouncementBar />
       {/* Hero Section */}
        <section className="relative w-full overflow-hidden bg-background">
         <div className="container mx-auto px-4">
