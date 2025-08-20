@@ -20,16 +20,16 @@ export default function Home() {
       {/* Hero Section */}
        <section className="relative w-full overflow-hidden bg-background">
         <div className="container mx-auto px-4">
-          <div className="relative grid grid-cols-1 md:grid-cols-12 items-center min-h-[80vh] md:min-h-screen py-16 md:py-0">
+          <div className="relative min-h-[80vh] md:min-h-screen py-16 md:py-0 flex items-center">
             {/* Background Text */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
               <h1 className="text-[20vw] md:text-[25vw] lg:text-[20vw] font-extrabold text-foreground/5 tracking-tighter animate-fade-in-slow">
-                ELEGANCE
+                NIDHU
               </h1>
             </div>
 
             {/* Center Image */}
-            <div className="absolute inset-0 md:inset-x-1/4 z-10 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+            <div className="absolute inset-0 z-10 animate-fade-in" style={{ animationDelay: '0.4s' }}>
                  <Image
                     src="/images/herimage.png"
                     alt="Hero image of a model wearing a saree"
@@ -40,35 +40,33 @@ export default function Home() {
                 />
             </div>
 
+            {/* Content Grid */}
+            <div className="relative z-20 grid grid-cols-1 md:grid-cols-2 w-full">
+                {/* Left Column */}
+                <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                  <h1 className="text-5xl md:text-7xl font-headline mb-6 text-foreground">
+                    Modern Sarees. Effortless Elegance.
+                  </h1>
+                   <div className="pl-4 border-l-2 border-primary">
+                     <p className="text-muted-foreground italic">
+                       "Timeless, wearable, and truly well made."
+                     </p>
+                   </div>
+                </div>
 
-            {/* Left Column */}
-            <div className="md:col-span-4 z-20 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <h1 className="text-5xl md:text-7xl font-headline mb-6 text-foreground">
-                Modern Sarees. Effortless Elegance.
-              </h1>
-               <div className="pl-4 border-l-2 border-primary">
-                 <p className="text-muted-foreground italic">
-                   "Timeless, wearable, and truly well made."
-                 </p>
-               </div>
-            </div>
-
-            {/* Empty Spacer Column */}
-            <div className="md:col-span-4 hidden md:block"></div>
-
-
-            {/* Right Column */}
-            <div className="md:col-span-4 z-20 flex flex-col items-start md:items-end animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-                <div className="md:text-right">
-                    <p className="text-muted-foreground max-w-sm mb-6">
-                        Timeless essentials for the modern minimalist. Designed to simplify your wardrobe — and elevate your everyday.
-                    </p>
-                    <Button asChild size="lg">
-                        <Link href="/collections/all">Shop Collection</Link>
-                    </Button>
-                    <div className="flex items-center gap-2 mt-8 md:justify-end">
-                        <ReviewStars rating={4.9} />
-                        <p className="text-sm text-muted-foreground">4.9 / 5.0 (450 Reviews)</p>
+                {/* Right Column */}
+                <div className="flex flex-col items-start md:items-end animate-fade-in-up mt-8 md:mt-0" style={{ animationDelay: '0.6s' }}>
+                    <div className="md:text-right">
+                        <p className="text-muted-foreground max-w-sm mb-6">
+                            Timeless essentials for the modern minimalist. Designed to simplify your wardrobe — and elevate your everyday.
+                        </p>
+                        <Button asChild size="lg">
+                            <Link href="/collections/all">Shop Collection</Link>
+                        </Button>
+                        <div className="flex items-center gap-2 mt-8 md:justify-end">
+                            <ReviewStars rating={4.9} />
+                            <p className="text-sm text-muted-foreground">4.9 / 5.0 (450 Reviews)</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -83,9 +81,10 @@ export default function Home() {
       {/* Featured Products Section */}
       <section id="featured-products" className="py-16 lg:py-24 bg-card">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-headline text-center mb-12">
-            Featured Collection
-          </h2>
+           <div className="text-center mb-12">
+               <h2 className="text-3xl md:text-4xl font-headline">Featured Collection</h2>
+               <p className="text-muted-foreground mt-2">Curated picks that embody our signature style and quality.</p>
+           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
