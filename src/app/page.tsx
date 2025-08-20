@@ -28,16 +28,18 @@ export default function Home() {
               </h1>
             </div>
 
-            {/* Center Image */}
-            <div className="absolute inset-0 z-10 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                 <Image
-                    src="/images/herimage.png"
+            {/* Center Image - Sticker-like */}
+            <div className="absolute inset-0 flex justify-center items-end z-10 pointer-events-none">
+              <div className="relative w-full max-w-lg h-[80vh] animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                <Image
+                    src="/images/main.png"
                     alt="Hero image of a model wearing a saree"
                     fill
-                    className="object-cover object-bottom"
+                    className="object-contain object-bottom"
                     data-ai-hint="saree fashion model"
                     priority
                 />
+              </div>
             </div>
 
             {/* Content Grid */}
